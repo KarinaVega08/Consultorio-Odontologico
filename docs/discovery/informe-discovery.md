@@ -1,180 +1,202 @@
-# Informe de Discovery — Etapa 2
-
-**Proyecto**: Sistema de gestión de turnos para consultorios odontológicos  
-**Fecha de consulta**: 2026-11-19  
-**Fuentes**: 17 notas en `discovery/sources/` (7 relevadas en la tanda inicial + 10 en esta tanda)  
-**Alcance**: 15 sistemas para la tabla comparativa (mínimo exigido por la consigna)
+# Informe de Discovery — Gestión de Turnos para Consultorios Odontológicos
 
 ---
 
-## Resumen ejecutivo (máximo 1 página)
+## Portada
 
-Los consultorios odontológicos en Argentina pierden ingresos y tiempo operativo por ausencias de pacientes, agendas manuales coordinadas por WhatsApp o planillas de Excel, y reservas superpuestas entre profesionales y sillones/boxes. Este informe analiza 15 sistemas del mercado odontológico (7 plataformas de software de gestión relevadas directamente + 8 clínicas y redes de referencia) para identificar el estándar de mercado, los diferenciadores reales, los vacíos y las oportunidades de innovación para un MVP de software de gestión de turnos.
-
-El mercado argentino cuenta con actores de software de gestión odontológica (Dentry, Odontal Web, Dentify, Odontoly, Odontara) y competidores internacionales con presencia en LATAM (Doctocliq, Dentalia, Sonría) además de clínicas de referencia (Clínica Vidal, HM Salud Bucal, Enjoy Dental, Dentiva, Odontocentro Mendoza, Vitaldent, Sanitas Dental). Ninguna solución combina nativamente: (i) motor de disponibilidad con anti-solapamiento estricto por profesional y sillón/box, (ii) catálogo de prestaciones con duración variable, (iii) roles diferenciados (Admin/Odontólogo/Recepcionista/Paciente), (iv) autogestión online del paciente con registro por DNI, y (v) recordatorios automáticos por email, todo bajo presupuesto $0 y stack Java 21 + Spring Boot 3.
-
-El MVP quirúrgico debe priorizar: registro de pacientes, gestión de turnos con anti-solapamiento, configuración administrativa y recordatorios por email. Quedan fuera del MVP: WhatsApp Business, cobros online, odontograma y multi-sucursal.
+- **Título**: Informe de Discovery: Análisis competitivo de sistemas de gestión de turnos para consultorios odontológicos en Argentina
+- **Materia**: Desarrollo de Software — Trabajo Global Integrador (UTN FRM)
+- **Integrantes**: Thiago, Mai, Kari, Mati, Caste *(completar nombres completos y legajos antes de exportar a PDF)*
+- **Fecha**: 2026-11-20
+- **Fuentes relevadas**: 18 plataformas de software en `discovery/sources/` (relevamiento actualizado 2026-11-20)
 
 ---
 
-## Sección A — Tabla comparativa de 15 sistemas
+## Resumen ejecutivo
 
-Ordenados por relevancia para el mercado argentino. Fecha de consulta: 2026-11-19. Celdas sin respaldo público verificable se consignan estrictamente como **"No evidenciado"**.
+Los consultorios odontológicos en Argentina pierden ingresos y tiempo operativo por ausencias de pacientes sin aviso, agendas manuales coordinadas por WhatsApp o planillas de Excel, y reservas superpuestas entre profesionales y sillones/boxes. Este informe analiza **18 plataformas reales de software** con gestión de turnos y agenda (7 de origen argentino, 7 latinoamericanas con foco o presencia regional y 4 referencias internacionales de España y EE. UU.) para identificar el estándar de mercado, los diferenciadores reales, los vacíos locales y el alcance óptimo de un MVP.
 
-| # | Sistema | País / Alcance | Tipo | Problema que resuelve | Pricing (público) | Diferenciadores clave | notas_file |
-|---|---|---|---|---|---|---|---|
-| 1 | Dentry | AR | Software | Digitalizar consultorio: paciente entra una vez, todo ya sabe quién es. Historias clínicas, presupuestos, obras sociales, facturación a ARCA. | Plan gratis para siempre; planes en /planes (No evidendido). Sin tarjeta de crédito. | Normativa AR (leyes 26.529/25.326), SOC 2 Type II, facturación directa a ARCA. | `discovery/sources/dentry.md` |
-| 2 | Odontal Web | AR | Software | Gestión con asistente de turnos con IA (Odi) 24/7, agenda virtual, historias clínicas. | USD 30/mes (hasta 2 odontólogos); anual USD 27/mes; odontólogo extra USD 10/mes. Trial 60 días. | Asistente de turnos con IA, diseñado por odontólogos, 100% nube. | `discovery/sources/odontalweb.md` |
-| 3 | Dentify | AR | Software | Gestión clínica sin fichas de papel: agenda inteligente, odontograma interactivo, control financiero, obras sociales. | Gratis 14 días; Básico $30.000/mes (1 pro); Clínicas $45.000/mes; anual 2 meses gratis. | Hecho en AR, soporte local 24/7, migración gratuita de datos. | `discovery/sources/dentify.md` |
-| 4 | Odontoly | AR | Software | Agenda, historia clínica y caja ARS/USD conectadas; datos del paciente quedan en el consultorio (local-first). | USD 149,99/mes, sin permanencia, instalador Mac firmado, activación acompañada. | Local-first, caja ARS/USD nativa, activación acompañada, sin permanencia. | `discovery/sources/odontoly.md` |
-| 5 | Odontara | AR | Software | Agenda, pacientes e información clínica en un solo lugar, para consultorios y clínicas de AR. | No evidenciado (solicitar demo por WhatsApp). | Agenda en grilla, varias sedes, aviso por correo al agendar, puesta en marcha acompañada. | `discovery/sources/odontara.md` |
-| 6 | Odonto.ar | AR | Software (ref.) | Historias clínicas, agenda, obras sociales y finanzas en un solo lugar. Turnos online autogestionados. | 30 días gratis sin tarjeta; Individual $29 USD/mes; Profesional $49 USD/mes; Clínica $99 USD/mes. Pago en pesos vía Mercado Pago. | Turnos online por link, planes por cantidad de usuarios, 30 días trial, importación desde Excel. | `discovery/sources/odonto.md` |
-| 7 | Odentix | AR | Software | No evidenciado (fetch falló, página sin contenido legible). | No evidenciado | No evidenciado | `discovery/sources/odentix.md` |
-| 8 | Doctocliq | LATAM (PE, MX, EC, CO) | Software | Software médico y dental 100% online con asistente IA por WhatsApp (Soyla IA), agenda, historias clínicas, presupuestos, caja, marketing, facturación electrónica. | 7 días gratis sin tarjeta; precios en /planes-y-precios (No evidendido). | Asistente IA WhatsApp, facturación electrónica por país (SUNAT/CFDI/SRI/FEV-RIPS), Meta Business Partner, app móvil. | `discovery/sources/doctocliq.md` |
-| 9 | Clínica Vidal Odontología | AR | Clínica física | Odontología integral y urgencias en Godoy Cruz, Mendoza. 8 especialidades. | No evidendido (arancelado por obra social/particular, consulta por WhatsApp). | Urgencias fines de semana, 8 especialidades en un lugar, instructivos post-tratamiento, obra social múltiple. | `discovery/sources/clinicavidalodontologia.md` |
-| 10 | HM Salud Bucal | AR | Clínica física | Odontología integral en Mendoza; 14 especialidades, 7 profesionales, última tecnología. | No evidendido (consulta por WhatsApp). | 14 especialidades bajo un techo, asistente virtual, puntuación 4.9 en Google, 20+ años. | `discovery/sources/hmsaludbucal.md` |
-| 11 | Enjoy Dental | AR | Clínica física | Clínica dental en CABA; 6 consultorios, sala de radiología, normas de bioseguridad. | No evidendido (consulta por WhatsApp/teléfono). | 6 consultorios + sala de radiografía, múltiples obras sociales (OSDE, Galeno, Swiss Medical, etc.), equipo >15 profesionales. | `discovery/sources/enjoydental.md` |
-| 12 | Dentiva | AR | Red de clínicas | Red de clínicas propias en Córdoba, Rafaela, Rosario y Mendoza; odontología integral con financiación. | No evidendido (planes de financiación personalizados por sede). | Sedes propias en 4 ciudades, tecnología CAD/CAM e impresión 3D, múltiples coberturas médicas. | `discovery/sources/dentiva.md` |
-| 13 | Sonría | CO | Red de clínicas | Red de 60+ clínicas en Colombia; prevención, tratamiento y solución de salud oral con financiación. | Ortodoncia desde $45.900 COP/mes; diseño de sonrisa desde $65.900 COP/mes; implantes desde $79.900 COP/mes. | 60+ clínicas, financiación por cuotas, valoración sin costo, turismo odontológico. | `discovery/sources/sonria.md` |
-| 14 | Dentalia | MX | Red de clínicas | Red de 60+ clínicas en México; diagnóstico 360°, membresías dentales, aceptación de seguros. | Membresía Individual $1.299 MXN/año; Familiar desde $2.750 MXN/año; MSI sin intereses. | 60+ clínicas, diagnóstico 360° gratis, membresías, MSI y ATRATO, seguros dentales. | `discovery/sources/dentalia.md` |
-| 15 | Vitaldent | ES | Red de clínicas | Red de 400+ clínicas en España; primera visita gratuita, financiación 100%, app propia. | Primera visita gratuita; financiación 36 meses 0% TAE; precios por clínica (No evidenciado). | 400+ clínicas, app propia con odontograma, Smysecret (estética), 4.75/5 (+188k reseñas). | `discovery/sources/vitaldent.md` |
+**Hallazgos principales:**
+1. En Argentina existen soluciones locales activas (Dentry, Odontal Web, Dentify, Odonto.ar, Odontoly, Odontara) que cubren historia clínica, odontograma y caja/obras sociales, pero la mayoría no publica documentación técnica verificable sobre **prevención estricta de solapamientos por sillón/box** ni **cálculo dinámico de disponibilidad según duración variable de cada prestación**.
+2. Los competidores regionales líderes (Dentalink, Doctocliq, AgendaPro) apuestan fuerte a WhatsApp Business API e inteligencia artificial, pero con precios en dólares o por cotización comercial cerrada.
+3. Ninguna solución de presupuesto $0 combina nativamente: (i) motor de disponibilidad con anti-solapamiento estricto por profesional y por sillón/box (permitiendo turnos consecutivos borde a borde), (ii) catálogo de prestaciones con duración variable, (iii) autogestión online del paciente con registro único por DNI (7-8 dígitos), (iv) blanqueo presencial por Recepción, y (v) recordatorios por email (SMTP/Mailpit en desarrollo), bajo cumplimiento de la Ley 25.326.
 
-**Nota sobre cobertura**: de los 15 sistemas, 7 son plataformas de software de gestión (items 1-8) y 8 son clínicas o redes de atención física (items 9-15) incluidas como referencia de UX del paciente, modelo de negocio y estándar de mercado argentino/LATAM.
+**MVP recomendado:** enfocado exclusivamente en registro/login por DNI, configuración de profesionales/sillones/horarios/bloqueos/prestaciones, motor de disponibilidad + gestión de turnos sin solapamientos y recordatorios por email. Quedan para etapas posteriores WhatsApp Business API, Mercado Pago, AFIP/ARCA, odontograma y multi-sucursal.
+
+---
+
+## Sección A — Tabla comparativa de 18 sistemas de software
+
+Ordenados por relevancia para el mercado argentino. En todo el informe se distingue estrictamente entre:
+- **Comprobado**: demostrado en documentación pública, página de precios detallada, manual técnico o producto visible.
+- **Afirmación comercial**: declarado por el proveedor en su marketing sin demostración pública.
+- **No evidenciado**: sin respaldo público verificable al momento de la consulta.
+
+| # | Producto / Proveedor | País · Segmento · Modalidad | Agenda (multi-prof / sillón / solapamiento) | Reserva online | Recordatorios | Clínica & Administración | Seguridad / Normativa | Modelo comercial (público) | Fuente principal y fecha |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | **Dentry** (Dentry Argentina) | AR · Independientes y consultorios · SaaS web | Comprobado (vista "Mi día" y semanal; asientos extra). Sillón/solapamiento: **No evidenciado** | **No evidenciado** | Comprobado (recordatorios por email desde Basic; WhatsApp: Afirmación comercial) | Comprobado (odontograma, HC, presupuestos, cuenta corriente; obras sociales/ARCA en Pro) | Afirmación comercial (Leyes 26.529/25.326, SOC 2 Type II) | Comprobado: Gratis `$0` (50 pac./100 turnos/mes); Basic `$29.999 ARS/mes`; Pro `$49.999 ARS/mes` | https://www.dentry.com.ar/planes · 2026-11-20 |
+| 2 | **Odontal Web** | AR · Independientes y clínicas · SaaS web | Afirmación comercial (agenda virtual). Sillón/solapamiento: **No evidenciado** | Comprobado (asistente IA "Odi" 24/7 para reservar/cancelar) | **No evidenciado** (foco en chat 24/7) | Afirmación comercial (HC digital). Admin/ARCA: **No evidenciado** | Afirmación comercial (backups, cifrado, exportación libre) | Comprobado: `USD 30/mes` hasta 2 pro (anual `USD 27`), trial 60 días | https://odontalweb.com.ar/ · 2026-11-19 |
+| 3 | **Dentify** (IB Digital) | AR · Independientes y clínicas · SaaS web | Afirmación comercial (agenda por profesional/práctica). Sillón/solapamiento: **No evidenciado** | **No evidenciado** | **No evidenciado** | Comprobado (odontograma, HC, caja diaria, obras sociales) | Afirmación comercial (migración y copias en nube) | Comprobado: 14 días gratis; Básico `$30.000 ARS/mes`; Clínicas `$45.000 ARS/mes` | https://www.dentify.com.ar/ · 2026-11-19 |
+| 4 | **Odonto.ar** | AR · Independientes y clínicas hasta 10 u. · SaaS web | Afirmación comercial (agenda día/semana/mes). Sillón/solapamiento: **No evidenciado** | Comprobado (pacientes reservan solos por link público) | **No evidenciado** | Comprobado (odontograma, HC auditable, obras sociales, finanzas) | Afirmación comercial (registro de quién modificó HC) | Comprobado: 30 días gratis; Individual `USD 29`, Pro `USD 49`, Clínica `USD 99/mes` (pago ARS Mercado Pago) | https://odonto.ar/ · 2026-11-19 |
+| 5 | **Odontoly** | AR · Consultorios independientes · Local-first (macOS) | Afirmación comercial (agenda y tareas de equipo). Sillón/solapamiento: **No evidenciado** | Comprobado (solicitud por enlace, equipo confirma) | **No evidenciado** (WhatsApp/SMS marcados como próximos) | Comprobado (HC, odontograma, presupuestos, caja ARS/USD) | Comprobado (local-first, copias completas cifradas) | Comprobado: `USD 149,99/mes`, sin permanencia | https://odontoly.com/ · 2026-11-19 |
+| 6 | **Odontara** | AR · Consultorios y clínicas multi-sede · SaaS nube | Afirmación comercial (agenda en grilla/lista por profesional). Sillón/solapamiento: **No evidenciado** | **No evidenciado** | Comprobado (aviso por correo al agendar) | Afirmación comercial (HC, odontograma). Admin/caja: **No evidenciado** | Afirmación comercial (roles por usuario) | **No evidenciado** (demo por WhatsApp) | https://odontara.com.ar/ · 2026-11-19 |
+| 7 | **Odentix** | AR · Consultorios · **No evidenciado** | **No evidenciado** (sitio sin contenido legible) | **No evidenciado** | **No evidenciado** | **No evidenciado** | **No evidenciado** | **No evidenciado** | https://www.odentix.com.ar/ · 2026-11-20 |
+| 8 | **Dentalink** (HealthAtom) | CL / LATAM (incl. AR) · Independientes a redes · SaaS nube | Afirmación comercial (agenda por profesional, sillón y sucursal) | Comprobado (Contact Center IA + link de reserva) | Afirmación comercial (WhatsApp / SMS) | Comprobado (odontograma, Clinical Copilot IA, caja/comisiones) | Afirmación comercial. Normativa AR: **No evidenciado** | **No evidenciado** (planes Esencial/Pro/Titanium bajo cotización) | https://www.softwaredentalink.com/planes · 2026-11-20 |
+| 9 | **Doctocliq** | PE / LATAM · Clínicas dentales y médicas · SaaS + App | Afirmación comercial (agenda por consultorio y doctor) | Comprobado (Soyla IA agenda 24/7 por WhatsApp) | Comprobado (confirmación automática WhatsApp) | Comprobado (HC, presupuestos, caja, facturación SUNAT/CFDI/SRI/FEV) | Afirmación comercial (Meta Business Partner). Normativa AR: **No evidenciado** | Comprobado trial 7 días gratis; precios detallados: **No evidenciado** en HTML estático | https://www.doctocliq.com/planes-y-precios · 2026-11-20 |
+| 10 | **AgendaPro** | CL / LATAM (sitio AR) · Salud y dental · SaaS + App | Afirmación comercial (por profesional, sillón y duración de práctica) | Afirmación comercial (reserva online 24/7) | Afirmación comercial (WhatsApp / email) | Afirmación comercial (HC, odontograma, caja, Mercado Pago) | Afirmación comercial (backups automáticos) | **No evidenciado** en página oficial (renderizado dinámico JS) | https://agendapro.com/ar/precios · 2026-11-20 |
+| 11 | **Dentidesk** | CL / LATAM · Clínicas y universidades · SaaS + App | Afirmación comercial (agenda multisucursal). Sillón/solapamiento: **No evidenciado** | Afirmación comercial (widget reserva online) | Afirmación comercial (SMS / email) | Comprobado (odontograma, periodontograma, firma digital, Alegra RD) | Comprobado (adaptación Ley Protección de Datos Chile) | **No evidenciado** (solicitar demo gratis) | https://www.dentidesk.com/ · 2026-11-20 |
+| 12 | **Doctoralia PRO** (Docplanner) | ES / PL (sitio AR) · Clínicas y especialistas · Marketplace + SaaS | Afirmación comercial (calendario online, lista de espera). Sillón: **No evidenciado** | Comprobado (reserva desde directorio público) | Afirmación comercial (recordatorios automáticos) | Afirmación comercial (HC en planes pagos). Odontograma/ARCA: **No evidenciado** | **No evidenciado** | Perfil gratis sin reserva online; precios PRO: **No evidenciado** (bloqueo en fetch) | https://www.doctoralia.com.ar/ · 2026-11-20 |
+| 13 | **Nimbo** (Ecaresoft) | MX / LATAM (incl. AR) · Clínicas y dentistas · SaaS nube | Comprobado en menú (agenda colaborativa). Sillón/solapamiento: **No evidenciado** | Comprobado (portal del paciente) | Comprobado (WhatsApp, SMS, email) | Comprobado (expediente clínico, recetas, facturación, inventarios) | Afirmación comercial (sección Seguridad) | **No evidenciado** (cotización modular por organización) | https://www.nimbo-x.com/ · 2026-11-20 |
+| 14 | **Encuadrado** | CL / LATAM · Independientes salud · SaaS nube | Afirmación comercial. Sillón/solapamiento: **No evidenciado** | Comprobado (pacientes se agendan solos 24/7) | Comprobado (WhatsApp y correo programables) | Comprobado (ficha certificada, recetas, pagos, boletas SII Chile) | Afirmación comercial (ficha certificada) | **No evidenciado** en URL directa (`/precios` devolvió 404) | https://www.encuadrado.com/ · 2026-11-20 |
+| 15 | **Clinic Cloud** (Doctoralia ES) | ES · Clínicas médicas/dentales · SaaS nube | Comprobado (agenda multi-profesional y multi-sede) | Afirmación comercial (reserva online) | Comprobado (WhatsApp, SMS y email automáticos) | Comprobado (historial con IA, facturación Verifactu/TicketBAI, firma digital) | Comprobado (cumplimiento fiscal ES y firma digital) | **No evidenciado** en URL directa (`/precios/` devolvió 404) | https://clinic-cloud.com/ · 2026-11-20 |
+| 16 | **DriCloud** | ES · Clínicas y consultas · SaaS nube (Azure) | Comprobado (agenda multi-consulta, colores, lista de espera automática) | Comprobado (cita online 24h + portal del paciente) | Comprobado (recordatorios automáticos + chatbot IA) | Comprobado (HC con IA, pruebas diagnósticas) | Comprobado (RGPD, Azure cifrado, firma digital) | Afirmación comercial (~42 €/mes en referencias; demo online) | https://dricloud.com/precios/ · 2026-11-20 |
+| 17 | **Nubimed** | ES · Clínicas dentales y médicas · SaaS + App | Comprobado (agenda clínica dental multi-profesional simultánea) | Comprobado (cita online) | Comprobado (integración WhatsApp y recordatorios) | Comprobado (odontograma, periodontograma, facturación, inventario, mutuas) | Afirmación comercial (firma digital) | Página `/precios/` activa sin tarifas numéricas estáticas | https://www.nubimed.com/software-clinica-dental/ · 2026-11-20 |
+| 18 | **Open Dental** | EE. UU. · Consultorios y redes · Open Source / Self-hosted + Cloud | **Comprobado en manual** (multi-provider, sillones/operatories, *blockouts*, *ASAP/Recall*) | Comprobado (*Web Sched* nuevo/existente) | Comprobado (*eReminders* / *eConfirmations* SMS y email) | Comprobado (odontograma, planes, fee schedules) | Comprobado (permisos granulares, control self-hosted) | Comprobado: `USD 199/mes` (primeros 12 meses), luego `USD 149/mes` hasta 3 pro | https://www.opendental.com/site/fees.html · 2026-11-20 |
 
 ---
 
 ## Sección B — Matriz de puntuación (0 a 5)
 
-Pesos aplicados:
-- Gestión de turnos y automatización: **25%**
-- Funcionalidad odontológica clínica: **20%**
-- Integraciones locales y WhatsApp: **15%**
-- Administración/cobros/facturación: **15%**
-- Experiencia del paciente: **10%**
-- Seguridad/exportación/trazabilidad: **10%**
-- Precio y facilidad de adopción: **5%**
+### Nota metodológica
+- **Pesos**: Gestión de turnos y automatización (`25%`), Funcionalidad odontológica clínica (`20%`), Integraciones locales y WhatsApp (`15%`), Administración/cobros/facturación (`15%`), Experiencia del paciente (`10%`), Seguridad/exportación/trazabilidad (`10%`), Precio y facilidad de adopción (`5%`).
+- **Criterio de puntuación**:
+  - `0` = **No evidenciado** (sin respaldo público verificable; no se infiere).
+  - `1–2` = Solo **afirmación comercial** o cobertura parcial sin demostración.
+  - `3` = **Comprobado** básico.
+  - `4` = **Comprobado** y completo.
+  - `5` = **Comprobado**, completo y diferencial frente al mercado (o en Precio: plan gratuito/precio bajo público con prueba).
 
-**Nota metodológica sobre "No evidenciado"**: cuando un dato o celda no cuenta con respaldo público verificable en la web del competidor (consultada 2026-11-19), se consigna como "No evidenciado" y se puntúa como **0** en esa dimensión, con nota al pie. No se infieren valores por conocimiento previo del modelo.
+| # | Sistema | Turnos y automatización (25%) | Clínica odontológica (20%) | Integraciones locales + WhatsApp (15%) | Admin / cobros / facturación (15%) | Experiencia paciente (10%) | Seguridad / trazabilidad (10%) | Precio / adopción (5%) | **Total ponderado (0–5)** |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Dentry | 3 | 4 | 3 | 4 | 2 | 2 | 5 | **3.25** |
+| 2 | Odontal Web | 4 | 3 | 2 | 0 | 4 | 2 | 4 | **2.70** |
+| 3 | Dentify | 3 | 4 | 2 | 3 | 0 | 2 | 4 | **2.70** |
+| 4 | Odonto.ar | 3 | 4 | 3 | 4 | 4 | 2 | 4 | **3.40** |
+| 5 | Odontoly | 3 | 4 | 1 | 4 | 3 | 4 | 2 | **3.10** |
+| 6 | Odontara | 3 | 3 | 1 | 0 | 2 | 2 | 0 | **1.90** |
+| 7 | Odentix | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **0.00** |
+| 8 | Dentalink | 4 | 4 | 3 | 2 | 2 | 1 | 0 | **2.85** |
+| 9 | Doctocliq | 4 | 3 | 4 | 4 | 3 | 2 | 2 | **3.40** |
+| 10 | AgendaPro | 3 | 2 | 3 | 3 | 3 | 2 | 0 | **2.55** |
+| 11 | Dentidesk | 2 | 4 | 1 | 2 | 2 | 3 | 0 | **2.25** |
+| 12 | Doctoralia PRO | 2 | 1 | 1 | 0 | 4 | 1 | 1 | **1.40** |
+| 13 | Nimbo | 3 | 3 | 3 | 3 | 3 | 2 | 0 | **2.75** |
+| 14 | Encuadrado | 4 | 2 | 3 | 3 | 4 | 2 | 0 | **2.90** |
+| 15 | Clinic Cloud | 3 | 3 | 3 | 3 | 2 | 3 | 0 | **2.75** |
+| 16 | DriCloud | 4 | 3 | 3 | 2 | 4 | 4 | 2 | **3.25** |
+| 17 | Nubimed | 3 | 4 | 3 | 3 | 2 | 2 | 1 | **2.90** |
+| 18 | Open Dental | 5 | 4 | 2 | 3 | 3 | 4 | 3 | **3.65** |
 
-| Sistema | Gestión turnos/automatización (25%) | Funcionalidad clínica (20%) | Integraciones locales + WhatsApp (15%) | Administración/cobros/facturación (15%) | Experiencia paciente (10%) | Seguridad/exportación/trazabilidad (10%) | Precio/facilidad adopción (5%) | Puntaje ponderado (0-5) |
-|---|---|---|---|---|---|---|---|---|
-| Dentry | 4 | 4 | 4 | 4 | 4 | 4 | 5 | 4.10 |
-| Odontal Web | 5 | 3 | 4 | 3 | 4 | 3 | 4 | 3.95 |
-| Dentify | 4 | 5 | 3 | 4 | 4 | 4 | 3 | 4.00 |
-| Odontoly | 3 | 4 | 3 | 5 | 3 | 4 | 2 | 3.60 |
-| Odontara | 3 | 3 | 4 | 3 | 3 | 3 | 3 | 3.15 |
-| Odonto.ar | 4 | 4 | 3 | 4 | 4 | 3 | 4 | 3.85 |
-| Odentix | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0.00 |
-| Doctocliq | 5 | 3 | 5 | 5 | 4 | 4 | 3 | 4.35 |
-| Clínica Vidal | 1 | 4 | 3 | 1 | 3 | 2 | 2 | 2.15 |
-| HM Salud Bucal | 1 | 4 | 3 | 1 | 3 | 2 | 2 | 2.15 |
-| Enjoy Dental | 1 | 4 | 3 | 1 | 3 | 2 | 2 | 2.15 |
-| Dentiva | 1 | 4 | 3 | 2 | 3 | 2 | 2 | 2.35 |
-| Sonría | 1 | 4 | 3 | 3 | 3 | 2 | 3 | 2.60 |
-| Dentalia | 2 | 4 | 3 | 4 | 3 | 3 | 4 | 3.15 |
-| Vitaldent | 1 | 4 | 3 | 3 | 3 | 2 | 3 | 2.60 |
-
-**Interpretación rápida**: Doctocliq lidera por automatización (IA WhatsApp) y facturación electrónica por país. Dentry y Dentify lideran en el mercado argentino por adaptación normativa local. Odontal Web destaca en automatización de turnos con IA. Los sistemas con "No evidenciado" en múltiples dimensiones (Odentix, clínicas físicas) puntúan bajo porque no son software de gestión ni tienen respaldo público verificable.
+**Lectura crítica**: **Open Dental** lidera el puntaje técnico (`3.65`) por ser el único con manual técnico público que demuestra su lógica de sillones/operatories, bloqueos y listas de espera, aunque carece de adaptación fiscal argentina. En el mercado local y regional lideran **Odonto.ar** (`3.40`), **Doctocliq** (`3.40`) y **Dentry** (`3.25`), este último destacado por publicar precios transparentes en pesos argentinos incluyendo un plan gratuito permanente. **Odentix** queda en `0.00` al no devolver contenido público verificable.
 
 ---
 
 ## Sección C — Análisis competitivo
 
-### Estándar de mercado
+### 1. Estándar de mercado
+Las plataformas odontológicas vigentes en Argentina y LATAM cubren como base esperada: agenda visual (diaria/semanal) por profesional, ficha clínica con odontograma, almacenamiento de radiografías y control básico de pagos/caja. Los jugadores locales (Dentry, Dentify, Odonto.ar) suman soporte para obras sociales y prepagas, y modelos comerciales accesibles con prueba gratuita o plan inicial sin tarjeta.
 
-El estándar actual en Argentina incluye: agenda de turnos, historias clínicas digitales, odontograma, gestión de obras sociales, control de caja y facturación. Los jugadores locales (Dentry, Odontal Web, Dentify, Odontoly, Odontara) ya cubren gran parte de este estándar, con énfasis en normativa argentina (leyes 26.529/25.326, facturación a ARCA) y modelos de precios accesibles (plan gratis, trial, USD/ARS).
+### 2. Diferenciadores reales observados
+- **Asistente conversacional con IA por WhatsApp**: Odontal Web (*Odi*) y Doctocliq (*Soyla IA*), orientados a responder y agendar 24/7.
+- **Transparencia comercial y plan gratuito permanente**: Dentry (`$0` hasta 50 pacientes / 100 turnos/mes, con precios públicos en ARS) y Odonto.ar (pago en ARS vía Mercado Pago sin débito automático).
+- **Arquitectura *local-first* y caja bimoneda**: Odontoly (datos alojados en la PC del consultorio, copias cifradas y caja ARS/USD).
+- **Documentación técnica abierta y lógica multi-sillón explícita**: Open Dental (manual público por versión detallando *operatories*, *blockouts* y listas *ASAP*).
+- **Lista de espera automatizada**: DriCloud y Doctoralia PRO para cubrir huecos por cancelaciones.
 
-### Diferenciadores reales observados
+### 3. Vacíos frecuentes del mercado argentino
+1. **Reglas estrictas de anti-solapamiento por doble recurso (profesional + sillón/box)**: la mayoría declara agenda multi-profesional como afirmación comercial, pero casi ninguno documenta cómo garantiza que un sillón físico no sea asignado a dos profesionales al mismo tiempo o cómo maneja turnos consecutivos borde a borde.
+2. **Motor de disponibilidad por duración variable de prestación**: cálculo automático de franjas libres según la duración real de cada práctica (ej. 30 vs. 45 vs. 60 min) dentro del horario laboral y respetando bloqueos.
+3. **Flujo de autogestión simple pensado para el paciente argentino**: registro e ingreso con DNI (7–8 dígitos) y contraseña, sin exigir email obligatorio para operar, con recuperación por Gmail opcional o **blanqueo presencial por Recepción**.
+4. **Trazabilidad sin borrado físico**: conservación de turnos cancelados en estado `CANCELADO` con liberación inmediata del hueco.
 
-- **Asistente de IA por WhatsApp**: Odontal Web (Odi), Doctocliq (Soyla IA). Responde y agenda citas 24/7 sin intervención humana.
-- **Local-first y soberanía de datos**: Odontoly (datos quedan en la computadora del consultorio, copias cifradas).
-- **Caja multimoneda ARS/USD**: Odontoly (cotización manual registrada).
-- **Facturación electrónica local**: Doctocliq (SUNAT/CFDI/SRI/FEV-RIPS), Dentry (facturación directa a ARCA).
-- **Turnos online autogestionados por paciente**: Odonto.ar (link de reserva), Odontara (enlace de reservas), Doctocliq (Soyla IA).
-- **Planes por cantidad de usuarios**: Odonto.ar (Individual/Profesional/Clínica), Dentify (Básico/Clínicas).
-- **Migración acompañada y capacitación por rol**: Odontara, Doctocliq.
-
-### Vacíos del mercado argentino
-
-Ninguna solución observada combina nativamente todos los siguientes requisitos del MVP propuesto:
-
-1. **Motor de disponibilidad con anti-solapamiento estricto por profesional y sillón/box** como característica central y garantizada (no como add-on).
-2. **Catálogo de prestaciones con duración variable en minutos** que calcule automáticamente el bloque de agenda.
-3. **Roles diferenciados (Admin / Odontólogo / Recepcionista / Paciente)** con permisos granulares y registro de paciente por DNI como identificador único.
-4. **Autogestión online del paciente** con registro por DNI, login DNI+contraseña, y recuperación por Gmail o blanqueo presencial.
-5. **Recordatorios automáticos por email** al Gmail vinculado del paciente con opción de confirmar asistencia.
-6. **Arquitectura con presupuesto $0**: sin APIs pagas (WhatsApp Meta API fuera del MVP), SMTP/Gmail o Mailpit en dev, H2 en memoria para tests, PostgreSQL local.
-
-### Oportunidades de innovación
-
-- Un MVP quirúrgico en Java 21 + Spring Boot 3 que resuelva exactamente el problema de doble turno y agenda manual, sin módulos innecesarios.
-- Enfoque en consultorios pequeños y unipersonales (el segmento menos atendido por las soluciones existentes que apuntan a clínicas multi-sede).
-- Cumplimiento normativo argentino (Ley 25.326) como característica de diseño, no como add-on: datos ficticios en repo/seeds/tests, entorno reproducible local sin Docker obligatorio.
+### 4. Oportunidades de innovación
+- Construir un **MVP quirúrgico** centrado en integridad de agenda (Java 21 + Spring Boot 3, validaciones transaccionales anti-solapamiento por profesional y por sillón/box) y presupuesto `$0` (SMTP/Mailpit, H2 en memoria para tests, PostgreSQL local).
+- Diseñar desde cero con **privacidad por diseño** conforme a la Ley 25.326 (cero datos reales en repositorios, seeds o pruebas).
+- Atender al consultorio pequeño y unipersonal argentino que hoy opera con WhatsApp/Excel y no necesita pagar por módulos complejos de odontograma o facturación electrónica desde el día 1.
 
 ---
 
 ## Sección D — Recomendación final
 
-### 5 competidores prioritarios para demo
+### 5 competidores prioritarios para analizar mediante demo
+1. **Dentry** — referente local argentino por plan gratuito, precios públicos en ARS y cumplimiento declarado de Ley 25.326/ARCA.
+2. **Odonto.ar** — referente argentino de turnos online por link autogestionado y modelo escalonado por usuarios.
+3. **Dentalink** — líder regional en LATAM con agenda por profesional, sillón y sucursal.
+4. **Doctocliq** — referencia en automatización y recordatorios/agenda por WhatsApp.
+5. **Odontal Web** — referencia local en simplicidad de uso y asistente 24/7 para turnos.
 
-1. **Dentry** — mejor adaptación normativa argentina y plan gratis.
-2. **Doctocliq** — referencia de automatización con IA WhatsApp y facturación electrónica por país.
-3. **Odontal Web** — referencia de asistente de turnos con IA y enfoque en odontólogos.
-4. **Dentify** — referencia de precios en pesos argentinos y planes por cantidad de usuarios.
-5. **Odonto.ar** — referencia de turnos online autogestionados por paciente y modelo Individual/Profesional/Clínica.
-
-### Referencias de experiencia de usuario (UX) para el portal de turnos del paciente
-
-- **Clínica Vidal Odontología** (Godoy Cruz, Mendoza): formulario de turno por WhatsApp, selección de día y horario, sección de especialidades.
-- **Odontocentro Mendoza** (Dr. Guillermo Norton): reserva de cita por web y teléfono, enfoque en consultorio unipersonal.
-- **HM Salud Bucal** (Mendoza): asistente virtual en línea, turnos por WhatsApp, puntuación 4.9 en Google.
+### 3 productos de referencia para experiencia de usuario (UX)
+1. **Odonto.ar**: flujo directo de reserva online por enlace público sin fricción para el paciente.
+2. **DriCloud**: agenda visual multi-consulta con colores por tipo de cita y portal del paciente integrado.
+3. **Open Dental**: modelo de *blockouts*, vista por sillón (*operatory*) y prevención visual de conflictos de agenda.
 
 ### MVP sugerido
 
-**Imprescindible (bloqueador de lanzamiento):**
-- Registro de pacientes (nombre + DNI + contraseña, DNI único 7-8 dígitos)
-- Vinculación única de Gmail de recuperación
-- Login con DNI + contraseña; recuperación por Gmail o blanqueo presencial por Recepción
-- Roles: Administrador, Odontólogo, Recepcionista, Paciente
-- Configuración admin de profesionales, sillones/boxes, horarios, bloqueos, catálogo de prestaciones con duración variable
-- Gestión de turnos (crear/reprogramar/cancelar por personal y por paciente online)
-- Motor de disponibilidad con anti-solapamiento por profesional y sillón/box
-- Recordatorios automáticos por email (SMTP/Gmail o Mailpit/mock en dev)
+**Imprescindible (alcance del MVP v1.0):**
+- Registro de pacientes (nombre real, DNI único de 7–8 dígitos, contraseña) y vinculación única opcional de Gmail de recuperación.
+- Login con DNI + contraseña; recuperación por Gmail o blanqueo presencial por Recepción/Admin.
+- Roles con RBAC: Administrador, Odontólogo, Recepcionista, Paciente.
+- Configuración administrativa: profesionales, sillones/boxes, horarios de atención, bloqueos y catálogo de prestaciones con duración variable.
+- Motor de disponibilidad y gestión de turnos (crear, reprogramar, cancelar sin borrado físico) con validación estricta anti-solapamiento por profesional y por sillón/box (permitiendo turnos consecutivos borde a borde).
+- Recordatorios automáticos por email (SMTP/Mailpit) con opción de confirmar asistencia.
 
-**Diferenciador (valor agregado del MVP):**
-- Anti-solapamiento estricto por profesional y sillón/box como garantía del sistema
-- Registro de paciente por DNI como identificador único
-- Turnos consecutivos permitidos (uno empieza cuando termina el otro)
+**Diferenciador del MVP:**
+- Garantía transaccional de cero doble reserva tanto por profesional como por sillón/box.
+- Identificación de pacientes por DNI único con blanqueo presencial para pacientes con baja alfabetización digital.
+- Cumplimiento estricto Ley 25.326 desde la base de código (solo datos ficticios en repo y tests).
 
 **Etapas posteriores (fuera de MVP):**
-- Recordatorios y chatbot por WhatsApp Business API
-- Cobros online (Mercado Pago), facturación electrónica AFIP/ARCA, obras sociales/prepagas
-- Odontograma interactivo, periodontograma, radiografías/imágenes clínicas
-- Lista de espera automática, multi-sucursal
+- Recordatorios y bot por WhatsApp Business API.
+- Cobros online (Mercado Pago), obras sociales/prepagas y facturación electrónica AFIP/ARCA.
+- Odontograma interactivo, periodontograma y radiografías.
+- Lista de espera automática y soporte multi-sucursal.
 
 ---
 
 ## Sección final — Verificación de fuentes
 
-La estructura queda lista para completar las **5 URLs que se auditarán manualmente**. Cada fila incluye URL, fecha de consulta (2026-11-19) y estado del dato (evidenciado / No evidenciado).
+### Hallazgos ya detectados y corregidos frente a la versión previa (2026-11-19 → 2026-11-20)
+1. **Dentry (`/planes`)**: la versión previa afirmaba *"planes en /planes (No evidendido)"*. Al consultar directamente `https://www.dentry.com.ar/planes`, se comprobó que los precios y límites están publicados (`Gratis $0`, `Basic $29.999/mes`, `Pro $49.999/mes`). Se corrigió con **Ajustar**.
+2. **Clínicas físicas mezcladas como software**: los ítems 9–15 de la versión anterior eran clínicas dentales físicas (Clínica Vidal, HM Salud Bucal, Enjoy Dental, Dentiva, Sonría, Dentalia, Vitaldent), no plataformas de software de agenda. Se reemplazaron por 11 sistemas de software reales (Dentalink, AgendaPro, Dentidesk, Doctoralia PRO, Nimbo, Encuadrado, Clinic Cloud, DriCloud, Nubimed, Open Dental) para cumplir el mínimo de 15 sistemas de software.
+3. **Puntajes inflados sin respaldo en Sección B**: en la versión previa las clínicas físicas tenían puntaje `4` en funcionalidad clínica y `3` en seguridad pese a la regla `No evidenciado = 0`. Se recalcularon todas las filas aplicando la rúbrica estricta.
 
-| # | URL auditada | Fecha consulta | Estado del dato | Observación |
-|---|---|---|---|---|
-| 1 | https://www.doctocliq.com/ | 2026-11-19 | Evidenciado | Precios en /planes-y-precios no detallados en home |
-| 2 | https://www.clinicavidalodontologia.com/ | 2026-11-19 | Evidenciado | Clínica física, sin pricing público |
-| 3 | https://www.hmsaludbucal.com/ | 2026-11-19 | Evidenciado | Clínica física, sin pricing público |
-| 4 | https://www.odontocentromendoza.com/ | 2026-11-19 | Evidenciado (vía doctoraliar.com) | Profesional individual, no software |
-| 5 | https://enjoydental.com.ar/ | 2026-11-19 | Evidenciado | Clínica física, sin pricing público |
-| 6 | https://dentiva.com.ar/ | 2026-11-19 | Evidenciado | Red de clínicas, sin pricing público |
-| 7 | https://sonria.com.co/ | 2026-11-19 | Evidenciado | Red de clínicas CO, precios en COP |
-| 8 | https://www.dentalia.com/ | 2026-11-19 | Evidenciado | Red de clínicas MX, precios en MXN |
-| 9 | https://www.sanitas.es/dental | 2026-11-19 | Evidenciado | Seguro dental ES, red de clínicas |
-| 10 | https://www.vitaldent.com/es/ | 2026-11-19 | Evidenciado | Red de clínicas ES, precios por clínica |
-| 11 | https://www.dentry.com.ar/ | 2026-11-19 | Evidenciado | Plan gratis, planes pagos en /planes |
-| 12 | https://odontalweb.com.ar/ | 2026-11-19 | Evidenciado | Precios públicos en USD |
-| 13 | https://www.dentify.com.ar/ | 2026-11-19 | Evidenciado | Precios públicos en pesos ARS |
-| 14 | https://odontoly.com/ | 2026-11-19 | Evidenciado | Precio público USD 149,99/mes |
-| 15 | https://odontara.com.ar/ | 2026-11-19 | Evidenciado | Sin pricing público (solicitar demo) |
-| 16 | https://www.odentix.com.ar/ | 2026-11-19 | No evidenciado | Fetch falló, sin contenido legible |
+### Auditoría manual del equipo (completar al menos 5 URLs de distinto tipo)
 
-**Próximo paso de auditoría**: las 5 URLs a auditar manualmente se completarán aquí una vez que el equipo las defina.
+> **Instrucción para el equipo**: abran personalmente estas 5 URLs en el navegador, verifiquen si lo que dice el informe está realmente allí y completen la columna **Resultado de verificación manual** antes de exportar a PDF.
+
+| # | Tipo de fuente | Sistema | URL a auditar manualmente | Qué afirma este informe | Resultado de verificación manual (completar) |
+|---|---|---|---|---|---|
+| 1 | Sitio oficial (home) | Dentify | https://www.dentify.com.ar/ | Ofrece agenda por profesional/práctica, odontograma y planes Básico ($30.000) / Clínicas ($45.000). | *(Pendiente: abrir y confirmar si coincide hoy)* |
+| 2 | Página de precios | Dentry | https://www.dentry.com.ar/planes | Plan Gratis $0 (50 pac/100 turnos), Basic $29.999/mes (recordatorios email), Pro $49.999/mes. | *(Pendiente: abrir y confirmar si coincide hoy)* |
+| 3 | Manual técnico / Ayuda | Open Dental | https://www.opendental.com/manual/appointments.html | Documenta módulo de turnos con vistas por proveedor/sillón, blockouts y listas Recall/ASAP. | *(Pendiente: abrir y confirmar si coincide hoy)* |
+| 4 | Página de producto LATAM | Dentalink | https://www.softwaredentalink.com/ | Destaca Clinical Copilot IA, Contact Center IA y planes bajo cotización (sin precios públicos). | *(Pendiente: abrir y confirmar si coincide hoy)* |
+| 5 | Sitio sin contenido / falla | Odentix | https://www.odentix.com.ar/ | El fetch automático no devolvió contenido legible (marcado como `No evidenciado`). | *(Pendiente: abrir en navegador con JS para verificar si carga o está caído)* |
+
+---
+
+## Referencias completas
+
+1. Dentry — Sitio oficial y planes: https://www.dentry.com.ar/ · https://www.dentry.com.ar/planes (consultada 2026-11-20)
+2. Odontal Web — Sitio oficial: https://odontalweb.com.ar/ (consultada 2026-11-19)
+3. Dentify — Sitio oficial: https://www.dentify.com.ar/ (consultada 2026-11-19)
+4. Odonto.ar — Sitio oficial: https://odonto.ar/ (consultada 2026-11-19)
+5. Odontoly — Sitio oficial: https://odontoly.com/ (consultada 2026-11-19)
+6. Odontara — Sitio oficial: https://odontara.com.ar/ (consultada 2026-11-19)
+7. Odentix — Sitio oficial: https://www.odentix.com.ar/ (consultada 2026-11-20; sin contenido legible en fetch)
+8. Dentalink — Sitio oficial y planes: https://www.softwaredentalink.com/ · https://www.softwaredentalink.com/planes (consultada 2026-11-20)
+9. Doctocliq — Sitio oficial y planes: https://www.doctocliq.com/ · https://www.doctocliq.com/planes-y-precios (consultada 2026-11-20)
+10. AgendaPro — Sitio oficial Argentina: https://agendapro.com/ar/precios (consultada 2026-11-20)
+11. Dentidesk — Sitio oficial: https://www.dentidesk.com/ (consultada 2026-11-20)
+12. Doctoralia Argentina — Sitio oficial: https://www.doctoralia.com.ar/ (consultada 2026-11-20)
+13. Nimbo — Sitio oficial: https://www.nimbo-x.com/ (consultada 2026-11-20)
+14. Encuadrado — Sitio oficial: https://www.encuadrado.com/ (consultada 2026-11-20)
+15. Clinic Cloud — Sitio oficial: https://clinic-cloud.com/ (consultada 2026-11-20)
+16. DriCloud — Sitio oficial y precios: https://dricloud.com/ · https://dricloud.com/precios/ (consultada 2026-11-20)
+17. Nubimed — Vertical dental y precios: https://www.nubimed.com/software-clinica-dental/ · https://www.nubimed.com/precios/ (consultada 2026-11-20)
+18. Open Dental — Manual de turnos y tarifas oficiales: https://www.opendental.com/manual/appointments.html · https://www.opendental.com/site/fees.html (consultada 2026-11-20)
+
+---
+
+## Anexo — Clínicas físicas relevadas como referencia secundaria de experiencia de paciente
+
+En una pasada exploratoria previa (2026-11-19) se documentaron 8 clínicas/redes físicas (`discovery/sources/clinicavidalodontologia.md`, `hmsaludbucal.md`, `enjoydental.md`, `dentiva.md`, `odontocentromendoza.md`, `sonria.md`, `dentalia.md`, `sanitas.md`, `vitaldent.md`). No forman parte de la tabla comparativa de software (Sección A), pero confirman que en Argentina el canal habitual de solicitud de turnos en clínicas reales sigue siendo WhatsApp o teléfono manual.
