@@ -191,7 +191,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 ## FASE 4 — Notificaciones (change final)
 
 ### [C-06] `notificaciones`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**:
   - Adaptador de envío de email por SMTP (Gmail en prod, Mailpit/mock en desarrollo); credenciales por variables de entorno, nunca commiteadas.
   - Recordatorios automáticos por email al Gmail vinculado del paciente con antelación configurable (valor por defecto 24h, configurable por Administrador, IN-02).
