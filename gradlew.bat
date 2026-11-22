@@ -1,0 +1,8 @@
+@rem Gradle wrapper script (delegado a instalación local de Gradle 8.7)
+@if defined GRADLE_CMD (
+    set "GRADLE_CMD=%GRADLE_CMD%"
+) else (
+    set "GRADLE_CMD=%USERPROFILE%\.gradle\wrapper\dists\gradle-8.7-bin\bhs2wmbdwecv87pi65oeuq5iu\gradle-8.7\bin\gradle.bat"
+)
+
+"%GRADLE_CMD%" --project-dir "%~dp0" %*
