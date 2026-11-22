@@ -29,5 +29,15 @@ public class TestConfig {
         public void testException() {
             throw new RuntimeException("error de prueba intencional");
         }
+
+        @GetMapping("/api/test-business-exception")
+        public void testBusinessException() {
+            throw new com.consultorio.domain.exception.BusinessException("regla de negocio violada");
+        }
+
+        @GetMapping("/api/test-not-found")
+        public void testNotFound() {
+            throw new com.consultorio.domain.exception.ResourceNotFoundException("recurso no encontrado");
+        }
     }
 }

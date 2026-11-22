@@ -30,4 +30,22 @@ class GlobalExceptionHandlerTest {
             .andExpect(jsonPath("$.error").exists())
             .andExpect(jsonPath("$.message").exists());
     }
+
+    @Test
+    void businessExceptionShouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/api/test-business-exception"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status").value(400))
+            .andExpect(jsonPath("$.error").value("Bad Request"))
+            .andExpect(jsonPath("$.message").value("regla de negocio violada"));
+    }
+
+    @Test
+    void resourceNotFoundExceptionShouldReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/test-not-found"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.status").value(404))
+            .andExpect(jsonPath("$.error").value("Not Found"))
+            .andExpect(jsonPath("$.message").value("recurso no encontrado"));
+    }
 }
