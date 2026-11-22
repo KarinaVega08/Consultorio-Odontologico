@@ -32,25 +32,25 @@ C-01 setup-base
 
 ---
 
-### Paralelismo por fase
+### Paralelismo por fase (Distribución del equipo — 5 integrantes)
 
 ```
-GATE 0: C-01 setup-base ✓     (líderes suben la base limpia a main)
-  → C-02 auth-pacientes                  [Agente A — Thiago]
-  → C-03 configuracion-consultorio       [Agente B — Kari]
-  → C-04 disponibilidad-turnos           [Agente C — Mati]   ← FORK (Oleada 1: 3 ramas separadas, sin colisiones de archivos)
+GATE 0: C-01 setup-base ✓     [Thiago — Líder técnico, sube base limpia a main y control general]
+  → C-02 auth-pacientes                  [Mati — feat/c02-registro-pacientes]
+  → C-03 configuracion-consultorio       [Kari — feat/c03-config-consultorio]
+  → C-04 disponibilidad-turnos           [Mai — feat/c04-disponibilidad-turnos]   ← FORK (Oleada 1: 3 ramas separadas)
 
 GATE 1: C-02, C-03, C-04 ✓
-  → C-05 gestion-turnos                  [Agente A — Thiago]   (Oleada 2, core del MVP)
+  → C-05 gestion-turnos                  [Caste — feat/c05-gestion-turnos]   (Oleada 2, Core MVP)
 
 GATE 2: C-05 ✓
-  → C-06 notificaciones                  [Agente B — Kari + Caste (SMTP/Mailpit)]   (Change final)
+  → C-06 notificaciones                  [Kari + Caste — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final)
 ```
 
 Cambios que pueden ejecutarse en paralelo sin colisiones de archivos (Oleada 1, GATE 1):
-- **C-02 auth-pacientes**: toca `backend/.../auth/` (Paciente, AuthController, AuthService, seguridad, registro/login/recuperación/blanqueo).
-- **C-03 configuracion-consultorio**: toca `backend/.../admin/` (Profesional, SillonBox, Prestacion, HorarioAtencion, Bloqueo + Admin CRUD).
-- **C-04 disponibilidad-turnos**: toca `backend/.../availability/` (AvailabilityController, AvailabilityService, lecturas de calendario).
+- **C-02 auth-pacientes (Mati)**: toca `backend/.../auth/` (Paciente, AuthController, AuthService, seguridad, registro/login/recuperación/blanqueo).
+- **C-03 configuracion-consultorio (Kari)**: toca `backend/.../admin/` (Profesional, SillonBox, Prestacion, HorarioAtencion, Bloqueo + Admin CRUD).
+- **C-04 disponibilidad-turnos (Mai)**: toca `backend/.../availability/` (AvailabilityController, AvailabilityService, lecturas de calendario).
 - Ninguno escribe en los paquetes de los otros dos; solo leen entidades base creadas en C-01.
 
 ---
@@ -63,16 +63,18 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 
 ---
 
-### Plan óptimo con 3 agentes
+### Plan de trabajo por integrante (Equipo completo — 5 integrantes)
 
-| Paso | Agente A (Backend Core — Thiago) | Agente B (Backend Aux — Kari) | Agente C (Frontend — Mati) |
-|------|----------------------------------|-------------------------------|----------------------------|
-| 1 | C-01 setup-base (esqueleto, Gradle, PostgreSQL/H2, carpetas, seguridad inicial) | — (prepara entorno H2, lee KB) | frontend shell + cliente API (parte de C-01) |
-| 2 | C-02 auth-pacientes (registro/login/recuperación/blanqueo) | C-03 configuracion-consultorio (CRUD profesionales, sillones, horarios, bloqueos, prestaciones) | C-04 disponibilidad-turnos (vista de franjas libres + consumo API) |
-| 3 | C-05 gestion-turnos (crear/reprogramar/cancelar, motor anti-solapamiento) | — | C-05 pantallas de agenda (crear/reprogramar/cancelar turno) |
-| 4 | — | C-06 notificaciones (recordatorios SMTP/Mailpit + enlaces únicos de confirmación/cancelación) | — |
+| Fase | Change | Nombre | Responsable | Rama Git | Alcance asignado |
+|---|---|---|---|---|---|
+| **Fase 1** | **C-01** | `setup-base` | **Thiago** (Listo ✓) | `main` | Esqueleto base Java 21 + Spring Boot 3 + Gradle + PostgreSQL/H2, seguridad inicial, y control/revisión general |
+| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati** | `feat/c02-registro-pacientes` | Registro y login con DNI, vinculación única con Gmail y blanqueo presencial |
+| **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
+| **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
+| **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
+| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste** | `feat/c06-notificaciones` | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
 
-> Equipo completo (5 integrantes): Thiago y Mai lideran C-01 (setup base, suben base limpia a `main`). Oleada 1 ejecutada por Thiago (C-02), Kari (C-03) y Mati (C-04) en ramas separadas. Caste refuerza C-06 (SMTP/Mailpit, pruebas de entrega de correo).
+> **Supervisión y control de calidad (Thiago):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.
 
 ---
 
