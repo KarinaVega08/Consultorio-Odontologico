@@ -20,9 +20,10 @@ Change C-06 completado en rama `feat/c06-notificaciones`. Núcleo de notificacio
 ## Tests (Strict TDD, todos en verde)
 - `NotificacionServiceTest` — 8 tests: dos enlaces únicos, fallback SMTP, antelación 24 h e idempotencia, token usado/vencido/inexistente, evento de cancelación para C-05, cambio de antelación y rechazo de 0.
 - `SmtpEmailSenderTest` — MimeMessage y conversión de `MailException`.
+- `SmtpDeliveryTest` — entrega real de recordatorio y confirmación contra SMTP embebido (GreenMail, sin servicios externos).
 - `NotificationControllerTest` — enlaces públicos 200/400 y RBAC admin (200/403).
 - `NotificacionTokenRepositoryTest` — `@DataJpaTest` con H2.
-- `./gradlew test` → BUILD SUCCESSFUL (37 tests, H2 en memoria).
+- `./gradlew test` → BUILD SUCCESSFUL (17 tests de C-06, 66 en total, H2 en memoria).
 
 ## Estado
 `C-06-notificaciones` marcado como `[x]` en `CHANGES.md`. Integración pendiente cuando se mergeen C-02 y C-05: publicar los eventos y aportar la implementación real de `TurnoParaRecordarPort`.

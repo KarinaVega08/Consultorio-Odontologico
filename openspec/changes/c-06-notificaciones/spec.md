@@ -17,6 +17,7 @@ Enviar recordatorios y confirmaciones por email con enlaces únicos, sin acoplar
 - **CA-4 (borde)**: Dado un token ya usado o vencido, cuando se abre el enlace, entonces recibe 400 y no se repite la acción.
 - **CA-5 (borde)**: Dado un Administrador, cuando cambia la antelación a 48 h, entonces el próximo recordatorio usa esa ventana.
 - **CA-6 (seguridad)**: Dado un token válido de cancelación, cuando se abre el enlace, entonces se marca usado y se publica `TurnoCanceladoPorPacienteEvent` para que C-05 cambie el estado.
+- **CA-7 (entrega)**: Dado un servidor SMTP embebido (GreenMail, equivalente a Mailpit), cuando se envía un recordatorio, entonces el correo se entrega con destinatario, asunto y cuerpo verificables sin depender de servicios externos.
 
 ## Requisitos no funcionales
 Java 21, Spring Boot 3, H2 en tests, SMTP real solo en producción, Mailpit/mock en desarrollo, secrets por entorno, datos ficticios (Ley 25.326).

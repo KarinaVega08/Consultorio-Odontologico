@@ -9,6 +9,7 @@
 - [x] `EmailSenderPort` + `SmtpEmailSender` con `JavaMailSender`.
 - [x] `NotificacionService`: listeners, recordatorio idempotente, enlaces únicos, fallback SMTP.
 - [x] Tests unitarios de los CA-1 a CA-6.
+- [x] `SmtpDeliveryTest`: entrega real contra SMTP embebido (GreenMail, equivalente a Mailpit sin servicios externos).
 
 ## Tarea 3 — API y scheduler
 - [x] Enlaces públicos `/api/notifications/confirm|cancel` y ajustes admin.

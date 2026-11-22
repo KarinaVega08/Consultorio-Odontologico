@@ -15,7 +15,13 @@
 - [x] `@PreAuthorize("hasRole('ADMINISTRADOR')")` y `@EnableMethodSecurity`.
 - [x] Tests `@WebMvcTest` de 201/400/403 y errores estructurados.
 
-## Tarea 4 — Verificación y cierre
+## Tarea 4 — Cobertura CRUD completa
+- [x] `PUT /api/admin/schedules/{id}` y `PUT /api/admin/blockers/{id}` (edición de horarios y bloqueos).
+- [x] Tests de repositorio para los 5 recursos (activos, baja lógica y filtros).
+- [x] Tests de servicio: alta/edición/listado/baja de cada recurso y 404 de recursos inexistentes.
+- [x] Tests `@WebMvcTest` de `GET/PUT/PATCH` y RBAC por recurso.
+
+## Tarea 5 — Verificación y cierre
 - [x] `./gradlew test` en verde con H2.
 - [x] Marcar checkbox de C-03 en `CHANGES.md`.
 - [x] Copiar spec vigente y archivar el change.

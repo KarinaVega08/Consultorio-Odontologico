@@ -200,6 +200,17 @@ public class ConfiguracionConsultorioService {
         return horarioAtencionRepository.findByProfesionalId(profesionalId).stream().map(this::toResponse).toList();
     }
 
+    public HorarioAtencionResponse actualizarHorario(UUID id, HorarioAtencionRequest request) {
+        validarHorario(request);
+        HorarioAtencion horario = horarioAtencionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Horario no encontrado: " + id));
+        horario.setProfesional(buscarProfesional(request.profesionalId()));
+        horario.setDiaSemana(request.diaSemana());
+        horario.setHoraInicio(request.horaInicio());
+        horario.setHoraFin(request.horaFin());
+        return toResponse(horarioAtencionRepository.save(horario));
+    }
+
     public HorarioAtencionResponse activarHorario(UUID id, boolean activo) {
         HorarioAtencion horario = horarioAtencionRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Horario no encontrado: " + id));
@@ -257,6 +268,18 @@ public class ConfiguracionConsultorioService {
 
     public List<BloqueoResponse> listarBloqueosPorSillonBox(UUID sillonBoxId) {
         return bloqueoRepository.findBySillonBoxId(sillonBoxId).stream().map(this::toResponse).toList();
+    }
+
+    public BloqueoResponse actualizarBloqueo(UUID id, BloqueoRequest request) {
+        validarBloqueo(request);
+        Bloqueo bloqueo = bloqueoRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Bloqueo no encontrado: " + id));
+        bloqueo.setProfesional(request.profesionalId() == null ? null : buscarProfesional(request.profesionalId()));
+        bloqueo.setSillonBox(request.sillonBoxId() == null ? null : buscarSillonBox(request.sillonBoxId()));
+        bloqueo.setFechaHoraInicio(request.fechaHoraInicio());
+        bloqueo.setFechaHoraFin(request.fechaHoraFin());
+        bloqueo.setMotivo(request.motivo());
+        return toResponse(bloqueoRepository.save(bloqueo));
     }
 
     public BloqueoResponse activarBloqueo(UUID id, boolean activo) {

@@ -115,6 +115,12 @@ public class AdminConfigController {
         return profesionalId == null ? service.listarHorarios() : service.listarHorariosPorProfesional(profesionalId);
     }
 
+    @PutMapping("/schedules/{id}")
+    public HorarioAtencionResponse actualizarHorario(@PathVariable UUID id,
+                                                     @Valid @RequestBody HorarioAtencionRequest request) {
+        return service.actualizarHorario(id, request);
+    }
+
     @PatchMapping("/schedules/{id}/active")
     public HorarioAtencionResponse activarHorario(@PathVariable UUID id, @RequestParam boolean activo) {
         return service.activarHorario(id, activo);
@@ -137,6 +143,12 @@ public class AdminConfigController {
             return service.listarBloqueosPorSillonBox(sillonBoxId);
         }
         return service.listarBloqueos();
+    }
+
+    @PutMapping("/blockers/{id}")
+    public BloqueoResponse actualizarBloqueo(@PathVariable UUID id,
+                                             @Valid @RequestBody BloqueoRequest request) {
+        return service.actualizarBloqueo(id, request);
     }
 
     @PatchMapping("/blockers/{id}/active")
