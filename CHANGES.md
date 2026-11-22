@@ -129,7 +129,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
   - `knowledge-base/07_flujos_principales.md` §Flujo 1, §Flujo 5
 
 ### [C-03] `configuracion-consultorio`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**:
   - Entidades `Profesional`, `SillonBox`, `Prestacion` (con `duracion_minutos` > 0), `HorarioAtencion`, `Bloqueo`.
   - CRUD de profesionales (alta/edición/activar-desactivar, nombre y matrícula).
