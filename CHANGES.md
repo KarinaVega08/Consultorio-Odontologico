@@ -81,7 +81,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 > Ejecutado primero por los líderes para subir la base limpia a `main`.
 
 ### [C-01] `setup-base`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**:
   - Esqueleto del proyecto: Java 21 + Spring Boot 3 + Gradle, módulo `backend/` + módulo `frontend/` (TypeScript Vanilla servido estático).
   - `build.gradle` / `settings.gradle` con dependencias: Spring Web, Spring Data JPA, Spring Security, PostgreSQL driver, H2 (tests), Lombok, validation.

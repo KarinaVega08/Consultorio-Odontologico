@@ -9,16 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
-import com.consultorio.api.controller.TestExceptionController;
-import com.consultorio.infrastructure.config.SecurityConfig;
 
 /**
  * Test en rojo (Strict TDD): GlobalExceptionHandler captura excepciones y devuelve
- * respuesta de error estructurada. GlobalExceptionHandler se implementó; ahora el test
- * debe pasar en verde usando TestExceptionController para disparar la excepción.
+ * respuesta de error estructurada. TestExceptionController y seguridad permisiva se
+ * proveen vía TestConfig (solo tests, no código productivo).
  */
-@WebMvcTest(TestExceptionController.class)
-@Import({GlobalExceptionHandler.class, SecurityConfig.class})
+@WebMvcTest(TestConfig.TestExceptionController.class)
+@Import({GlobalExceptionHandler.class, TestConfig.class})
 class GlobalExceptionHandlerTest {
 
     @Autowired
