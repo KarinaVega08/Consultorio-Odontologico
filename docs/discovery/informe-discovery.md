@@ -168,7 +168,7 @@ Las plataformas odontológicas vigentes en Argentina y LATAM cubren como base es
 |---|---|---|---|---|---|
 | 1 | Sitio oficial (home) | Dentify | https://www.dentify.com.ar/ | Ofrece agenda por profesional/práctica, odontograma y planes Básico ($30.000) / Clínicas ($45.000). | *(Pendiente: abrir y confirmar si coincide hoy)* |
 | 2 | Página de precios | Dentry | https://www.dentry.com.ar/planes | Plan Gratis $0 (50 pac/100 turnos), Basic $29.999/mes (recordatorios email), Pro $49.999/mes. | *(Pendiente: abrir y confirmar si coincide hoy)* |
-| 3 | Manual técnico / Ayuda | Open Dental | https://www.opendental.com/manual/appointments.html | Documenta módulo de turnos con vistas por proveedor/sillón, blockouts y listas Recall/ASAP. | *(Pendiente: abrir y confirmar si coincide hoy)* |
+| 3 | Manual técnico / Ayuda | Open Dental | https://www.opendental.com/manual/appointments.html | Documenta módulo de turnos con vistas por proveedor/sillón, blockouts y listas Recall/ASAP. | Verificado sin cambios — Revisor: Thiago, Fecha: 2026-11-22. Confirma columnas por sillón/box (Operatory 1, 2, 3, Hygiene Op), bloqueos horarios (Blockouts), vistas Day/Week, estados de confirmación y listas Recall/Unsched. |
 | 4 | Página de producto LATAM | Dentalink | https://www.softwaredentalink.com/ | Destaca Clinical Copilot IA, Contact Center IA y planes bajo cotización (sin precios públicos). | *(Pendiente: abrir y confirmar si coincide hoy)* |
 | 5 | Sitio sin contenido / falla | Odentix | https://www.odentix.com.ar/ | El fetch automático no devolvió contenido legible (marcado como `No evidenciado`). | *(Pendiente: abrir en navegador con JS para verificar si carga o está caído)* |
 
