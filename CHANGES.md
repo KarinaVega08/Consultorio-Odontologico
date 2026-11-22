@@ -86,9 +86,16 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
   - Esqueleto del proyecto: Java 21 + Spring Boot 3 + Gradle, módulo `backend/` + módulo `frontend/` (TypeScript Vanilla servido estático).
   - `build.gradle` / `settings.gradle` con dependencias: Spring Web, Spring Data JPA, Spring Security, PostgreSQL driver, H2 (tests), Lombok, validation.
   - Estructura de carpetas por capas: `domain/`, `application/`, `infrastructure/`, `api/` bajo `com.consultorio`.
-  - `application.yml` + variables de entorno (DB_URL, DB_USER, DB_PASSWORD, SMTP_*, MAILPIT_*, APP_PORT).
+  - `application.yml` + variables de entorno (DB_URL, DB_USER, DB_PASSWORD, SMTP_*, MAILPIT_*, APP_PORT, FRONTEND_PATH).
   - Base de datos: PostgreSQL local para ejecución, H2 en memoria para tests (sin Docker obligatorio).
-  - Seguridad inicial: Spring Security, RBAC por rol (Paciente, Recepcionista, Odontólogo, Administrador), seeds solo con datos ficticios (Ley 25.326, RN-EX-01).
+  - Seguridad inicial: Spring Security, RBAC por rol (Paciente, Recepcionista, Odontólogo, Administrador), CSRF deshabilitado, sesiones STATELESS, seeds solo con datos ficticios (Ley 25.326, RN-EX-01).
+  - `BCryptPasswordEncoder` como bean `PasswordEncoder` para encoding de contraseñas.
+  - `GlobalExceptionHandler` (`@ControllerAdvice`): manejo de errores de validación (`MethodArgumentNotValidException` → 400 con `fieldErrors`), `BusinessException` (400), `ResourceNotFoundException` (404), `RuntimeException` (500), `Exception` genérico (500).
+  - Enums de dominio: `RolUsuario` (PACIENTE, RECEPCIONISTA, ODONTOLOGO, ADMINISTRADOR) y `EstadoTurno` (RESERVADO, CONFIRMADO, CANCELADO, COMPLETADO).
+  - Excepciones de negocio: `BusinessException` y `ResourceNotFoundException`.
+  - Entidad base: `BaseEntity` (`@MappedSuperclass`) con ID UUID, `activo`, `fechaCreacion`, `fechaActualizacion`.
+  - API de health check: `GET /api/health` (200).
+  - Landing estática: `backend/src/main/resources/static/index.html` servida desde el mismo proceso.
 - **Dependencias**: ninguna
 - **Governance**: CRITICO (modelos core e infraestructura de seguridad que todo lo demás referencia)
 - **Riesgo**: MEDIO (configuración de conexión DB, versiones Java 21/SB 3, seguridad base)

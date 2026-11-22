@@ -98,6 +98,25 @@ Reglas globales ya definidas en `~/.claude/CLAUDE.md` (orquestador, governance, 
 3. **Trazabilidad de turnos:** Nunca realizar borrado físico (`DELETE`) de turnos. Al cancelar un turno, pasa a estado `CANCELADO` y libera automáticamente el horario para nuevas reservas.
 4. **Tests autocontenidos:** Toda la suite de tests automatizados (JUnit 5 + MockMvc/SpringBootTest) debe correr en verde con `./gradlew test` usando H2 en memoria, sin requerir PostgreSQL ni servicios externos levantados.
 
+## Componentes Base Ya Implementados (C-01 setup-base — completado)
+
+Los siguientes componentes del setup base ya están listos en `main` y pueden ser reutilizados por los cambios siguientes (C-02 en adelante):
+
+- **Esqueleto del proyecto**: `backend/` con Gradle, Spring Boot 3.5, Java 21, estructura por capas (`domain/`, `application/`, `infrastructure/`, `api/`) bajo `com.consultorio`.
+- **Clase principal**: `ConsultorioApplication` (`@SpringBootApplication`).
+- **Configuración externa**: `application.yml` parametrizado con variables de entorno (`DB_URL`, `DB_USER`, `DB_PASSWORD`, `SMTP_*`, `MAILPIT_*`, `APP_PORT`, `FRONTEND_PATH`); valores por defecto apuntan a H2 en memoria.
+- **Base de datos**: PostgreSQL local para ejecución, H2 en memoria para tests (`data.sql` solo con comentarios, cumplimiento Ley 25.326: cero datos reales de pacientes).
+- **BCryptPasswordEncoder**: bean `PasswordEncoder` en `SecurityConfig` para encoding de contraseñas.
+- **Manejo global de errores**: `GlobalExceptionHandler` (`@ControllerAdvice`) captura `MethodArgumentNotValidException` (400 con `fieldErrors`), `BusinessException` (400), `ResourceNotFoundException` (404), `RuntimeException` (500) y `Exception` genérico (500), con cuerpo JSON estructurado (`timestamp`, `status`, `error`, `message`).
+- **Enums de dominio**: `RolUsuario` (`PACIENTE`, `RECEPCIONISTA`, `ODONTOLOGO`, `ADMINISTRADOR`) y `EstadoTurno` (`RESERVADO`, `CONFIRMADO`, `CANCELADO`, `COMPLETADO`) en `com.consultorio.domain.model`.
+- **Excepciones de negocio**: `BusinessException` y `ResourceNotFoundException` en `com.consultorio.domain.exception`.
+- **Entidad base**: `BaseEntity` (`@MappedSuperclass`) con ID UUID, `activo`, `fechaCreacion`, `fechaActualizacion` y callbacks `@PrePersist`/`@PreUpdate`.
+- **Seguridad inicial**: `SecurityConfig` con `SecurityFilterChain`, CSRF deshabilitado, sesiones STATELESS, whitelist de rutas públicas (`/api/health`, `/api/auth/**`, `/api/availability`, recursos estáticos), resto requiere autenticación.
+- **API de health check**: `HealthController` con `GET /api/health` respondiendo 200.
+- **Landing estática**: `backend/src/main/resources/static/index.html` (landing servida desde el mismo proceso, consulta `/api/health` para mostrar estado del backend).
+- **Tests (Strict TDD, 4 tests, todos en verde)**: `HealthControllerTest` (200), `SecurityConfigTest` (rutas públicas permitadas / privadas bloqueadas), `GlobalExceptionHandlerTest` (error estructurado 500), `TestConfig` (`@TestConfiguration` con `TestExceptionController` y seguridad permisiva, solo en tests).
+- `./gradlew test` → BUILD SUCCESSFUL con H2 en memoria, sin requerir PostgreSQL ni servicios externos.
+
 ## Flujo de Trabajo
 
 `KB → CHANGES → /opsx:propose → archive`
