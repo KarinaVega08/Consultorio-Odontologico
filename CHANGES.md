@@ -2,7 +2,7 @@
 
 > Índice canónico de todos los changes del proyecto **Odontológico — Gestión de Turnos**.
 > Cada change es atómico: un agente puede implementarlo en una sesión (~4-6 horas).
-> **Leer este archivo antes de ejecutar cualquier `/opsx:propose`.**
+> **Leer este archivo antes de ejecutar cualquier `/opsx-propose`.**
 
 > **Alcance y exclusiones (estricto):** Este CHANGES.md cubre únicamente el MVP definido en la knowledge-base y en las restricciones del usuario. Quedan **excluidos del MVP**: WhatsApp Business API, Mercado Pago, AFIP/ARCA, odontograma/periodontograma/radiografías y multi-sucursal. Nada de lo excluido se incluye en ningún change.
 
@@ -12,9 +12,9 @@
 
 1. **Identificar el change**: buscar el change con estado `[ ]` pendiente cuyas dependencias estén ya cumplidas (checkboxes marcados de sus dependencias).
 2. **Leer la KB**: leer los archivos listados en "Leer antes" de ese change (fuente de verdad: `knowledge-base/`).
-3. **Proponer**: ejecutar `/opsx:propose C-NN-nombre-del-change` con el scope detallado.
+3. **Proponer**: ejecutar `/opsx-propose C-NN-nombre-del-change` con el scope detallado.
 4. **Implementar y cerrar**: codificar, probar y marcar el checkbox del change como `[x]`.
-5. **Archivar y avanzar**: ejecutar `/opsx:archive C-NN-nombre-del-change` y continuar con el siguiente change desbloqueado.
+5. **Archivar y avanzar**: ejecutar `/opsx-archive C-NN-nombre-del-change` y continuar con el siguiente change desbloqueado.
 
 ---
 
@@ -28,6 +28,7 @@ C-01 setup-base
 │   └── C-02, C-03 y C-04 no dependen entre sí (ramas paralelas de Oleada 1)
 └──► C-05 gestion-turnos                   (depende de C-02, C-03, C-04)
         └──► C-06 notificaciones           (depende de C-05 y C-02)
+                └──► C-07 frontend-web     (depende de C-02, C-04, C-05, C-06)
 ```
 
 ---
@@ -44,7 +45,10 @@ GATE 1: C-02, C-03, C-04 ✓
   → C-05 gestion-turnos                  [Caste + Thiago (Listo ✓) — feat/c05-gestion-turnos]   (Oleada 2, Core MVP)
 
 GATE 2: C-05 ✓
-  → C-06 notificaciones                  [Kari + Caste — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final)
+  → C-06 notificaciones                  [Kari + Caste — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final backend)
+
+GATE 3: C-06 ✓
+  → C-07 frontend-web                    [Caste (Base) → Mai (Finiquitado) → Thiago (Unificación)]
 ```
 
 Cambios que pueden ejecutarse en paralelo sin colisiones de archivos (Oleada 1, GATE 1):
@@ -72,7 +76,8 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
 | **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
 | **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste + Thiago (Listo ✓)** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
-| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste** | `feat/c06-notificaciones` | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
+| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste (Listo ✓)** | `feat/c06-notificaciones` | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
+| **Fase 5** (Frontend) | **C-07** | `frontend-web` | **Caste + Mai + Thiago** | `feat/front-base` → `feat/front-completo` | Frontend completo: Caste arma la base visual, maquetado y navegación; Mai finiquita la lógica interactiva (reserva, disponibilidad y gestión); Thiago unifica en `main` |
 
 > **Supervisión y control de calidad (Thiago):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.
 
@@ -213,6 +218,32 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 
 > **Nota de integración (estado actual en `main`):** el **change C-06 está completo e integrado directamente en `main`** (adaptador SMTP, recordatorios configurables, enlaces únicos de confirmación/cancelación y fallback de envío; mergeado por Kari en `dabff4e` / `d42370c`), por eso su checkbox figura `[x]`. **No confundir con el cierre posterior `c-06-integracion-turnos`**: es un change **separado**, planificado en `origin/feat/c06-integracion-turnos`, que conectará C-05 con notificaciones (publicar `TurnoCreadoEvent`, `TurnoReprogramadoEvent` y `TurnoCanceladoEvent` desde `TurnoService`, y reemplazar el fallback no-op por un `TurnoParaRecordarPort` real). Ese cierre está pendiente, es **fuera del alcance de C-06** y no modifica su estado.
 
+## FASE 5 — Frontend web completo (interfaz de usuario final)
+
+### [C-07] `frontend-web`
+- **Estado**: `[ ]` pendiente
+- **Dinámica de equipo**: Caste (Etapa 1: base de diseño y maquetado) → Mai (Etapa 2: finiquitado con consumo de APIs y validaciones) → Thiago (Etapa 3: revisión general y unificación a `main`).
+- **Scope**:
+  - **Etapa 1 (Caste — rama `feat/front-base`)**:
+    - Estilos unificados en `backend/src/main/resources/static/css/styles.css` (diseño moderno, tipografía, paleta de colores y componentes).
+    - Barra de navegación común (header) y footer en todas las pantallas con accesos a: *Inicio*, *Sacar Turno*, *Mis Turnos* y *Login / Mi Cuenta / Cerrar Sesión*.
+    - Maquetado HTML de `index.html` (landing page actualizada), `reservar.html` (formulario de reserva y contenedor para horarios) y `mis-turnos.html` (panel de listado de turnos).
+    - Módulo de conexión HTTP enviando el token de autenticación guardado en `localStorage` (`consultorio_auth_token`).
+  - **Etapa 2 (Mai — rama `feat/front-completo`)**:
+    - Lógica de consulta de disponibilidad (`GET /api/availability`) con carga de profesionales, prestaciones y selección de fecha.
+    - Renderizado interactivo de las franjas horarias libres y confirmación de la reserva con `POST /api/appointments`.
+    - Lógica de "Mis Turnos" (`GET /api/appointments`) con visualización de turnos activos y cancelados con badges de estado.
+    - Cancelación de turnos (`DELETE /api/appointments/{id}`) con confirmación y refresco automático.
+    - Validaciones de experiencia de usuario (bloqueo de fechas pasadas, redirección si no hay sesión activa a `login.html`, y diseño responsive).
+  - **Etapa 3 (Thiago — líder técnico)**:
+    - Revisión del código final de Mai, prueba de flujo E2E completo en navegador y merge a `main`.
+- **Dependencias**: `C-02`, `C-04`, `C-05`, `C-06`
+- **Governance**: MEDIO (interfaz de usuario del sistema)
+- **Riesgo**: BAJO (el backend ya está 100% probado y funcional)
+- **Leer antes**:
+  - `knowledge-base/07_flujos_principales.md` §Flujo 1, §Flujo 2, §Flujo 3, §Flujo 4
+  - `knowledge-base/08_arquitectura_propuesta.md` §Frontend estático
+
 ---
 
 ## Resumen de cambios
@@ -224,10 +255,11 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | C-03 | configuracion-consultorio | 2 | C-01 | MEDIO | MEDIO | C-02, C-04 |
 | C-04 | disponibilidad-turnos | 2 | C-01 | MEDIO | MEDIO | C-02, C-03 |
 | C-05 | gestion-turnos | 3 | C-02, C-03, C-04 | CRITICO | ALTO | — (bloquea hasta que C-02/C-03/C-04 estén listos) |
-| C-06 | notificaciones | 4 | C-05, C-02 | ALTO | MEDIO | — (último) |
+| C-06 | notificaciones | 4 | C-05, C-02 | ALTO | MEDIO | — (último backend) |
+| C-07 | frontend-web | 5 | C-02, C-04, C-05, C-06 | MEDIO | BAJO | — (Caste base → Mai finiquita) |
 
-**Camino crítico**: `C-01 → C-02 → C-05 → C-06` (4 changes).
-**Gates de paralelismo**: 3 (GATE 0, GATE 1 FORK, GATE 2).
-**Primer change recomendado**: `C-01 setup-base` → `/opsx:propose C-01-setup-base`.
+**Camino crítico**: `C-01 → C-02 → C-05 → C-06 → C-07` (5 changes).
+**Gates de paralelismo**: 4 (GATE 0, GATE 1 FORK, GATE 2, GATE 3).
+**Primer change recomendado**: `C-01 setup-base` → `/opsx-propose C-01-setup-base`.
 
-Para arrancar: `/opsx:propose C-01-setup-base`
+Para arrancar: `/opsx-propose C-01-setup-base`

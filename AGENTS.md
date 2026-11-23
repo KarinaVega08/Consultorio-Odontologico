@@ -57,7 +57,7 @@ Ver `CHANGES.md` en la raíz para el detalle completo.
 
 **Camino crítico:** `C-01 → C-02 → C-05 → C-06` (4 changes, mínimo irreducible).
 
-**Primer change sugerido:** `/opsx:propose C-01-setup-base`
+**Primer change sugerido:** `/opsx-propose C-01-setup-base`
 
 ## Reglas Duras (específicas del proyecto)
 
@@ -119,10 +119,10 @@ Los siguientes componentes del setup base ya están listos en `main` y pueden se
 
 ## Flujo de Trabajo
 
-`KB → CHANGES → /opsx:propose → archive`
+`KB → CHANGES → /opsx-propose → archive`
 
 1. Leer `knowledge-base/` (fuente de verdad del dominio y arquitectura).
 2. Leer `CHANGES.md` para identificar el change pendiente cuyas dependencias estén ya cumplidas.
-3. Ejecutar `/opsx:propose C-NN-nombre-del-change` con el scope detallado.
+3. Ejecutar `/opsx-propose C-NN-nombre-del-change` con el scope detallado.
 4. Implementar, probar y marcar el checkbox del change como `[x]`.
-5. Ejecutar `/opsx:archive C-NN-nombre-del-change` y continuar con el siguiente change desbloqueado.
+5. Ejecutar `/opsx-archive C-NN-nombre-del-change` y continuar con el siguiente change desbloqueado.
