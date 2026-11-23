@@ -41,7 +41,7 @@ GATE 0: C-01 setup-base ✓     [Thiago — Líder técnico, sube base limpia a 
   → C-04 disponibilidad-turnos           [Mai — feat/c04-disponibilidad-turnos]   ← FORK (Oleada 1: 3 ramas separadas)
 
 GATE 1: C-02, C-03, C-04 ✓
-  → C-05 gestion-turnos                  [Caste — feat/c05-gestion-turnos]   (Oleada 2, Core MVP)
+  → C-05 gestion-turnos                  [Caste + Thiago (Listo ✓) — feat/c05-gestion-turnos]   (Oleada 2, Core MVP)
 
 GATE 2: C-05 ✓
   → C-06 notificaciones                  [Kari + Caste — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final)
@@ -71,7 +71,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati + Thiago (Listo ✓)** | `feat/c02-registro-pacientes` | Registro y login con DNI, vinculación única con Gmail, recuperación y reset de contraseña, blanqueo presencial |
 | **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
 | **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
-| **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
+| **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste + Thiago (Listo ✓)** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
 | **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste** | `feat/c06-notificaciones` | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
 
 > **Supervisión y control de calidad (Thiago):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.
@@ -170,7 +170,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 ## FASE 3 — Oleada 2: core del MVP (candidato principal para el ciclo OPSX completo)
 
 ### [C-05] `gestion-turnos`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**:
   - Entidad `Turno` (id UUID, FKs a Paciente/Profesional/SillonBox/Prestacion, fecha_hora_inicio, fecha_hora_fin calculada = inicio + duracion_prestacion, estado enum RESERVADO/CONFIRMADO/CANCELADO/COMPLETADO, creado_por, fechas de auditoría).
   - `POST /api/appointments` — creación de turno (paciente online y personal del consultorio) con validación anti-solapamiento por profesional y por sillón/box en el momento de creación (race-condition guard).
