@@ -1,7 +1,8 @@
 # Tasks — C-05 gestion-turnos
 
-> Checklist de trabajo para **Caste**. Rama: `feat/c05-gestion-turnos`.
+> Checklist de trabajo para **Caste**. Rama: `feat/c05-gestion-turnos` (solo este change).
 > Referencias: `specs/gestion-turnos/spec.md` (qué) y `design.md` (cómo).
+> La integración con `C-06` se planifica en la rama `feat/c06-integracion-turnos` y **no** pertenece a esta rama.
 
 ## 1. Coordinación y preparación (antes de codear)
 
@@ -13,10 +14,10 @@
 
 - [x] 2.1 Explore: relevar estado del código, KB y specs relacionadas en `explore.md` — verificación: archivo presente con brechas detectadas.
 - [x] 2.2 Propose: `proposal.md` con Why, What Changes y capacidad `gestion-turnos` — verificación: `openspec status --change c-05-gestion-turnos` marca `proposal` done.
-- [x] 2.3 Spec: `specs/gestion-turnos/spec.md` con ≥3 escenarios (feliz, error de negocio, borde) — verificación: `openspec validate --change c-05-gestion-turnos` sin errores.
-- [x] 2.4 Design: `design.md` con decisiones D1-D6 (IN-04 resuelto, integración C-06) — verificación: archivo presente con todas las secciones.
+- [x] 2.3 Spec: `specs/gestion-turnos/spec.md` con 9 requirements y 12 escenarios WHEN/THEN (feliz, error de negocio, borde y seguridad) — verificación: `openspec validate c-05-gestion-turnos --strict` sin errores.
+- [x] 2.4 Design: `design.md` con decisiones D1-D5 (IN-04 resuelto; sin integración C-06) — verificación: archivo presente con todas las secciones.
 - [x] 2.5 Tasks: este archivo — verificación: `openspec status --change c-05-gestion-turnos` → todos los artefactos `done`.
-- [ ] 2.6 Subir la rama y abrir PR a `main` para revisión de Thiago (solo artefactos de planificación, sin código) — verificación: PR abierto en GitHub.
+- [x] 2.6 Subir la rama a `origin/feat/c05-gestion-turnos` (sin PR: la revisión y el merge los hace Thiago) — verificación: `git ls-remote origin refs/heads/feat/c05-gestion-turnos` muestra el commit del propose.
 
 ## 3. Modelo de datos (apply)
 
@@ -38,23 +39,16 @@
 - [ ] 5.1 `AppointmentController` con `POST`, `PUT`, `DELETE` y `GET /api/appointments` invocando al servicio y devolviendo DTOs — verificación: tests MockMvc de los escenarios del spec (201/200/400/404).
 - [ ] 5.2 RBAC: autenticación obligatoria; paciente solo sobre turnos propios; recepción/odontólogo/administrador sobre cualquiera (`@PreAuthorize`) — verificación: tests "Acceso sin autenticación" (401/403) y "Paciente ajeno" (403) en verde.
 
-## 6. Integración con C-06 (apply)
+## 6. Verificación integral (verify)
 
-- [ ] 6.1 Mapper a `TurnoNotificable` y publicación de `TurnoCreadoEvent`, `TurnoReprogramadoEvent`, `TurnoCanceladoEvent` al final del método (sin evento si el paciente no tiene email) — verificación: test que verifica la publicación y que el correo de confirmación sale con los dos enlaces únicos.
-- [ ] 6.2 Implementar `TurnoParaRecordarPort` (turnos `RESERVADO`/`CONFIRMADO` en la ventana con paciente con email) — verificación: test del puerto que devuelve los turnos esperados y el contexto arranca sin el no-op.
-- [ ] 6.3 Listeners de `TurnoCanceladoPorPacienteEvent` (→ `CANCELADO`) y `AsistenciaConfirmadaEvent` (→ `CONFIRMADO`), ignorando turnos inexistentes o ya cancelados — verificación: tests de integración abriendo `/api/notifications/cancel` y `/api/notifications/confirm` con token real: el turno cambia de estado.
+- [ ] 6.1 Correr la suite completa en verde: `./gradlew test` en `backend/` → `BUILD SUCCESSFUL`, 0 fallos, H2 en memoria y sin servicios externos — verificación: salida de Gradle con todos los escenarios del spec cubiertos.
+- [ ] 6.2 Revisar reglas duras: cero datos reales de pacientes (Ley 25.326) y cero secrets commiteados — verificación: sin coincidencias de DNIs/emails reales ni credenciales en `git grep -iE "(password|secret).*=.*[^$]"`.
 
-## 7. Verificación integral (verify)
+## 7. Cierre de esta rama
 
-- [ ] 7.1 Correr la suite completa en verde: `./gradlew test` en `backend/` → `BUILD SUCCESSFUL`, 0 fallos, H2 en memoria y sin servicios externos — verificación: salida de Gradle con todos los escenarios del spec cubiertos.
-- [ ] 7.2 Revisar reglas duras: cero datos reales de pacientes (Ley 25.326) y cero secrets commiteados — verificación: sin coincidencias de DNIs/emails reales ni credenciales en `git grep -iE "(password|secret).*=.*[^$]"`.
-
-## 8. Cierre
-
-- [ ] 8.1 Marcar `[x]` el checkbox de `C-05` en `CHANGES.md` — verificación: `grep "C-05" CHANGES.md` muestra completado.
-- [ ] 8.2 PR final a `main` con tests en verde y revisión/aprobación de Thiago — verificación: PR mergeado en `main` y `./gradlew test` en verde sobre `main`.
+- [ ] 7.1 Dejar la rama lista para revisión: commit de planificación pusheado, `openspec validate` en verde y **cero archivos de C-06** en la rama — verificación: `git diff --name-only origin/main..HEAD` solo muestra rutas bajo `openspec/changes/c-05-gestion-turnos/`.
 
 ## Workflow follow-up
 
-- Archivar el change (`/opsx:archive c-05-gestion-turnos`) una vez mergeado el PR.
+- La revisión, el merge y el archivado del change los hace **Thiago** (no se ejecutan desde esta rama).
 - Dejar lista la evidencia para el video: tests en verde, el momento de "Ajustar" del propose y el archivo archivado.

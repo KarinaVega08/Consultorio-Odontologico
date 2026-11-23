@@ -2,7 +2,7 @@
 
 ## Why
 
-El MVP no tiene todavía ninguna forma de **reservar, reprogramar o cancelar turnos**: es el core del producto (Épica 3, US-009 a US-012) y el eslabón del camino crítico `C-01 → C-02 → C-05 → C-06`. Sin él, los recordatorios y enlaces únicos de `C-06` quedan colgados (su `TurnoParaRecordarPort` sigue en no-op) y `C-04` no tiene contra qué validar las franjas.
+El MVP no tiene todavía ninguna forma de **reservar, reprogramar o cancelar turnos**: es el core del producto (Épica 3, US-009 a US-012) y el eslabón del camino crítico `C-01 → C-02 → C-05 → C-06`. Sin él, `C-04` no tiene contra qué validar las franjas ni `C-06` puede integrarse con la agenda. La integración con notificaciones se planifica por separado en la rama `feat/c06-integracion-turnos`.
 
 ## What Changes
 
@@ -13,23 +13,22 @@ El MVP no tiene todavía ninguna forma de **reservar, reprogramar o cancelar tur
 - **`GET /api/appointments`** — listado filtrable por profesional, fecha y estado.
 - Validación de **RN-TU-03**: el turno debe caber completo dentro del horario laboral vigente del profesional y sin chocar con bloqueos de profesional y/o sillón/box.
 - **Turnos consecutivos borde a borde permitidos** (`finA == inicioB` no es solapamiento) — criterio estricto `inicioA < finB && inicioB < finA`, idéntico al de la spec de `C-04`.
-- **Integración con `C-06`** (change que Caste comparte con Kari): publicación de `TurnoCreadoEvent`, `TurnoReprogramadoEvent` y `TurnoCanceladoEvent`, implementación real de `TurnoParaRecordarPort` (reemplaza el bean no-op), y escucha de `TurnoCanceladoPorPacienteEvent` (→ `CANCELADO`) y `AsistenciaConfirmadaEvent` (→ `CONFIRMADO`), que hoy nadie recibe.
 - RBAC sobre los endpoints: cualquier rol autenticado; el paciente solo opera sobre **sus propios turnos**; recepción/odontólogo/administrador sobre cualquiera (Flujo 4, paso 2).
 
 ## Capabilities
 
 ### New Capabilities
 
-- `gestion-turnos`: creación, reprogramación, cancelación lógica y consulta de turnos de la agenda del consultorio, con anti-solapamiento por profesional y sillón/box, turnos borde a borde permitidos e integración de eventos con el módulo de notificaciones.
+- `gestion-turnos`: creación, reprogramación, cancelación lógica y consulta de turnos de la agenda del consultorio, con anti-solapamiento por profesional y sillón/box y turnos borde a borde permitidos.
 
 ### Modified Capabilities
 
-<!-- Ninguna: los requirements de C-06, C-03 y C-04 no cambian; C-05 los consume. -->
+<!-- Ninguna: los requirements de C-03 y C-04 no cambian; C-05 los consume. La integración con C-06 se planifica en su propia rama. -->
 
 ## Impact
 
-- **Código nuevo**: `backend/src/main/java/com/consultorio/domain/model/Turno.java`, `domain/repository/TurnoRepository.java`, `application/service/TurnoService.java` (+ mapper a `TurnoNotificable`), `application/dto/*`, `api/controller/AppointmentController.java`, implementación de `TurnoParaRecordarPort` y listeners de eventos de `C-06`.
-- **Dependencias**: requiere el merge de **`C-02`** (entidad `Paciente`, `AuthenticatedUser` y filtro Bearer) para el apply; consume entidades y repositorios de **`C-03`** (`Profesional`, `SillonBox`, `Prestacion`, `HorarioAtencion`, `Bloqueo`) ya presentes en `main`; se alinea con la regla de solapamiento de **`C-04`** y con los puertos/eventos de **`C-06`**.
+- **Código nuevo**: `backend/src/main/java/com/consultorio/domain/model/Turno.java`, `domain/repository/TurnoRepository.java`, `application/service/TurnoService.java`, `application/dto/*`, `api/controller/AppointmentController.java`.
+- **Dependencias**: requiere el merge de **`C-02`** (entidad `Paciente`, `AuthenticatedUser` y filtro Bearer) para el apply; consume entidades y repositorios de **`C-03`** (`Profesional`, `SillonBox`, `Prestacion`, `HorarioAtencion`, `Bloqueo`) ya presentes en `main`; se alinea con la regla de solapamiento de **`C-04`**. La integración con los puertos/eventos de **`C-06`** se planifica en la rama `feat/c06-integracion-turnos`.
 - **BD**: estrategia anti-solapamiento compatible con H2 (tests) y PostgreSQL (runtime) — resuelve IN-04.
 - **Tests**: nueva batería sobre H2 con datos ficticios (RN-EX-01 / RN-EX-02), sin servicios externos.
 

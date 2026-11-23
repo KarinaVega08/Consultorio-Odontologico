@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Gestionar la agenda de turnos del consultorio: crear, reprogramar y cancelar citas sin solapamientos por profesional ni por sillón/box, conservando el historial de turnos y publicando los eventos que consume el módulo de notificaciones.
+Gestionar la agenda de turnos del consultorio: crear, reprogramar y cancelar citas sin solapamientos por profesional ni por sillón/box, conservando el historial de turnos. La integración de eventos y recordatorios con `C-06` se especifica por separado en el change `c-06-integracion-turnos` (rama `feat/c06-integracion-turnos`).
 
 ## ADDED Requirements
 
@@ -86,24 +86,6 @@ El sistema SHALL exponer `GET /api/appointments` con filtros opcionales de profe
 - **GIVEN** que existen turnos de dos profesionales en distintos estados
 - **WHEN** se envía `GET /api/appointments?profesionalId=...&estado=RESERVADO`
 - **THEN** el sistema responde `200 OK` solo con los turnos de ese profesional en estado `RESERVADO`
-
-### Requirement: Integración de eventos con el módulo de notificaciones
-El sistema SHALL publicar `TurnoCreadoEvent`, `TurnoReprogramadoEvent` y `TurnoCanceladoEvent` (con los datos mínimos del turno para notificar) al crear, reprogramar y cancelar por API, SHALL implementar la consulta real de `TurnoParaRecordarPort`, y SHALL cambiar el estado a `CANCELADO` al recibir `TurnoCanceladoPorPacienteEvent` y a `CONFIRMADO` al recibir `AsistenciaConfirmadaEvent`.
-
-#### Scenario: La creación dispara la confirmación por email (feliz, integración)
-- **GIVEN** que el paciente del turno tiene correo de recuperación vinculado
-- **WHEN** se crea el turno
-- **THEN** se publica el evento de turno creado y el módulo de notificaciones envía el correo de confirmación con los enlaces únicos de confirmar asistencia y cancelar
-
-#### Scenario: Cancelar desde el enlace único pone el turno en CANCELADO (integración)
-- **GIVEN** que existe un turno `RESERVADO` con un token de cancelación válido y sin usar
-- **WHEN** el paciente abre `GET /api/notifications/cancel?token=...`
-- **THEN** el turno queda en estado `CANCELADO` (recibido vía evento desde el módulo de notificaciones)
-
-#### Scenario: Confirmar asistencia desde el enlace único pone el turno en CONFIRMADO (integración)
-- **GIVEN** que existe un turno `RESERVADO` con un token de confirmación válido y sin usar
-- **WHEN** el paciente abre `GET /api/notifications/confirm?token=...`
-- **THEN** el turno queda en estado `CONFIRMADO`
 
 ### Requirement: Autorización sobre los turnos según rol
 El sistema SHALL exigir autenticación para todos los endpoints de turnos; el paciente SHALL poder operar solo sobre turnos propios y el personal (recepcionista, odontólogo, administrador) sobre cualquier turno.
