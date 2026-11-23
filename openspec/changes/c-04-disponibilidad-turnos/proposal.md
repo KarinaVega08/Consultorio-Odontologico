@@ -48,3 +48,10 @@ Sin un motor de disponibilidad:
 - **Estrategia recomendada**: implementar primero el calculador puro con DTOs y tests unitarios; conectar los repositorios cuando las entidades existan en `main`.
 - **Riesgo**: desincronización con la lógica anti-solapamiento de `C-05` si se definen reglas distintas.
 - **Pregunta abierta IN-05**: granularidad de la grilla (15 o 30 minutos). Se propone 15 minutos como valor por defecto configurable.
+
+## 7. Aprobación del propose (registro manual)
+
+- **Fecha**: 2026-11-23.
+- **Estado**: aprobado. Alcance confirmado sin cambios de fondo: `GET /api/availability`, calculador puro, DTOs y tests unitarios + integración.
+- **Decisiones incorporadas**: grilla de 15 minutos configurable (`availability.grid-minutes`, A4); entidades C-03 en `com.consultorio.admin.*` en modo solo lectura (A2); `Turno` desacoplado mediante `TurnoDisponibilidadPort` para C-05 (A3).
+- **Verificación**: `openspec validate c-04-disponibilidad-turnos` → *valid* (delta spec en `specs/c-04-disponibilidad-turnos/spec.md`).

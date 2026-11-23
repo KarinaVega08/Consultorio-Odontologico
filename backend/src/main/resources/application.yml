@@ -43,6 +43,9 @@ mailpit:
 app:
   frontend-path: ${FRONTEND_PATH:src/main/resources/static}
 
+availability:
+  grid-minutes: ${AVAILABILITY_GRID_MINUTES:15}
+
 notification:
   from: ${SMTP_FROM:consultorio@example.com}
   base-url: ${APP_BASE_URL:http://localhost:8080}
