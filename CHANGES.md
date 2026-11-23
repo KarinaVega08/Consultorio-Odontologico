@@ -36,7 +36,7 @@ C-01 setup-base
 
 ```
 GATE 0: C-01 setup-base ✓     [Thiago — Líder técnico, sube base limpia a main y control general]
-  → C-02 auth-pacientes                  [Mati — feat/c02-registro-pacientes]
+  → C-02 auth-pacientes                  [Mati + Thiago (Listo ✓) — feat/c02-registro-pacientes]
   → C-03 configuracion-consultorio       [Kari — feat/c03-config-consultorio]
   → C-04 disponibilidad-turnos           [Mai — feat/c04-disponibilidad-turnos]   ← FORK (Oleada 1: 3 ramas separadas)
 
@@ -48,7 +48,7 @@ GATE 2: C-05 ✓
 ```
 
 Cambios que pueden ejecutarse en paralelo sin colisiones de archivos (Oleada 1, GATE 1):
-- **C-02 auth-pacientes (Mati)**: toca `backend/.../auth/` (Paciente, AuthController, AuthService, seguridad, registro/login/recuperación/blanqueo).
+- **C-02 auth-pacientes (Mati + Thiago (Listo ✓))**: toca `backend/.../auth/` (Paciente, AuthController, AuthService, seguridad, registro/login/recuperación/blanqueo).
 - **C-03 configuracion-consultorio (Kari)**: toca `backend/.../admin/` (Profesional, SillonBox, Prestacion, HorarioAtencion, Bloqueo + Admin CRUD).
 - **C-04 disponibilidad-turnos (Mai)**: toca `backend/.../availability/` (AvailabilityController, AvailabilityService, lecturas de calendario).
 - Ninguno escribe en los paquetes de los otros dos; solo leen entidades base creadas en C-01.
@@ -68,7 +68,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | Fase | Change | Nombre | Responsable | Rama Git | Alcance asignado |
 |---|---|---|---|---|---|
 | **Fase 1** | **C-01** | `setup-base` | **Thiago** (Listo ✓) | `main` | Esqueleto base Java 21 + Spring Boot 3 + Gradle + PostgreSQL/H2, seguridad inicial, y control/revisión general |
-| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati** | `feat/c02-registro-pacientes` | Registro y login con DNI, vinculación única con Gmail y blanqueo presencial |
+| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati + Thiago (Listo ✓)** | `feat/c02-registro-pacientes` | Registro y login con DNI, vinculación única con Gmail, recuperación y reset de contraseña, blanqueo presencial |
 | **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
 | **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
 | **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
@@ -111,7 +111,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 > Tres cambios que se ejecutan en ramas separadas sin pisar los mismos archivos. Cada uno depende solo de C-01.
 
 ### [C-02] `auth-pacientes`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**:
   - Entidad `Paciente` (id UUID, nombre_completo, dni 7-8 dígitos único, password_hash, email_recuperacion opcional vinculado una sola vez, fecha_registro, activo).
   - `POST /api/auth/register` — valida formato y unicidad de DNI, crea paciente con contraseña hasheada.
