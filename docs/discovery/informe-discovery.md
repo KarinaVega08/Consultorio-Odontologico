@@ -6,7 +6,7 @@
 
 - **Título**: Informe de Discovery: Análisis competitivo de sistemas de gestión de turnos para consultorios odontológicos en Argentina
 - **Materia**: Desarrollo de Software — Trabajo Global Integrador (UTN FRM)
-- **Integrantes**: Thiago, Mai, Kari, Mati, Caste *(completar nombres completos y legajos antes de exportar a PDF)*
+- **Integrantes**: Castellarín Franco (51931), Claros Mailén (51939), Oliva Matías (52064), Sinatra Thiago (52132), Vega Karina (52149)
 - **Fecha**: 2026-11-20
 - **Fuentes relevadas**: 18 plataformas de software en `discovery/sources/` (relevamiento actualizado 2026-11-20)
 
@@ -162,15 +162,16 @@ Las plataformas odontológicas vigentes en Argentina y LATAM cubren como base es
 
 ### Auditoría manual del equipo (completar al menos 5 URLs de distinto tipo)
 
-> **Instrucción para el equipo**: abran personalmente estas 5 URLs en el navegador, verifiquen si lo que dice el informe está realmente allí y completen la columna **Resultado de verificación manual** antes de exportar a PDF.
+> **Instrucción para el equipo**: abran personalmente estas URLs en el navegador, verifiquen si lo que dice el informe está realmente allí y completen la columna **Resultado de verificación manual** antes de exportar a PDF.
 
 | # | Tipo de fuente | Sistema | URL a auditar manualmente | Qué afirma este informe | Resultado de verificación manual (completar) |
 |---|---|---|---|---|---|
-| 1 | Sitio oficial (home) | Dentify | https://www.dentify.com.ar/ | Ofrece agenda por profesional/práctica, odontograma y planes Básico ($30.000) / Clínicas ($45.000). | *(Pendiente: abrir y confirmar si coincide hoy)* |
-| 2 | Página de precios | Dentry | https://www.dentry.com.ar/planes | Plan Gratis $0 (50 pac/100 turnos), Basic $29.999/mes (recordatorios email), Pro $49.999/mes. | *(Pendiente: abrir y confirmar si coincide hoy)* |
+| 1 | Sitio oficial (home) | Dentify | https://www.dentify.com.ar/ | Ofrece agenda por profesional/práctica, odontograma y planes Básico ($30.000) / Clínicas ($45.000). | Verificado sin cambios — Revisora: Karina, Fecha: 23/11/2026. Confirma la agenda por profesional/práctica con vistas diaria y semanal, el odontograma interactivo, las historias clínicas, la gestión financiera con obras sociales y los planes Básico $30.000/mes y Clínicas $45.000/mes con 14 días gratis. |
+| 2 | Página de precios | Dentry | https://www.dentry.com.ar/planes | Plan Gratis $0 (50 pac/100 turnos), Basic $29.999/mes (recordatorios email), Pro $49.999/mes. | Verificado sin cambios — Revisora: Karina, Fecha: 23/11/2026. Confirma el plan Gratis $0 sin vencimiento (hasta 50 pacientes y 100 turnos/mes), el plan Basic $29.999/mes con recordatorios de turnos por email, el plan Pro $49.999/mes y el asiento adicional de $15.000/mes, además del odontograma y la historia clínica incluidos. |
 | 3 | Manual técnico / Ayuda | Open Dental | https://www.opendental.com/manual/appointments.html | Documenta módulo de turnos con vistas por proveedor/sillón, blockouts y listas Recall/ASAP. | Verificado sin cambios — Revisor: Thiago, Fecha: 2026-11-22. Confirma columnas por sillón/box (Operatory 1, 2, 3, Hygiene Op), bloqueos horarios (Blockouts), vistas Day/Week, estados de confirmación y listas Recall/Unsched. |
 | 4 | Página de producto LATAM | Dentalink | https://www.softwaredentalink.com/ | Destaca Clinical Copilot IA, Contact Center IA y planes bajo cotización (sin precios públicos). | *(Pendiente: abrir y confirmar si coincide hoy)* |
 | 5 | Sitio sin contenido / falla | Odentix | https://www.odentix.com.ar/ | El fetch automático no devolvió contenido legible (marcado como `No evidenciado`). | *(Pendiente: abrir en navegador con JS para verificar si carga o está caído)* |
+| 6 | Sitio oficial (home) | Odontal Web | https://odontalweb.com.ar/ | Asistente IA "Odi" 24/7 para pedir/cancelar turnos y consultar horarios, agenda virtual, historias clínicas y plan único USD 30/mes (USD 27 anual) con trial de 60 días. | Verificado sin cambios — Revisora: Karina, Fecha: 23/11/2026. Confirma el asistente conversacional "Odi" operativo 24/7 para solicitar, cancelar y reprogramar turnos, la agenda virtual, las historias clínicas, el plan único de USD 30/mes (USD 27/mes pagando anualmente) y la prueba gratuita de 60 días sin tarjeta. |
 
 ---
 
