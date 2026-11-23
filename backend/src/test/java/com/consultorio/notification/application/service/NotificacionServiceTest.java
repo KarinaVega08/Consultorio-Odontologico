@@ -64,6 +64,7 @@ class NotificacionServiceTest {
 
     @Test
     void crearTurnoEnviaConfirmacionConDosEnlacesUnicos() {
+        when(tokenRepository.findByTurnoIdAndTipoAndUsadoFalse(any(), any())).thenReturn(List.of());
         when(tokenRepository.save(any(NotificacionToken.class))).thenAnswer(inv -> inv.getArgument(0));
 
         service.onTurnoCreado(new TurnoCreadoEvent(turnoFicticio()));
@@ -138,6 +139,36 @@ class NotificacionServiceTest {
         assertThatThrownBy(() -> service.confirmarAsistencia("vencido"))
             .isInstanceOf(BusinessException.class)
             .hasMessageContaining("vencido");
+    }
+
+    @Test
+    void crearTokenInvalidaTokenPrevioDelMismoTipoYTurno() {
+        UUID turnoId = UUID.randomUUID();
+        TurnoNotificable turno = new TurnoNotificable(
+            turnoId, UUID.randomUUID(), "99.999.999", "paciente@example.com",
+            "Dr. Ficticio", LocalDateTime.now().plusHours(2), "Consulta"
+        );
+
+        NotificacionToken previo = new NotificacionToken();
+        previo.setToken("token-previo");
+        previo.setTipo(TipoNotificacionToken.CONFIRMAR_ASISTENCIA);
+        previo.setTurnoId(turnoId);
+        previo.setEmailDestino("paciente@example.com");
+        previo.setFechaExpiracion(LocalDateTime.now().plusDays(1));
+        previo.setUsado(false);
+        previo.setActivo(true);
+
+        when(tokenRepository.findByTurnoIdAndTipoAndUsadoFalse(turnoId, TipoNotificacionToken.CONFIRMAR_ASISTENCIA))
+            .thenReturn(List.of(previo));
+        when(tokenRepository.save(any(NotificacionToken.class)))
+            .thenAnswer(inv -> inv.getArgument(0));
+
+        String nuevoToken = service.crearToken(TipoNotificacionToken.CONFIRMAR_ASISTENCIA, turno);
+
+        assertThat(previo.getUsado()).isTrue();
+        assertThat(previo.getFechaUso()).isNotNull();
+        assertThat(nuevoToken).isNotEqualTo("token-previo");
+        verify(tokenRepository, times(2)).save(any(NotificacionToken.class));
     }
 
     @Test

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -178,7 +179,15 @@ public class NotificacionService {
 
     // ------------------------------------------------------------------ Helper
 
-    private String crearToken(TipoNotificacionToken tipo, TurnoNotificable turno) {
+    String crearToken(TipoNotificacionToken tipo, TurnoNotificable turno) {
+        // Invalidar tokens previos no usados del mismo tipo y turno para evitar enlaces duplicados
+        List<NotificacionToken> previos = tokenRepository.findByTurnoIdAndTipoAndUsadoFalse(turno.turnoId(), tipo);
+        previos.forEach(t -> {
+            t.setUsado(true);
+            t.setFechaUso(LocalDateTime.now());
+            tokenRepository.save(t);
+        });
+
         String valor = UUID.randomUUID().toString().replace("-", "");
         NotificacionToken token = new NotificacionToken();
         token.setToken(valor);

@@ -4,6 +4,7 @@ import com.consultorio.domain.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Prestacion extends BaseEntity {
     private String nombre;
 
     @Column(name = "duracion_minutos", nullable = false)
+    @Min(value = 1, message = "La duración de la prestación debe ser mayor a 0 minutos")
     private Integer duracionMinutos;
 
     @Column(name = "descripcion")

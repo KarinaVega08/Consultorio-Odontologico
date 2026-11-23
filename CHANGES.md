@@ -211,6 +211,8 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
   - `knowledge-base/02_descripcion_general.md` §Integraciones externas (SMTP/Mailpit)
   - `knowledge-base/10_preguntas_abiertas.md` §IN-02 horas de antelación para recordatorio
 
+> **Nota de integración:** C-06 tiene el código base listo (adaptador SMTP, recordatorios configurables, enlaces únicos de confirmación/cancelación, fallback de envío). Su integración real se completa al mergear **C-05** (publicar los eventos `TurnoCreadoEvent`, `TurnoReprogramadoEvent`, `TurnoCanceladoEvent` y aportar la implementación real de `TurnoParaRecordarPort`).
+
 ---
 
 ## Resumen de cambios
