@@ -211,7 +211,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
   - `knowledge-base/02_descripcion_general.md` §Integraciones externas (SMTP/Mailpit)
   - `knowledge-base/10_preguntas_abiertas.md` §IN-02 horas de antelación para recordatorio
 
-> **Nota de integración:** C-06 tiene el código base listo (adaptador SMTP, recordatorios configurables, enlaces únicos de confirmación/cancelación, fallback de envío). Su integración real se completa al mergear **C-05** (publicar los eventos `TurnoCreadoEvent`, `TurnoReprogramadoEvent`, `TurnoCanceladoEvent` y aportar la implementación real de `TurnoParaRecordarPort`).
+> **Nota de integración (estado actual en `main`):** el **change C-06 está completo e integrado directamente en `main`** (adaptador SMTP, recordatorios configurables, enlaces únicos de confirmación/cancelación y fallback de envío; mergeado por Kari en `dabff4e` / `d42370c`), por eso su checkbox figura `[x]`. **No confundir con el cierre posterior `c-06-integracion-turnos`**: es un change **separado**, planificado en `origin/feat/c06-integracion-turnos`, que conectará C-05 con notificaciones (publicar `TurnoCreadoEvent`, `TurnoReprogramadoEvent` y `TurnoCanceladoEvent` desde `TurnoService`, y reemplazar el fallback no-op por un `TurnoParaRecordarPort` real). Ese cierre está pendiente, es **fuera del alcance de C-06** y no modifica su estado.
 
 ---
 
