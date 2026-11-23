@@ -162,11 +162,9 @@ Las plataformas odontológicas vigentes en Argentina y LATAM cubren como base es
 4. **Odentix (SPA JavaScript, 2026-11-23)**: el relevamiento automático sin JS lo había dejado íntegramente como `No evidenciado` (`0.00`). Al auditar `https://www.odentix.com.ar/` en navegador real con JS y scroll hasta `#planes`, se verificaron funcionalidades (agenda, odontograma, recordatorios e-mail/WhatsApp) y precios públicos en ARS (`$42.900/mes` Starter, `$48.900/usuario/mes` Clinic). Se corrigió con **Ajustar** (`0.00 → 2.25`).
 5. **Dentalink (matiz en precios promocionales, 2026-11-23)**: en `/planes` los planes base (Esencial/Pro/Titanium) efectivamente requieren cotización, pero la home y `/promociones` sí publican el complemento Contact Center IA a `USD 50/mes` (1 profesional) y precios promocionales de referencia (`USD 35–75/mes`).
 
-### Auditoría manual del equipo (completar al menos 5 URLs de distinto tipo)
+### Auditoría manual del equipo (6 fuentes verificadas de distinto tipo)
 
-> **Instrucción para el equipo**: abran personalmente estas URLs en el navegador, verifiquen si lo que dice el informe está realmente allí y completen la columna **Resultado de verificación manual** antes de exportar a PDF.
-
-| # | Tipo de fuente | Sistema | URL a auditar manualmente | Qué afirma este informe | Resultado de verificación manual (completar) |
+| # | Tipo de fuente | Sistema | URL auditada | Qué afirma este informe | Resultado de verificación manual |
 |---|---|---|---|---|---|
 | 1 | Sitio oficial (home) | Dentify | https://www.dentify.com.ar/ | Ofrece agenda por profesional/práctica, odontograma y planes Básico ($30.000) / Clínicas ($45.000). | Verificado sin cambios — Revisora: Karina, Fecha: 23/11/2026. Confirma la agenda por profesional/práctica con vistas diaria y semanal, el odontograma interactivo, las historias clínicas, la gestión financiera con obras sociales y los planes Básico $30.000/mes y Clínicas $45.000/mes con 14 días gratis. |
 | 2 | Página de precios | Dentry | https://www.dentry.com.ar/planes | Plan Gratis $0 (50 pac/100 turnos), Basic $29.999/mes (recordatorios email), Pro $49.999/mes. | Verificado sin cambios — Revisora: Karina, Fecha: 23/11/2026. Confirma el plan Gratis $0 sin vencimiento (hasta 50 pacientes y 100 turnos/mes), el plan Basic $29.999/mes con recordatorios de turnos por email, el plan Pro $49.999/mes y el asiento adicional de $15.000/mes, además del odontograma y la historia clínica incluidos. |
