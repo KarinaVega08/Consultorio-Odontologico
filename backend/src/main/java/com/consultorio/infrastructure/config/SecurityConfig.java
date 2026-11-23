@@ -6,6 +6,7 @@ import com.consultorio.infrastructure.security.HmacTokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,15 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+
 @Configuration
 @EnableWebSecurity
+@Order(2)
 public class SecurityConfig {
 
     @Bean
     public TokenService tokenService(
-            @Value("${app.security.jwt-secret:dev-only-insecure-change-in-prod-key-32bytes}") String secret,
+            @Value("${app.security.jwt-secret:}") String secret,
             @Value("${app.security.jwt-expiration-seconds:86400}") long expirationSeconds) {
-        return new HmacTokenService(secret, expirationSeconds);
+        String effectiveSecret = secret;
+        if (effectiveSecret == null || effectiveSecret.isBlank()) {
+            byte[] random = new byte[32];
+            new SecureRandom().nextBytes(random);
+            effectiveSecret = Base64.getEncoder().encodeToString(random);
+        }
+        return new HmacTokenService(effectiveSecret, expirationSeconds);
     }
 
     @Bean

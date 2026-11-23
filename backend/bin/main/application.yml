@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: consultorio-odontologico
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/consultorio_odontologico}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO:update}
+    show-sql: ${HIBERNATE_SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: ${HIBERNATE_FORMAT_SQL:false}
+  h2:
+    console:
+      enabled: ${H2_CONSOLE_ENABLED:false}
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USER:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:false}
+          starttls:
+            enable: ${SMTP_STARTTLS:false}
+
+server:
+  port: ${APP_PORT:8080}
+
+smtp:
+  host: ${SMTP_HOST:localhost}
+  port: ${SMTP_PORT:1025}
+  user: ${SMTP_USER:}
+  password: ${SMTP_PASSWORD:}
+
+mailpit:
+  host: ${MAILPIT_HOST:localhost}
+  port: ${MAILPIT_PORT:1025}
+
+app:
+  frontend-path: ${FRONTEND_PATH:src/main/resources/static}
+
+notification:
+  from: ${SMTP_FROM:consultorio@example.com}
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  horas-antelacion: ${REMINDER_HOURS_BEFORE:24}
+  validez-token-horas: ${NOTIFICATION_TOKEN_VALIDITY_HOURS:48}
+  recordatorio:
+    cron: '${REMINDER_CRON:0 0 8 * * *}'

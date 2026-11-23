@@ -15,6 +15,17 @@ spring:
   h2:
     console:
       enabled: ${H2_CONSOLE_ENABLED:false}
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USER:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:false}
+          starttls:
+            enable: ${SMTP_STARTTLS:false}
 
 server:
   port: ${APP_PORT:8080}
@@ -31,3 +42,11 @@ mailpit:
 
 app:
   frontend-path: ${FRONTEND_PATH:src/main/resources/static}
+
+notification:
+  from: ${SMTP_FROM:consultorio@example.com}
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  horas-antelacion: ${REMINDER_HOURS_BEFORE:24}
+  validez-token-horas: ${NOTIFICATION_TOKEN_VALIDITY_HOURS:48}
+  recordatorio:
+    cron: '${REMINDER_CRON:0 0 8 * * *}'

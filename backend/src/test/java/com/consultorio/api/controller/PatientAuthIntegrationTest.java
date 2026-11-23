@@ -1,6 +1,8 @@
 package com.consultorio.api.controller;
 
+import com.consultorio.domain.model.RecoveryToken;
 import com.consultorio.domain.repository.PacienteRepository;
+import com.consultorio.domain.repository.RecoveryTokenRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
@@ -33,6 +37,9 @@ class PatientAuthIntegrationTest {
 
     @Autowired
     private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private RecoveryTokenRepository recoveryTokenRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -211,5 +218,121 @@ class PatientAuthIntegrationTest {
     void staticLoginViewShouldBePubliclyAccessible() throws Exception {
         mockMvc.perform(get("/login.html"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void scenario7_recoverPasswordWithLinkedGmailReturnsOk() throws Exception {
+        // Registrar paciente con Gmail vinculado
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nombreCompleto": "Paciente Seis",
+                                  "dni": "99999996",
+                                  "password": "ClaveSegura123"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dni\":\"99999996\",\"password\":\"ClaveSegura123\"}"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JsonNode loginJson = objectMapper.readTree(loginResult.getResponse().getContentAsString());
+        String sessionToken = loginJson.get("token").asText();
+
+        // Vincular Gmail
+        mockMvc.perform(post("/api/patients/me/recovery-email")
+                        .header("Authorization", "Bearer " + sessionToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"paciente.seis.test@gmail.com\"}"))
+                .andExpect(status().isOk());
+
+        // Solicitar recuperación de contraseña (debe devolver 200 aunque no exponga el token)
+        mockMvc.perform(post("/api/auth/recover-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dni\":\"99999996\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void scenario8_recoverPasswordWithoutLinkedGmailStillReturnsOk() throws Exception {
+        // Registrar paciente SIN Gmail vinculado
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nombreCompleto": "Paciente Siete",
+                                  "dni": "99999997",
+                                  "password": "ClaveSegura123"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        // Solicitar recuperación sin Gmail vinculado (debe devolver 200, no filtrar)
+        mockMvc.perform(post("/api/auth/recover-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dni\":\"99999997\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void scenario9_resetPasswordWithValidTokenWorks() throws Exception {
+        // Registrar paciente
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nombreCompleto": "Paciente Ocho",
+                                  "dni": "99999998",
+                                  "password": "ClaveVieja123"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        // Crear token de recuperación directamente en la BD
+        RecoveryToken token = new RecoveryToken();
+        token.setToken("token-recuperacion-valido-1234567890");
+        token.setDni("99999998");
+        token.setFechaExpiracion(LocalDateTime.now().plusHours(1));
+        token.setUsado(false);
+        token.setActivo(true);
+        recoveryTokenRepository.save(token);
+
+        // Resetear contraseña con el token
+        mockMvc.perform(post("/api/auth/reset-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"token\":\"token-recuperacion-valido-1234567890\",\"newPassword\":\"ClaveNueva123\"}"))
+                .andExpect(status().isOk());
+
+        // Verificar que se puede hacer login con la nueva contraseña
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dni\":\"99999998\",\"password\":\"ClaveNueva123\"}"))
+                .andExpect(status().isOk());
+
+        // Verificar que la contraseña vieja ya no funciona
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dni\":\"99999998\",\"password\":\"ClaveVieja123\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void scenario10_resetPasswordWithInvalidTokenReturnsBadRequest() throws Exception {
+        mockMvc.perform(post("/api/auth/reset-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"token\":\"token-inexistente\",\"newPassword\":\"ClaveNueva123\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void scenario11_adminPasswordResetRequiresAuthentication() throws Exception {
+        mockMvc.perform(post("/api/admin/password-reset")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dni\":\"99999991\",\"newPassword\":\"NuevaClave123\"}"))
+                .andExpect(status().isForbidden());
     }
 }

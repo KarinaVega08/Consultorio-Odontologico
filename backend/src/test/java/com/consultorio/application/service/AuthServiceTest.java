@@ -8,6 +8,7 @@ import com.consultorio.domain.exception.BusinessException;
 import com.consultorio.domain.model.Paciente;
 import com.consultorio.domain.model.RolUsuario;
 import com.consultorio.domain.repository.PacienteRepository;
+import com.consultorio.domain.repository.RecoveryTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,13 +42,16 @@ class AuthServiceTest {
     @Mock
     private TokenService tokenService;
 
+    @Mock
+    private RecoveryTokenRepository recoveryTokenRepository;
+
     private PasswordEncoder passwordEncoder;
     private AuthService authService;
 
     @BeforeEach
     void setUp() {
         passwordEncoder = new BCryptPasswordEncoder();
-        authService = new AuthService(pacienteRepository, passwordEncoder, tokenService);
+        authService = new AuthService(pacienteRepository, passwordEncoder, tokenService, recoveryTokenRepository);
     }
 
     @Test

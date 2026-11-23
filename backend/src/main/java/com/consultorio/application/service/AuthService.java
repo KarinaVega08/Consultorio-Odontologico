@@ -7,8 +7,10 @@ import com.consultorio.application.dto.RegisterRequest;
 import com.consultorio.domain.exception.BusinessException;
 import com.consultorio.domain.exception.ResourceNotFoundException;
 import com.consultorio.domain.model.Paciente;
+import com.consultorio.domain.model.RecoveryToken;
 import com.consultorio.domain.model.RolUsuario;
 import com.consultorio.domain.repository.PacienteRepository;
+import com.consultorio.domain.repository.RecoveryTokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -30,13 +33,16 @@ public class AuthService {
     private final PacienteRepository pacienteRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final RecoveryTokenRepository recoveryTokenRepository;
 
     public AuthService(PacienteRepository pacienteRepository,
                        PasswordEncoder passwordEncoder,
-                       TokenService tokenService) {
+                       TokenService tokenService,
+                       RecoveryTokenRepository recoveryTokenRepository) {
         this.pacienteRepository = pacienteRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
+        this.recoveryTokenRepository = recoveryTokenRepository;
     }
 
     @Transactional
@@ -107,5 +113,86 @@ public class AuthService {
                 requiereVincular,
                 paciente.getFechaCreacion()
         );
+    }
+
+    // ---------------------------------------------------------- Recuperación de contraseña (RN-AU-03)
+
+    /**
+     * Genera un token de recuperación único si el paciente tiene Gmail vinculado.
+     * Responde siempre con éxito genérico para no filtrar si el DNI existe en el sistema.
+     */
+    @Transactional
+    public void recoverPassword(String dni) {
+        String dniNormalizado = dni.trim();
+        Paciente paciente = pacienteRepository.findByDni(dniNormalizado)
+                .filter(p -> Boolean.TRUE.equals(p.getActivo()))
+                .orElse(null);
+
+        if (paciente != null && paciente.getEmailRecuperacion() != null
+                && !paciente.getEmailRecuperacion().isBlank()) {
+            // Invalidar tokens previos no usados para este DNI
+            recoveryTokenRepository.findByDniAndUsadoFalse(dniNormalizado)
+                    .ifPresent(t -> {
+                        t.setUsado(true);
+                        t.setFechaUso(LocalDateTime.now());
+                        recoveryTokenRepository.save(t);
+                    });
+
+            RecoveryToken token = new RecoveryToken();
+            token.setToken(java.util.UUID.randomUUID().toString().replace("-", ""));
+            token.setDni(dniNormalizado);
+            token.setFechaExpiracion(LocalDateTime.now().plusHours(1));
+            token.setUsado(false);
+            token.setActivo(true);
+            recoveryTokenRepository.save(token);
+            logger.info("Token de recuperación generado para DNI {}", dniNormalizado);
+        }
+        // Si no existe o no tiene Gmail vinculado, no hacemos nada (respuesta genérica)
+    }
+
+    /**
+     * Valida el token de recuperación de un solo uso y actualiza la contraseña.
+     */
+    @Transactional
+    public void resetPassword(String tokenValue, String newPassword) {
+        RecoveryToken token = recoveryTokenRepository.findByToken(tokenValue)
+                .orElseThrow(() -> new BusinessException("El token de recuperación no es válido"));
+
+        if (Boolean.TRUE.equals(token.getUsado())) {
+            throw new BusinessException("El token de recuperación ya fue utilizado");
+        }
+
+        if (token.getFechaExpiracion() == null || token.getFechaExpiracion().isBefore(LocalDateTime.now())) {
+            throw new BusinessException("El token de recuperación ha vencido");
+        }
+
+        Paciente paciente = pacienteRepository.findByDni(token.getDni())
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente no encontrado"));
+
+        paciente.setPasswordHash(passwordEncoder.encode(newPassword));
+        pacienteRepository.save(paciente);
+
+        token.setUsado(true);
+        token.setFechaUso(LocalDateTime.now());
+        recoveryTokenRepository.save(token);
+
+        logger.info("Contraseña restablecida para DNI {}", paciente.getDni());
+    }
+
+    // ---------------------------------------------------------- Blanqueo presencial (RN-AU-05)
+
+    /**
+     * Blanqueo presencial de contraseña por Recepcionista o Administrador.
+     */
+    @Transactional
+    public void adminResetPassword(String dni, String newPassword) {
+        String dniNormalizado = dni.trim();
+        Paciente paciente = pacienteRepository.findByDni(dniNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente no encontrado"));
+
+        paciente.setPasswordHash(passwordEncoder.encode(newPassword));
+        pacienteRepository.save(paciente);
+
+        logger.info("Blanqueo presencial de contraseña para DNI {} por personal autorizado", dniNormalizado);
     }
 }
