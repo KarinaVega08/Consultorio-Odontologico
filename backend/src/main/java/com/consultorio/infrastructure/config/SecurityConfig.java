@@ -55,6 +55,8 @@ public class SecurityConfig {
                     "/",
                     "/index.html",
                     "/login.html",
+                    "/reservar.html",
+                    "/mis-turnos.html",
                     "/favicon.ico",
                     "/css/**",
                     "/js/**",

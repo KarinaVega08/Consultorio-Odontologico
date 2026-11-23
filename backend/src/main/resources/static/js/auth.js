@@ -1,6 +1,4 @@
 (function () {
-  const TOKEN_KEY = 'consultorio_auth_token';
-
   const alertBox = document.getElementById('alert-box');
   const authSection = document.getElementById('auth-section');
   const profileSection = document.getElementById('profile-section');
@@ -60,14 +58,9 @@
       password: document.getElementById('reg-password').value
     };
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(() => null);
+      const res = await Api.post('/api/auth/register', payload);
       if (!res.ok) {
-        showAlert(extractErrorMessage(data, 'No se pudo completar el registro'), 'error');
+        showAlert(extractErrorMessage(res.data, 'No se pudo completar el registro'), 'error');
         return;
       }
       registerForm.reset();
@@ -87,19 +80,14 @@
       password: document.getElementById('login-password').value
     };
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(() => null);
+      const res = await Api.post('/api/auth/login', payload);
       if (!res.ok) {
-        showAlert(extractErrorMessage(data, 'DNI o contraseña inválidos'), 'error');
+        showAlert(extractErrorMessage(res.data, 'DNI o contraseña inválidos'), 'error');
         return;
       }
-      localStorage.setItem(TOKEN_KEY, data.token);
+      Api.setToken(res.data.token);
       loginForm.reset();
-      renderProfile(data.patient);
+      renderProfile(res.data.patient);
       showAlert('Sesión iniciada correctamente.', 'success');
     } catch {
       showAlert('Error de conexión con el servidor', 'error');
@@ -109,28 +97,19 @@
   gmailForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearAlert();
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
+    if (!Api.isLoggedIn()) {
       showAlert('Sesión expirada. Volvé a iniciar sesión.', 'error');
       return;
     }
     const email = document.getElementById('gmail-input').value.trim();
     try {
-      const res = await fetch('/api/patients/me/recovery-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({ email })
-      });
-      const data = await res.json().catch(() => null);
+      const res = await Api.post('/api/patients/me/recovery-email', { email });
       if (!res.ok) {
-        showAlert(extractErrorMessage(data, 'No se pudo vincular el Gmail'), 'error');
+        showAlert(extractErrorMessage(res.data, 'No se pudo vincular el Gmail'), 'error');
         return;
       }
       gmailForm.reset();
-      renderProfile(data);
+      renderProfile(res.data);
       showAlert('Gmail de recuperación vinculado correctamente.', 'success');
     } catch {
       showAlert('Error de conexión con el servidor', 'error');
@@ -138,24 +117,20 @@
   });
 
   logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem(TOKEN_KEY);
+    Api.clearToken();
     profileSection.classList.add('hidden');
     authSection.classList.remove('hidden');
     switchTab('login');
   });
 
   (async function restoreSession() {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return;
+    if (!Api.isLoggedIn()) return;
     try {
-      const res = await fetch('/api/patients/me', {
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
+      const res = await Api.get('/api/patients/me');
       if (res.ok) {
-        const patient = await res.json();
-        renderProfile(patient);
+        renderProfile(res.data);
       } else {
-        localStorage.removeItem(TOKEN_KEY);
+        Api.clearToken();
       }
     } catch {
       // Ignorar si el backend no está disponible al cargar

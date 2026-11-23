@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sacar Turno — Consultorio Odontológico</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="nav-brand" href="/index.html">🦷 Consultorio Odontológico</a>
+      <ul class="nav-links">
+        <li><a class="nav-link" href="/index.html">Inicio</a></li>
+        <li><a class="nav-link active" href="/reservar.html">Sacar Turno</a></li>
+        <li><a class="nav-link" href="/mis-turnos.html">Mis Turnos</a></li>
+        <li><a class="nav-link nav-account" id="nav-account" href="/login.html">Iniciar sesión</a></li>
+        <li><button type="button" id="nav-logout" class="nav-logout hidden">Cerrar Sesión</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1 class="page-title">Sacar Turno</h1>
+      <p class="subtitle">Elegí profesional, prestación y fecha para ver los horarios libres. Los turnos se confirman al seleccionar una franja.</p>
+
+      <div id="reserva-alert" class="alert"></div>
+
+      <section class="card">
+        <h3>Datos de la reserva</h3>
+        <form id="reserva-form">
+          <fieldset>
+            <legend>Selección</legend>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profesional">Profesional</label>
+                <select id="profesional" name="profesional" required>
+                  <option value="">Seleccioná un profesional</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sillon">Sillón / Box</label>
+                <select id="sillon" name="sillon">
+                  <option value="">Cualquiera disponible</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="prestacion">Prestación</label>
+                <select id="prestacion" name="prestacion" required>
+                  <option value="">Seleccioná una prestación</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input id="fecha" name="fecha" type="date" required>
+                <p class="form-hint">No se pueden elegir fechas pasadas.</p>
+              </div>
+            </div>
+            <button type="button" id="buscar-franjas" class="btn">Buscar horarios disponibles</button>
+          </fieldset>
+        </form>
+      </section>
+
+      <section class="card section-gap">
+        <h3>Horarios disponibles</h3>
+        <div id="franjas">
+          <div class="empty-state">
+            <strong>Sin horarios para mostrar todavía</strong>
+            Completá los datos de la reserva y presioná "Buscar horarios disponibles".
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Consultorio Odontológico &copy; 2026 — Trabajo Global Integrador — UTN FRM</p>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/nav.js"></script>
+</body>
+</html>

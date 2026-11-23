@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Turnos — Consultorio Odontológico</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="nav-brand" href="/index.html">🦷 Consultorio Odontológico</a>
+      <ul class="nav-links">
+        <li><a class="nav-link" href="/index.html">Inicio</a></li>
+        <li><a class="nav-link" href="/reservar.html">Sacar Turno</a></li>
+        <li><a class="nav-link active" href="/mis-turnos.html">Mis Turnos</a></li>
+        <li><a class="nav-link nav-account" id="nav-account" href="/login.html">Iniciar sesión</a></li>
+        <li><button type="button" id="nav-logout" class="nav-logout hidden">Cerrar Sesión</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1 class="page-title">Mis Turnos</h1>
+      <p class="subtitle">Consultá tus turnos activos y cancelados, y cancelá uno si ya no podés asistir.</p>
+
+      <div id="turnos-alert" class="alert"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="turnos-list"></tbody>
+        </table>
+      </div>
+
+      <div id="empty-state" class="empty-state">
+        <strong>No tenés turnos reservados</strong>
+        Cuando reserves un turno, va a aparecer acá con su estado y la opción de cancelarlo.
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Consultorio Odontológico &copy; 2026 — Trabajo Global Integrador — UTN FRM</p>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/nav.js"></script>
+</body>
+</html>
