@@ -17,7 +17,7 @@
 - [x] 2.3 Spec: `specs/frontend-web/spec.md` con 7 requirements y 12 escenarios WHEN/THEN (feliz, borde, seguridad) — verificación: `openspec validate c-07-frontend-web --strict` sin errores.
 - [x] 2.4 Design: `design.md` con decisiones D1-D6 — verificación: archivo presente con todas las secciones.
 - [x] 2.5 Tasks: este archivo — verificación: `openspec status --change c-07-frontend-web` → todos los artefactos `done`.
-- [ ] 2.6 Subir la rama a `origin/feat/front-base` cuando Caste lo autorice (sin PR: la revisión es de Thiago) — verificación: `git ls-remote origin refs/heads/feat/front-base`.
+- [x] 2.6 Subir la rama a `origin/feat/front-base` cuando Caste lo autorice (sin PR: la revisión es de Thiago) — verificación: `git ls-remote origin refs/heads/feat/front-base`.
 
 ## 3. Base visual (apply)
 
