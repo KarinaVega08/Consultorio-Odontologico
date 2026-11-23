@@ -1,36 +1,39 @@
 # Dentalink
 
-- **Proveedor**: HealthAtom / Softland (Dentalink)
-- **País de origen**: Chile (presencia en +20 países de LATAM, incluida Argentina)
-- **URL oficial**: https://www.softwaredentalink.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://www.softwaredentalink.com/ (home oficial)
-  - https://www.softwaredentalink.com/planes (página de planes y solicitud de cotización)
+- **URL**: https://www.softwaredentalink.com/ (y https://www.softwaredentalink.com/planes)
+- **Fecha de investigación**: 2026-11-23
 
-## Segmento y modalidad
-- Segmento: odontólogos independientes, clínicas dentales y redes multicentro — **Comprobado** (`https://www.softwaredentalink.com/planes`).
-- Modalidad: SaaS 100% en la nube — **Comprobado** (`https://www.softwaredentalink.com/`).
+## Problema que resuelve
 
-## Gestión de agenda
-- Agenda por profesional, por sillón/box y por sucursal; gestión multicentro — **Afirmación comercial** (`https://www.softwaredentalink.com/`).
-- Duración variable de prestaciones / prevención de solapamientos / sobreturnos: **No evidenciado** en las páginas públicas consultadas (requiere demo).
+Centralizar la gestión clínica, administrativa y de agendamiento de consultorios y clínicas odontológicas en Latinoamérica, automatizando la atención de citas y el diagnóstico con herramientas de inteligencia artificial.
 
-## Turnos digitales
-- Agendamiento online 24/7 con enlace integrado a web/redes — **Afirmación comercial**.
-- Contact Center IA (atención automática de mensajes/llamadas para agendar turnos, con promoción para consultorios unipersonales) — **Comprobado** (anuncio en `https://www.softwaredentalink.com/`).
+## Usuarios objetivo
 
-## Automatización y gestión odontológica
-- Recordatorios automáticos por WhatsApp/SMS — **Afirmación comercial**.
-- Historia clínica digital, odontograma, presupuestos, radiografías y *Clinical Copilot* (asistencia con IA sobre radiografías) — **Comprobado** (mención destacada en home).
+Odontólogos independientes (un solo profesional), clínicas dentales en crecimiento y redes multicentro en +20 países de LATAM (incluida Argentina).
 
-## Administración, integraciones y seguridad
-- Caja, comisiones de odontólogos, inventario, reportes, soporte multicentro — **Afirmación comercial**.
-- Normativa argentina específica (Ley 25.326 / ARCA): **No evidenciado**.
+## Features detectadas
 
-## Modelo comercial
-- Planes Esencial, Pro, Titanium y complementos IA — **Comprobado** (nombres y formulario de cotización en `/planes`).
-- Precios públicos: **No evidenciado** (se cotiza por país y tamaño mediante formulario/demo).
+- Agenda por profesional, por sillón/gabinete y por sucursal; gestión multicentro — **Afirmación comercial**
+- Agendamiento online 24/7 y confirmaciones automáticas de citas — **Comprobado**
+- Contact Center IA (atiende WhatsApp y llamadas para agendar turnos) — **Comprobado**
+- Clinical Copilot (IA sobre radiografías hacia el plan de tratamiento), historia clínica digital, odontograma, presupuestos y firma electrónica — **Comprobado**
+- Control de pagos, caja, gastos, inventario, comisiones, obras sociales/prepagas (en `/ar`) y encuestas NPS — **Comprobado** en flujo/planes
+- Prevención estricta de solapamientos y normativa Ley 25.326: **No evidenciado**
 
-## Evidencia de adopción
-- Auto-declarado en home: "+16 años", "+20 países", "+15.000 clínicas", "+100K profesionales" (clínicas citadas: Norden, Clínica Everest, Sanasalud, Clínica Alpes).
+## Pricing
+
+- **Planes Esencial, Pro y Titanium**: (no publicado) — en `/planes` se solicita cotización o demo gratis según país y N° de odontólogos — **Comprobado**
+- **Contact Center IA** (complemento): promoción publicada en portada de `USD 50/mes` (1 profesional, hasta 80 conversaciones) — **Comprobado**
+- **Promociones** (`/promociones` Black Friday): referencias desde `USD 35/mes` (Esencial/Pro promo) hasta `USD 75/mes` normal (Titanium) — **Comprobado**
+
+## Posicionamiento
+
+"Dentalink el Software Dental líder en Latinoamérica" — "+16 años, +20 países, +15.000 clínicas, +100K profesionales" (cifras auto-declaradas en portada).
+
+## Diferenciadores
+
+Asistente de IA sobre radiografías (*Clinical Copilot*), Contact Center IA por WhatsApp y llamadas, y fuerte presencia en redes multicentro de LATAM.
+
+## Notas del investigador
+
+Verificado en navegador el 2026-11-23: la tabla `#comparar-planes` de `/planes` no muestra tarifas fijas, pero la home y `/promociones` sí publican precios de referencia en USD para Contact Center IA y promociones temporales.

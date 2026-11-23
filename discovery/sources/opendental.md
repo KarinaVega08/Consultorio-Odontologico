@@ -1,23 +1,36 @@
 # Open Dental
 
-- **Proveedor**: Open Dental Software Inc.
-- **País de origen**: Estados Unidos
-- **URL oficial**: https://www.opendental.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://www.opendental.com/manual/appointments.html (manual técnico oficial)
-  - https://www.opendental.com/site/fees.html (página pública oficial de tarifas)
+- **URL**: https://www.opendental.com/ (y https://www.opendental.com/manual/appointments.html, https://www.opendental.com/site/fees.html)
+- **Fecha de investigación**: 2026-11-20
 
-## Segmento y modalidad
-- Segmento: consultorios dentales independientes, clínicas multi-profesional y organizaciones multi-sede — **Comprobado** (`https://www.opendental.com/site/fees.html`).
-- Modalidad: software open source auto-alojado (self-hosted local o servidor propio) con opción Open Dental Cloud — **Comprobado** (`https://www.opendental.com/site/fees.html`).
+## Problema que resuelve
 
-## Gestión de agenda (documentación verificada)
-- Módulo *Appointments* con vistas por proveedor y por sillón/operatorio, bloques personalizables (*blockouts*), *Pinboard* para programar desde planes de tratamiento, listas de seguimiento (*Recall*, *ASAP*, *Broken*) — **Comprobado** (`https://www.opendental.com/manual/appointments.html`).
+Proveer un sistema de gestión odontológica completo, altamente configurable y de código abierto (auto-alojado o en la nube) con control estricto de agenda por profesional y sillón/operatorio, planes de tratamiento y tarifas.
 
-## Turnos digitales y automatización
-- *Web Sched* (reserva online para pacientes nuevos y existentes), *eReminders* y *eConfirmations* (recordatorios y confirmaciones automáticas por SMS/email) como eServices adicionales — **Comprobado** (`https://www.opendental.com/site/fees.html`).
+## Usuarios objetivo
 
-## Modelo comercial (transparente)
-- **Tarifa inicial (EE.UU.)**: `USD 199/mes` por ubicación (contrato de 12 meses, hasta 3 profesionales; luego baja a tarifa reducida `USD 149/mes` tras el mes 13). Incluye software, actualizaciones y soporte técnico por teléfono/chat/email. — **Comprobado** (`https://www.opendental.com/site/fees.html`).
-- Sin adaptación fiscal/normativa para Argentina (ARCA/Ley 25.326): **No evidenciado**.
+Consultorios dentales independientes, clínicas multi-profesional y redes multi-sede (EE. UU. y uso internacional).
+
+## Features detectadas
+
+- Módulo *Appointments* con vistas diarias/semanales por proveedor y por sillón/operatorio (*Operatory*) — **Comprobado en manual oficial** (`https://www.opendental.com/manual/appointments.html`)
+- Bloqueos horarios personalizables (*Blockouts*), *Pinboard* para citas desde plan de tratamiento y listas *Recall*, *ASAP* y *Broken* — **Comprobado en manual oficial**
+- *Web Sched* (reserva online para pacientes nuevos y existentes), *eReminders* y *eConfirmations* (SMS y email) — **Comprobado** (`https://www.opendental.com/site/fees.html`)
+- Odontograma, planes de tratamiento, *fee schedules* configurables y permisos granulares de seguridad — **Comprobado**
+- Adaptación fiscal o normativa argentina (ARCA / Ley 25.326): **No evidenciado**
+
+## Pricing
+
+- **Licencia y soporte EE. UU.**: `USD 199/mes` por ubicación durante los primeros 12 meses (hasta 3 profesionales), luego tarifa reducida de `USD 149/mes` a partir del mes 13; self-hosted o Open Dental Cloud opcional — **Comprobado** (`https://www.opendental.com/site/fees.html`)
+
+## Posicionamiento
+
+Software dental open source con documentación técnica pública por versión y precios transparentes sin costos ocultos.
+
+## Diferenciadores
+
+Manual técnico público completo que detalla exactamente cómo modela sillones (*operatories*), *blockouts* horarios, estados de confirmación y listas *ASAP/Recall*.
+
+## Notas del investigador
+
+Único competidor relevado con manual operativo público de agenda por sillón y lista de precios transparente publicada en detalle. Verificado manualmente además por Thiago el 2026-11-22.

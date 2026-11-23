@@ -1,23 +1,36 @@
 # Nubimed
 
-- **Proveedor**: Nubimed
-- **País de origen**: España
-- **URL oficial**: https://www.nubimed.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://www.nubimed.com/software-clinica-dental/ (página específica dental)
-  - https://www.nubimed.com/precios/ (página oficial de precios)
+- **URL**: https://www.nubimed.com/software-clinica-dental/ (y https://www.nubimed.com/precios/)
+- **Fecha de investigación**: 2026-11-20
 
-## Segmento y modalidad
-- Segmento: clínicas médicas y específicamente clínicas dentales — **Comprobado** (`https://www.nubimed.com/software-clinica-dental/`).
-- Modalidad: SaaS en la nube + App Nubimed — **Comprobado**.
+## Problema que resuelve
 
-## Gestión de agenda, turnos digitales y automatización
-- Agenda clínica dental multi-profesional con vista simultánea, software de citas médicas, sala de espera e integración con WhatsApp y recordatorios — **Comprobado** (`https://www.nubimed.com/software-clinica-dental/`).
+Gestionar en la nube clínicas dentales y médicas conectando agenda multi-profesional simultánea, odontograma y periodontograma digital, sala de espera, facturación, inventario y mutuas.
 
-## Gestión odontológica y administración
-- Odontograma digital, periodontograma dental, historia clínica, firma digital, contabilidad/facturación, inventario médico y gestión de mutuas — **Comprobado** (`https://www.nubimed.com/software-clinica-dental/`).
-- Normativa argentina (ARCA / obras sociales AR): **No evidenciado**.
+## Usuarios objetivo
 
-## Modelo comercial
-- Prueba sin compromiso ("Pruébalo"); planes publicados en `/precios/` (referencias de terceros reportan Lite ~27,40 €/mes y Premium ~50,10 €/mes + IVA, con SMS y almacenamiento extra por consumo).
+Clínicas dentales y centros médicos multi-especialidad (principalmente España).
+
+## Features detectadas
+
+- Agenda clínica dental multi-profesional con vista simultánea y sala de espera — **Comprobado** (`https://www.nubimed.com/software-clinica-dental/`)
+- Cita online, integración con WhatsApp y recordatorios automáticos — **Comprobado**
+- Odontograma digital, periodontograma dental, historia clínica y firma digital — **Comprobado**
+- Contabilidad, facturación, inventario médico, gestión de mutuas y App Nubimed — **Comprobado**
+- Adaptación normativa argentina (ARCA / obras sociales AR): **No evidenciado**
+
+## Pricing
+
+- Prueba sin compromiso ("Pruébalo") y página `/precios/` activa sin tarifas numéricas estáticas visibles en el extracto; referencias externas mencionan planes desde `27,40 €/mes` (Lite) y `50,10 €/mes` (Premium).
+
+## Posicionamiento
+
+"Software para Clínica Dental" — programa de gestión dental 100% en la nube con odontograma y periodontograma nativos.
+
+## Diferenciadores
+
+Módulo dental específico con odontograma y periodontograma completos, gestión de sala de espera y mutuas integradas.
+
+## Notas del investigador
+
+Se consultaron `/software-clinica-dental/` y `/precios/` el 2026-11-20.

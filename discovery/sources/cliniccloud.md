@@ -1,27 +1,37 @@
 # Clinic Cloud
 
-- **Proveedor**: Doctoralia España SL (Clinic Cloud)
-- **País de origen**: España (uso reportado en España y LATAM)
-- **URL oficial**: https://clinic-cloud.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://clinic-cloud.com/ (home oficial)
+- **URL**: https://clinic-cloud.com/
+- **Fecha de investigación**: 2026-11-20
 
-## Segmento y modalidad
-- Segmento: clínicas médicas, dentales y de estética (desde consultas pequeñas hasta multi-sede) — **Comprobado** (`https://clinic-cloud.com/`).
-- Modalidad: SaaS 100% en la nube — **Comprobado**.
+## Problema que resuelve
 
-## Gestión de agenda, turnos digitales y automatización
-- Agenda inteligente multi-profesional y multi-sede — **Comprobado** (`https://clinic-cloud.com/`).
-- Comunicaciones por WhatsApp, SMS y email con recordatorios y confirmaciones automáticas — **Comprobado** (`https://clinic-cloud.com/`).
-- Reserva online para pacientes / control de estados de cita: **Afirmación comercial** (referencias secundarias; `/precios/` devolvió 404).
+Unificar en la nube la actividad de clínicas médicas, dentales y de estética: agenda inteligente multi-profesional, comunicaciones automatizadas, historial clínico asistido por IA y facturación fiscal.
 
-## Gestión clínica, administración y seguridad
-- Historial clínico con asistente de IA, facturación (facturas, bonos, mutuas, compatible con Verifactu/TicketBAI en España) y firma digital de consentimientos — **Comprobado** (`https://clinic-cloud.com/`).
-- Adaptación a normativa argentina (Ley 25.326 / ARCA): **No evidenciado**.
+## Usuarios objetivo
 
-## Modelo comercial
-- Prueba gratis / solicitud de demo ("50% de descuento por tiempo limitado"); `/precios/` devolvió 404 el 2026-11-20, por lo que **tarifas exactas en sitio oficial: No evidenciado** (referencias de terceros mencionan cobro por cantidad de agendas).
+Clínicas médicas, dentales y de estética en España y Latinoamérica (desde consultas individuales hasta centros multi-sede).
 
-## Evidencia de adopción
-- Auto-declarado en home: "+12.000 doctores nos avalan".
+## Features detectadas
+
+- Agenda inteligente multi-profesional y multi-sede en tiempo real — **Comprobado** (`https://clinic-cloud.com/`)
+- Comunicaciones por WhatsApp, SMS y email con recordatorios y confirmaciones automáticas — **Comprobado**
+- Historial clínico con asistente de IA y firma digital de consentimientos — **Comprobado**
+- Facturación (facturas, bonos, mutuas, compatible con Verifactu y TicketBAI en España) — **Comprobado**
+- Reserva online para pacientes: **Afirmación comercial** (referencias secundarias)
+- Adaptación normativa argentina (Ley 25.326 / ARCA): **No evidenciado**
+
+## Pricing
+
+- (no publicado en URL directa) — ofrece prueba gratis / solicitud de demo ("50% de descuento por tiempo limitado"); la subruta `/precios/` devolvió `404` el 2026-11-20.
+
+## Posicionamiento
+
+"Software clínico todo-en-uno" (Doctoralia España SL) — "+12.000 doctores nos avalan | Compatible con VERIFACTU" (auto-declarado en home).
+
+## Diferenciadores
+
+Asistente de IA para documentar historias clínicas, cumplimiento fiscal español (Verifactu/TicketBAI) y respaldo del grupo Doctoralia.
+
+## Notas del investigador
+
+La página `/precios/` devolvió 404 el 2026-11-20; los datos de funcionalidades provienen de la portada oficial.
