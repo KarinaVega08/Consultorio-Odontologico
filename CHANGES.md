@@ -150,7 +150,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
   - `knowledge-base/05_reglas_de_negocio.md` §RN-TU-05
 
 ### [C-04] `disponibilidad-turnos`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**:
   - `GET /api/availability` — consulta de horarios disponibles para un profesional, sillón/box, fecha y prestación.
   - Cálculo de franjas libres considerando: horarios de atención del profesional, bloqueos (profesional y sillón), turnos existentes, duración de la prestación.

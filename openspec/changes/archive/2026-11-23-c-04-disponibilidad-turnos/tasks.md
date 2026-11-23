@@ -44,10 +44,10 @@
 
 - [ ] **E1.** Merge a `main` cuando `C-03` (Kari) esté lista, conectando los repositorios reales si se usaron interfaces.
 - [ ] **E2.** Avisar a **Caste** que `C-04` está disponible para su `C-05`.
-- [ ] **E3.** Archivar el change (`/opsx:archive C-04-disponibilidad-turnos`) una vez mergeado.
+- [x] **E3.** Archivar el change (`/opsx:archive C-04-disponibilidad-turnos`) una vez mergeado.
 - [x] **E4.** Commits propios con mensajes claros (`feat(c04-...): ...`).
 
-> **Estado al cierre de la sesión:** C-03 ya está integrado en la rama y sus repositorios reales están conectados en `AvailabilityService`. Quedan pendientes de acción humana: el merge a `main` (E1), el aviso directo a Caste (E2 — handoff documentado en `handoff-c05.md`) y el archive (E3, después del merge).
+> **Estado al cierre de la sesión:** C-03 ya está integrado en la rama y sus repositorios reales están conectados en `AvailabilityService`. E3 (archive, 2026-11-23) completado en la rama `feat/c04-disponibilidad-turnos`; no se hizo push ni merge a `main`. Quedan pendientes de acción humana: el merge a `main` (E1) y el aviso directo a Caste (E2 — handoff documentado en `handoff-c05.md`).
 
 ## Fase F — Evidencia para la defensa
 
