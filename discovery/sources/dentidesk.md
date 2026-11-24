@@ -1,27 +1,37 @@
 # Dentidesk
 
-- **Proveedor**: Dentidesk
-- **País de origen**: Chile (operación en LATAM)
-- **URL oficial**: https://www.dentidesk.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://www.dentidesk.com/ (home oficial)
+- **URL**: https://www.dentidesk.com/
+- **Fecha de investigación**: 2026-11-20
 
-## Segmento y modalidad
-- Segmento: clínicas dentales, consultorios y universidades odontológicas — **Comprobado** (`https://www.dentidesk.com/`).
-- Modalidad: SaaS en la nube + app móvil complementaria — **Comprobado**.
+## Problema que resuelve
 
-## Gestión de agenda y turnos digitales
-- Agenda online e interactiva, multisucursal, con widget de reserva online para web/redes — **Afirmación comercial** (`https://www.dentidesk.com/`).
-- Prevención de solapamientos / múltiples sillones / duración variable de prestaciones: **No evidenciado** en la home pública.
+Ordenar la operación clínica y administrativa de clínicas dentales y universidades en la nube, conectando agenda, fichas clínicas digitales, consentimientos informados y facturación.
 
-## Automatización y gestión odontológica
-- Recordatorios automáticos (SMS / email) — **Afirmación comercial**.
-- Fichas clínicas digitales, odontograma, periodontograma, firma digital de consentimientos informados — **Comprobado** (destacado en home).
+## Usuarios objetivo
 
-## Administración, integraciones y seguridad
-- Facturación electrónica integrada con Alegra (mencionada para República Dominicana / DGII) y adaptación a nueva Ley de Protección de Datos de Chile — **Comprobado** (`https://www.dentidesk.com/`).
-- Adaptación a normativa argentina (ARCA / Ley 25.326): **No evidenciado**.
+Clínicas dentales, consultorios odontológicos y universidades con carreras de odontología en Latinoamérica.
 
-## Modelo comercial
-- Demo gratis bajo solicitud ("Solicita tu demo gratis"); **precios públicos: No evidenciado** en la home oficial (`https://www.dentidesk.com/`).
+## Features detectadas
+
+- Agenda online interactiva y multisucursal con widget de reserva online para web/redes — **Afirmación comercial**
+- Fichas clínicas digitales con odontograma, periodontograma y especialidades — **Comprobado**
+- Firma digital de consentimientos informados — **Comprobado** (destacado en portada)
+- Recordatorios automáticos por SMS y correo electrónico — **Afirmación comercial**
+- Facturación electrónica integrada con Alegra (mencionada para República Dominicana / DGII) y acceso móvil — **Comprobado**
+- Múltiples sillones/boxes, prevención de solapamientos y normativa argentina (ARCA / Ley 25.326): **No evidenciado**
+
+## Pricing
+
+- (no publicado) — ofrece "Solicita tu demo gratis" en `https://www.dentidesk.com/`; sin tarifas públicas visibles en la home oficial.
+
+## Posicionamiento
+
+"DENTIDESK | El software dental número 1 en Latino América" — "El software que ordena tu clínica dental", con foco en seguridad de datos (Ley de Protección de Datos en Chile) y soporte humano.
+
+## Diferenciadores
+
+Firma digital de consentimientos informados, módulo específico de acceso para universidades y adecuación explícita a protección de datos en Chile.
+
+## Notas del investigador
+
+La subruta `/caracteristicas/` devolvió 404 el 2026-11-20; toda la evidencia directa proviene de la portada oficial.

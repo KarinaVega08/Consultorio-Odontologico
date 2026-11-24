@@ -1,24 +1,37 @@
 # DriCloud
 
-- **Proveedor**: DriCloud
-- **País de origen**: España
-- **URL oficial**: https://dricloud.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://dricloud.com/ (home oficial)
-  - https://dricloud.com/precios/ (página oficial de planes y comparativa)
+- **URL**: https://dricloud.com/ (y https://dricloud.com/precios/)
+- **Fecha de investigación**: 2026-11-20
 
-## Segmento y modalidad
-- Segmento: consultas médicas independientes, clínicas y centros con múltiples gabinetes (incluye odontología) — **Comprobado** (`https://dricloud.com/`).
-- Modalidad: SaaS en la nube sobre infraestructura Azure — **Comprobado** (`https://dricloud.com/precios/`).
+## Problema que resuelve
 
-## Gestión de agenda, turnos digitales y automatización
-- Agenda clínica con citas por colores, multi-consulta y tiempo real — **Comprobado** (`https://dricloud.com/`).
-- Cita médica online 24 horas desde web y portal del paciente (documentos, pagos y citas) — **Comprobado** (`https://dricloud.com/`).
-- Lista de espera automatizada ("los huecos libres se llenan solos") — **Comprobado** (`https://dricloud.com/`).
-- Recordatorios automáticos y chatbot web con IA — **Comprobado** (`https://dricloud.com/`).
+Digitalizar la agenda clínica multi-consulta, la cita médica online 24 horas y la historia clínica asistida por IA en la nube (Azure), reduciendo huecos libres mediante lista de espera automática.
 
-## Gestión clínica, seguridad y modelo comercial
-- Historia clínica con IA ("Escucha Clínica"), firma digital RGPD, seguridad Azure con cifrado, soporte 24/7 con formación gratuita — **Comprobado** (`https://dricloud.com/precios/`).
-- Adaptación normativa argentina (ARCA/Ley 25.326): **No evidenciado**.
-- Modelo comercial: tarifa plana por tamaño de clínica (desde ~42 €/mes en referencias anuales); demo online disponible.
+## Usuarios objetivo
+
+Consultas médicas independientes, clínicas odontológicas y centros con múltiples gabinetes o especialidades (principalmente España).
+
+## Features detectadas
+
+- Agenda clínica con citas por colores, multi-consulta y en tiempo real — **Comprobado** (`https://dricloud.com/`)
+- Cita médica online 24 horas desde web y portal del paciente (documentos, pagos y citas) — **Comprobado**
+- Lista de espera automática ("los huecos libres se llenan solos, sin llamar") — **Comprobado**
+- Recordatorios automáticos y chatbot web con IA — **Comprobado**
+- Historia clínica con IA ("Escucha Clínica"), firma digital RGPD, seguridad en Azure con cifrado y soporte 24/7 — **Comprobado** (`https://dricloud.com/precios/`)
+- Adaptación normativa argentina (ARCA / Ley 25.326): **No evidenciado**
+
+## Pricing
+
+- Demo online gratuita disponible en `https://dricloud.com/precios/`; referencias secundarias reportan tarifa plana desde `~42 €/mes` (no detallada numéricamente en el extracto estático).
+
+## Posicionamiento
+
+"Software médico en la nube para clínicas y consultas" — plataforma rápida en Azure con IA clínica integrada y soporte 24/7 sin coste extra.
+
+## Diferenciadores
+
+Lista de espera automatizada que reasigna cancelaciones sin intervención manual, infraestructura cifrada en Azure y portal completo del paciente.
+
+## Notas del investigador
+
+Se verificaron tanto la home como `/precios/` el 2026-11-20.

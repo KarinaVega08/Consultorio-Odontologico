@@ -1,22 +1,36 @@
 # Nimbo
 
-- **Proveedor**: Nimbo (Ecaresoft)
-- **País de origen**: México (sitios locales para Argentina, México, Ecuador, Perú)
-- **URL oficial**: https://www.nimbo-x.com/
-- **Fecha de consulta**: 2026-11-20
-- **URLs consultadas**:
-  - https://www.nimbo-x.com/ (home oficial)
+- **URL**: https://www.nimbo-x.com/
+- **Fecha de investigación**: 2026-11-20
 
-## Segmento y modalidad
-- Segmento: consultorios particulares, clínicas ambulatorias, redes de consultorios; incluye vertical específica para "Dentistas" — **Comprobado** (`https://www.nimbo-x.com/`).
-- Modalidad: SaaS 100% en la nube — **Comprobado**.
+## Problema que resuelve
 
-## Gestión de agenda, turnos y automatización
-- Agenda médica colaborativa, portal del paciente, recordatorios automáticos (WhatsApp, SMS, email) y encuestas de satisfacción — **Comprobado** (listado en menú de producto de `nimbo-x.com`).
-- Gestión multi-sillón/box o duración variable de prestaciones: **No evidenciado**.
+Centralizar en la nube la gestión clínica y administrativa de consultorios particulares y clínicas ambulatorias (expediente clínico electrónico, agenda médica, facturación, inventarios y reputación digital).
 
-## Gestión odontológica y administración
-- Expediente clínico electrónico, recetas, notas inteligentes, facturación, inventarios y reportes; mención de vertical Dentistas — **Comprobado** en home (`nimbo-x.com`); detalle de odontograma sin demostrar públicamente (**Afirmación comercial** en referencias secundarias).
+## Usuarios objetivo
 
-## Modelo comercial
-- Creación de cuenta / llamada comercial; **precios públicos en la home: No evidenciado** (esquema modular cotizado por organización/profesional).
+Consultorios particulares, clínicas ambulatorias, torres de consultorios y redes de salud en LATAM (México, Argentina, Ecuador, Perú); incluye vertical específica para "Dentistas".
+
+## Features detectadas
+
+- Agenda médica colaborativa y portal del paciente — **Comprobado** (menú de producto en `nimbo-x.com`)
+- Recordatorios automáticos por WhatsApp, SMS y correo electrónico, más encuestas de satisfacción — **Comprobado**
+- Expediente clínico electrónico, recetas médicas, notas inteligentes, facturación, inventarios y reportes — **Comprobado**
+- Mención de especialidad "Dentistas"; detalle de odontograma sin demostración pública (**Afirmación comercial** en referencias)
+- Gestión multi-sillón/box y prevención de solapamientos: **No evidenciado**
+
+## Pricing
+
+- (no publicado) — creación de cuenta / llamada comercial; esquema modular cotizado por organización y profesional.
+
+## Posicionamiento
+
+"La solución todo-en-uno para clínicas" — ecosistema modular en la nube (Clinical, CRM, ERP) adaptado a múltiples países de Latinoamérica, incluida Argentina.
+
+## Diferenciadores
+
+Vertical dedicada por especialidad (incluye Dentistas) y por país (Argentina, México, Ecuador, Perú), con portal del paciente y encuestas de satisfacción integradas.
+
+## Notas del investigador
+
+Las tarifas exactas no están publicadas en la home oficial consultada el 2026-11-20.
