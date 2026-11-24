@@ -87,6 +87,10 @@ public class DemoDataSeeder implements ApplicationRunner {
         sillon.setNombre("Sillón 1");
         sillonBoxRepository.save(sillon);
 
+        SillonBox sillon2 = new SillonBox();
+        sillon2.setNombre("Sillón 2");
+        sillonBoxRepository.save(sillon2);
+
         Prestacion consulta = crearPrestacion("Consulta general", 30, "Control y diagnóstico inicial");
         Prestacion limpieza = crearPrestacion("Limpieza dental", 45, "Higiene profesional");
         Prestacion revision = crearPrestacion("Revisión completa", 60, "Evaluación integral");
@@ -117,7 +121,7 @@ public class DemoDataSeeder implements ApplicationRunner {
         pacientes.add(crearPaciente("Bruno Martínez", "39777111", "bruno.martinez.test@gmail.com"));
 
         // 15 turnos ficticios en 4 estados (4 RESERVADO, 4 CONFIRMADO, 4 COMPLETADO, 3 CANCELADO).
-        // Se reparten entre días pasados y futuros sin solaparse (un solo sillón en la demo).
+        // Se reparten entre días pasados y futuros sin solaparse en el Sillón 1 (el Sillón 2 queda libre).
         crearTurno(sillon, pacientes.get(0), profesionales.get(0), consulta, diaHabil(-3), LocalTime.of(9, 0), EstadoTurno.COMPLETADO);
         crearTurno(sillon, pacientes.get(4), profesionales.get(3), revision, diaHabil(-3), LocalTime.of(10, 0), EstadoTurno.COMPLETADO);
         crearTurno(sillon, pacientes.get(1), profesionales.get(1), limpieza, diaHabil(-3), LocalTime.of(11, 0), EstadoTurno.COMPLETADO);
@@ -136,8 +140,8 @@ public class DemoDataSeeder implements ApplicationRunner {
 
         log.info("[DEMO] Datos ficticios cargados. Login: DNI {} / contraseña {}.", DNI_DEMO, PASSWORD_DEMO);
         log.info("[DEMO] 15 pacientes, 15 profesionales y 15 turnos ficticios (4 RESERVADO, 4 CONFIRMADO, 4 COMPLETADO, 3 CANCELADO).");
-        log.info("[DEMO] Sillón: {}, prestaciones: 3, turno demo: {} 09:30-10:00, bloqueo: {} 10:00-10:30.",
-                sillon.getNombre(), diaDemo, diaDemo);
+        log.info("[DEMO] 2 sillones: {} y {}, prestaciones: 3, turno demo: {} 09:30-10:00, bloqueo: {} 10:00-10:30.",
+                sillon.getNombre(), sillon2.getNombre(), diaDemo, diaDemo);
     }
 
     private Profesional crearProfesional(String nombreCompleto, String matricula, int tipoHorario) {
