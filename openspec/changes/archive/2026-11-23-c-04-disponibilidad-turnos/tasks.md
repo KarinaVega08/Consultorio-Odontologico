@@ -42,8 +42,8 @@
 
 ## Fase E — Integración y cierre
 
-- [ ] **E1.** Merge a `main` cuando `C-03` (Kari) esté lista, conectando los repositorios reales si se usaron interfaces.
-- [ ] **E2.** Avisar a **Caste** que `C-04` está disponible para su `C-05`.
+- [x] **E1.** Merge a `main` cuando `C-03` (Kari) esté lista, conectando los repositorios reales si se usaron interfaces.
+- [x] **E2.** Avisar a **Caste** que `C-04` está disponible para su `C-05`.
 - [x] **E3.** Archivar el change (`/opsx:archive C-04-disponibilidad-turnos`) una vez mergeado.
 - [x] **E4.** Commits propios con mensajes claros (`feat(c04-...): ...`).
 
