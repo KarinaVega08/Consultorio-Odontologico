@@ -79,4 +79,19 @@ public interface TurnoRepository extends JpaRepository<Turno, UUID> {
     List<Turno> findBySillonBoxIdAndFechaHoraInicioBetween(UUID sillonBoxId,
                                                            LocalDateTime desde,
                                                            LocalDateTime hasta);
+
+    /** Turnos candidatos a recordatorio: activos, no cancelados, con correo y en la ventana. */
+    @Query("""
+        select t from Turno t
+        where t.activo = true
+          and t.estado in (com.consultorio.domain.model.EstadoTurno.RESERVADO,
+                           com.consultorio.domain.model.EstadoTurno.CONFIRMADO)
+          and t.fechaHoraInicio >= :desde
+          and t.fechaHoraInicio <= :hasta
+          and t.paciente.emailRecuperacion is not null
+          and t.paciente.emailRecuperacion <> ''
+        order by t.fechaHoraInicio
+        """)
+    List<Turno> findRecordatoriosEnVentana(@Param("desde") LocalDateTime desde,
+                                          @Param("hasta") LocalDateTime hasta);
 }
