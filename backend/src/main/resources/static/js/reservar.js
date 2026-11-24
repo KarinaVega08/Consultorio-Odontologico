@@ -41,6 +41,28 @@
     return date.toLocaleDateString('es-AR') + ' ' + formatHour(iso);
   }
 
+  function selectedLabel(select) {
+    if (!select || select.selectedIndex <= 0) {
+      return '';
+    }
+    return select.options[select.selectedIndex].text;
+  }
+
+  function detalleTurno(inicio, finTexto, nombrePaciente) {
+    const cuando = formatDateTime(inicio) + (finTexto ? ' a ' + finTexto : '');
+    return 'Paciente: ' + (nombrePaciente || '') + '\n' +
+      'Profesional: ' + selectedLabel(profesionalSel) + '\n' +
+      'Prestación: ' + selectedLabel(prestacionSel) + '\n' +
+      'Sillón: ' + selectedLabel(sillonSel) + '\n' +
+      'Fecha y hora: ' + cuando;
+  }
+
+  function horaFinPrevista(inicio, minutos) {
+    const fin = new Date(inicio);
+    fin.setMinutes(fin.getMinutes() + minutos);
+    return formatHour(fin);
+  }
+
   function errorMessage(data, fallback) {
     if (data && data.fieldErrors) {
       return Object.values(data.fieldErrors).join('. ');
@@ -162,6 +184,26 @@
         return;
       }
 
+      let finPrevisto = '';
+      try {
+        const catalogo = await Catalog.load();
+        const prestacion = (catalogo.prestaciones || []).find(function (p) {
+          return p.id === prestacionSel.value;
+        });
+        if (prestacion && prestacion.duracionMinutos) {
+          finPrevisto = horaFinPrevista(inicio, prestacion.duracionMinutos);
+        }
+      } catch (error) {
+        // Sin catálogo no se puede estimar el fin; el confirm muestra solo el inicio.
+      }
+
+      if (!window.confirm('¿Deseás sacar el siguiente turno?\n\n' +
+          detalleTurno(inicio, finPrevisto, me.data.nombreCompleto) +
+          '\n\nApretá Aceptar para confirmar.')) {
+        showAlert('Reserva cancelada: no se creó ningún turno.', 'info');
+        return;
+      }
+
       const payload = {
         pacienteId: me.data.id,
         profesionalId: profesionalSel.value,
@@ -176,6 +218,9 @@
         return;
       }
 
+      window.alert('¡Turno reservado con éxito!\n\n' +
+        detalleTurno(res.data.fechaHoraInicio, formatHour(res.data.fechaHoraFin), me.data.nombreCompleto) +
+        '\n\nYa podés verlo en "Mis Turnos".');
       showAlert('Turno reservado para el ' + formatDateTime(inicio) + '. Ya podés verlo en "Mis Turnos".', 'success');
       await buscarFranjas();
     } catch (error) {
