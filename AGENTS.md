@@ -7,7 +7,7 @@
 | Backend | Java, Spring Boot 3, Gradle, JPA/Hibernate, API REST | Java 21, Spring Boot 3.x |
 | Backend - Base de datos (ejecución) | PostgreSQL | Local |
 | Backend - Base de datos (tests) | H2 en memoria | - |
-| Frontend | TypeScript Vanilla (servido estático) | - |
+| Frontend | HTML, CSS y JavaScript vanilla (servido estático) | - |
 | Email | SMTP / Gmail (desarrollo: Mailpit o mock SMTP) | - |
 | Despliegue | Entorno reproducible local, sin Docker obligatorio | - |
 

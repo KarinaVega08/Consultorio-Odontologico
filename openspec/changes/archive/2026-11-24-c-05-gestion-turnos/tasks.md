@@ -6,7 +6,7 @@
 
 ## 1. Coordinación y preparación (antes de codear)
 
-- [ ] 1.1 Responderle a **Mai** (su tarea A3) con el modelo de `Turno` del design D1/D3 (campos, ubicación `domain.model.Turno`, regla estricta) — verificación: respuesta enviada en el chat del equipo y confirmación de Mai.
+- [x] 1.1 Responderle a **Mai** (su tarea A3) con el modelo de `Turno` del design D1/D3 (campos, ubicación `domain.model.Turno`, regla estricta) — verificación: respuesta enviada en el chat del equipo y confirmación de Mai.
 - [x] 1.2 Avisar a **Thiago** que el apply requiere el merge de `C-02` (`Paciente`, `AuthenticatedUser`, filtro Bearer) — verificación: `git log` confirma que `d5d8a73 feat(c02-auth-pacientes)` es ancestro de esta rama.
 - [x] 1.3 Confirmar en verde la base antes de empezar — verificación: `./gradlew test` en `backend/` → `BUILD SUCCESSFUL`.
 
