@@ -15,6 +15,15 @@
   const franjasBox = document.getElementById('franjas');
   const alertBox = document.getElementById('reserva-alert');
 
+  const modal = document.getElementById('turno-modal');
+  const modalIcon = document.getElementById('modal-icon');
+  const modalTitle = document.getElementById('modal-title');
+  const modalSubtitle = document.getElementById('modal-subtitle');
+  const modalDetails = document.getElementById('modal-details');
+  const modalCancel = document.getElementById('modal-cancel');
+  const modalConfirm = document.getElementById('modal-confirm');
+  let modalConfig = null;
+
   function showAlert(message, type) {
     alertBox.textContent = message;
     alertBox.className = 'alert ' + (type || 'info');
@@ -50,17 +59,72 @@
 
   function detalleTurno(inicio, finTexto, nombrePaciente) {
     const cuando = formatDateTime(inicio) + (finTexto ? ' a ' + finTexto : '');
-    return 'Paciente: ' + (nombrePaciente || '') + '\n' +
-      'Profesional: ' + selectedLabel(profesionalSel) + '\n' +
-      'Prestación: ' + selectedLabel(prestacionSel) + '\n' +
-      'Sillón: ' + selectedLabel(sillonSel) + '\n' +
-      'Fecha y hora: ' + cuando;
+    return [
+      { label: 'Paciente', value: nombrePaciente || '' },
+      { label: 'Profesional', value: selectedLabel(profesionalSel) },
+      { label: 'Prestación', value: selectedLabel(prestacionSel) },
+      { label: 'Sillón', value: selectedLabel(sillonSel) },
+      { label: 'Fecha y hora', value: cuando }
+    ];
   }
 
   function horaFinPrevista(inicio, minutos) {
     const fin = new Date(inicio);
     fin.setMinutes(fin.getMinutes() + minutos);
     return formatHour(fin);
+  }
+
+  function abrirModal(config) {
+    modalConfig = config;
+    modalIcon.textContent = config.icon || '✦';
+    modalIcon.className = 'modal-icon ' + (config.tone || 'info');
+    modalTitle.textContent = config.title;
+    modalSubtitle.textContent = config.subtitle || '';
+    modalDetails.textContent = '';
+    (config.detalles || []).forEach(function (item) {
+      const dt = document.createElement('dt');
+      dt.textContent = item.label;
+      const dd = document.createElement('dd');
+      dd.textContent = item.value;
+      modalDetails.appendChild(dt);
+      modalDetails.appendChild(dd);
+    });
+    modalCancel.textContent = config.cancelText || 'Cancelar';
+    modalConfirm.textContent = config.confirmText || 'Confirmar';
+    modal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    modalConfirm.focus();
+  }
+
+  function cerrarModal(confirmado) {
+    if (modal.classList.contains('hidden')) {
+      return;
+    }
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    const config = modalConfig;
+    modalConfig = null;
+    if (confirmado && config && config.onConfirm) {
+      config.onConfirm();
+    } else if (!confirmado && config && config.onCancel) {
+      config.onCancel();
+    }
+  }
+
+  function pedirConfirmacion(detalles) {
+    return new Promise(function (resolve) {
+      abrirModal({
+        icon: '✦',
+        tone: 'info',
+        title: '¿Confirmar el turno?',
+        subtitle: 'Revisá los datos antes de reservar.',
+        detalles: detalles,
+        cancelText: 'Volver',
+        confirmText: 'Sí, reservar turno',
+        onConfirm: function () { resolve(true); },
+        onCancel: function () { resolve(false); }
+      });
+    });
   }
 
   function errorMessage(data, fallback) {
@@ -74,6 +138,15 @@
     buscarBtn.disabled = loading;
     buscarBtn.textContent = loading ? 'Buscando...' : 'Buscar horarios disponibles';
   }
+
+  modalCancel.addEventListener('click', function () { cerrarModal(false); });
+  modalConfirm.addEventListener('click', function () { cerrarModal(true); });
+  modal.querySelector('.modal-backdrop').addEventListener('click', function () { cerrarModal(false); });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      cerrarModal(false);
+    }
+  });
 
   async function init() {
     fechaInput.min = todayISO();
@@ -194,12 +267,13 @@
           finPrevisto = horaFinPrevista(inicio, prestacion.duracionMinutos);
         }
       } catch (error) {
-        // Sin catálogo no se puede estimar el fin; el confirm muestra solo el inicio.
+        // Sin catálogo no se puede estimar el fin; el modal muestra solo el inicio.
       }
 
-      if (!window.confirm('¿Deseás sacar el siguiente turno?\n\n' +
-          detalleTurno(inicio, finPrevisto, me.data.nombreCompleto) +
-          '\n\nApretá Aceptar para confirmar.')) {
+      const confirma = await pedirConfirmacion(
+        detalleTurno(inicio, finPrevisto, me.data.nombreCompleto)
+      );
+      if (!confirma) {
         showAlert('Reserva cancelada: no se creó ningún turno.', 'info');
         return;
       }
@@ -218,9 +292,16 @@
         return;
       }
 
-      window.alert('¡Turno reservado con éxito!\n\n' +
-        detalleTurno(res.data.fechaHoraInicio, formatHour(res.data.fechaHoraFin), me.data.nombreCompleto) +
-        '\n\nYa podés verlo en "Mis Turnos".');
+      abrirModal({
+        icon: '✓',
+        tone: 'success',
+        title: '¡Turno reservado con éxito!',
+        subtitle: 'Ya podés verlo en "Mis Turnos".',
+        detalles: detalleTurno(res.data.fechaHoraInicio, formatHour(res.data.fechaHoraFin), me.data.nombreCompleto),
+        cancelText: 'Seguir reservando',
+        confirmText: 'Ver mis turnos',
+        onConfirm: function () { window.location.href = '/mis-turnos.html'; }
+      });
       showAlert('Turno reservado para el ' + formatDateTime(inicio) + '. Ya podés verlo en "Mis Turnos".', 'success');
       await buscarFranjas();
     } catch (error) {
