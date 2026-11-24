@@ -49,8 +49,22 @@
   </main>
 
   <footer class="site-footer">
-    <p>Consultorio Odontológico &copy; 2026 — Trabajo Global Integrador — UTN FRM</p>
+    <p>Consultorio Odontológico &copy; 2026 - Trabajo Global Integrador - UTN FRM</p>
   </footer>
+
+  <div id="turno-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div id="modal-icon" class="modal-icon info">✦</div>
+      <h2 id="modal-title" class="modal-title"></h2>
+      <p id="modal-subtitle" class="modal-subtitle"></p>
+      <dl id="modal-details" class="modal-details"></dl>
+      <div class="modal-actions">
+        <button type="button" id="modal-cancel" class="btn btn-secondary"></button>
+        <button type="button" id="modal-confirm" class="btn btn-danger"></button>
+      </div>
+    </div>
+  </div>
 
   <script src="/js/api.js"></script>
   <script src="/js/nav.js"></script>

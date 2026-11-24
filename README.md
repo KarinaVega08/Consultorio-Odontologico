@@ -99,10 +99,10 @@ cd backend
 ../gradlew bootRun --args='--spring.profiles.active=demo'
 ```
 
-Usuario de prueba: **DNI `99999999` / contraseña `demo1234`**.
-Se siembran: 1 profesional, 1 sillón, 3 prestaciones (30/45/60 min), horarios lun–vie
-09:00–12:00 y 14:00–17:00, un turno ocupado 09:30–10:00 y un bloqueo 10:00–10:30
-en el próximo día hábil.
+Hay **15 pacientes ficticios**, todos con contraseña `demo1234` (por ejemplo DNI `99999999` / Juan Pérez y DNI `30555123` / Romina Duarte, sin Gmail para probar la vinculación). El cartel del script lista los 15 DNIs.
+Se siembran: **15 profesionales** con horarios variados, **2 sillones**, 3 prestaciones (30/45/60 min), horarios lun-vie 09:00-12:00 y 14:00-17:00, **15 turnos** en los 4 estados, un turno ocupado 09:30-10:00 y un bloqueo 10:00-10:30 en el próximo día hábil (Sillón 1).
+
+> **Nota de despliegue:** `build.gradle` incluye H2 como `runtimeOnly` para que el perfil `demo` funcione sin PostgreSQL. Para un despliegue de producción, usar un perfil sin H2 y inyectar la conexión con `DB_URL`/`DB_USER`/`DB_PASSWORD` (nunca credenciales hardcodeadas).
 
 ## Puertos y páginas
 

@@ -72,11 +72,11 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | Fase | Change | Nombre | Responsable | Rama Git | Alcance asignado |
 |---|---|---|---|---|---|
 | **Fase 1** | **C-01** | `setup-base` | **Thiago** (Listo ✓) | `main` | Esqueleto base Java 21 + Spring Boot 3 + Gradle + PostgreSQL/H2, seguridad inicial, y control/revisión general |
-| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati + Thiago (Listo ✓)** | `feat/c02-registro-pacientes` | Registro y login con DNI, vinculación única con Gmail, recuperación y reset de contraseña, blanqueo presencial |
-| **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
+| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati + Thiago (Listo ✓)** | `feat/c02-registro-pacientes` (mergeada en `main`) | Registro y login con DNI, vinculación única con Gmail, recuperación y reset de contraseña, blanqueo presencial |
+| **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` (mergeada en `main`) | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
 | **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
 | **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste + Thiago (Listo ✓)** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
-| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste (Listo ✓)** | `feat/c06-notificaciones` | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
+| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste (Listo ✓)** | `feat/c06-notificaciones` (mergeada en `main`) | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
 | **Fase 5** (Frontend) | **C-07** | `frontend-web` | **Caste + Mai + Thiago (Listo ✓)** | `feat/front-base` → `feat/front-completo` | Frontend completo: Caste arma la base visual, maquetado y navegación; Mai finiquita la lógica interactiva (reserva, disponibilidad y gestión); Thiago unifica en `main` |
 
 > **Supervisión y control de calidad (Thiago):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.

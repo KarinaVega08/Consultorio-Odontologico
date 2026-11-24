@@ -61,8 +61,8 @@ public class DemoDataSeeder implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        if (profesionalRepository.count() > 0) {
-            log.info("[DEMO] Ya existen datos cargados; se omite el seed.");
+        if (pacienteRepository.existsByDni(DNI_DEMO)) {
+            log.info("[DEMO] Ya existen datos de la demo; se omite el seed.");
             return;
         }
 

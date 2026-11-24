@@ -1,6 +1,20 @@
 #!/usr/bin/env sh
 
 # Gradle wrapper script (delegado a instalación local de Gradle 8.7)
-GRADLE_CMD="${GRADLE_CMD:-$HOME/.gradle/wrapper/dists/gradle-8.7-bin/bhs2wmbdwecv87pi65oeuq5iu/gradle-8.7/bin/gradle}"
+# Portable: busca cualquier hash de caché del wrapper y, si no hay, usa gradle del PATH.
+if [ -n "$GRADLE_CMD" ]; then
+    exec "$GRADLE_CMD" "$@"
+fi
 
-exec "$GRADLE_CMD" "$@"
+for candidate in "$HOME"/.gradle/wrapper/dists/gradle-8.7-bin/*/gradle-8.7/bin/gradle; do
+    if [ -x "$candidate" ]; then
+        exec "$candidate" "$@"
+    fi
+done
+
+if command -v gradle >/dev/null 2>&1; then
+    exec gradle "$@"
+fi
+
+echo "Error: no se encontró Gradle 8.7. Instalalo o definí GRADLE_CMD con la ruta a gradle." >&2
+exit 1

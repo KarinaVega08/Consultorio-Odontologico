@@ -42,7 +42,7 @@
 
   function formatHour(iso) {
     const date = new Date(iso);
-    return date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
   }
 
   function formatDateTime(iso) {
@@ -292,6 +292,7 @@
         return;
       }
 
+      await buscarFranjas();
       abrirModal({
         icon: '✓',
         tone: 'success',
@@ -303,7 +304,6 @@
         onConfirm: function () { window.location.href = '/mis-turnos.html'; }
       });
       showAlert('Turno reservado para el ' + formatDateTime(inicio) + '. Ya podés verlo en "Mis Turnos".', 'success');
-      await buscarFranjas();
     } catch (error) {
       showAlert('Error de conexión con el backend', 'error');
     } finally {

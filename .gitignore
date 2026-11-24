@@ -4,6 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 
 # Java
+backend/bin/
+
 *.class
 *.jar
 !gradle/wrapper/gradle-wrapper.jar

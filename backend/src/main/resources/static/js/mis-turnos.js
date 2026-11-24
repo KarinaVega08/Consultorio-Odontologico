@@ -13,6 +13,15 @@
   const emptyState = document.getElementById('empty-state');
   const alertBox = document.getElementById('turnos-alert');
 
+  const modal = document.getElementById('turno-modal');
+  const modalIcon = document.getElementById('modal-icon');
+  const modalTitle = document.getElementById('modal-title');
+  const modalSubtitle = document.getElementById('modal-subtitle');
+  const modalDetails = document.getElementById('modal-details');
+  const modalCancel = document.getElementById('modal-cancel');
+  const modalConfirm = document.getElementById('modal-confirm');
+  let modalConfig = null;
+
   const nombres = {
     profesionales: {},
     prestaciones: {},
@@ -24,11 +33,61 @@
     alertBox.className = 'alert ' + (type || 'info');
   }
 
+  function formatHour(iso) {
+    return new Date(iso).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+  }
+
   function formatDateTime(iso) {
     const date = new Date(iso);
     return date.toLocaleDateString('es-AR') + ' ' +
-      date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
   }
+
+  function abrirModal(config) {
+    modalConfig = config;
+    modalIcon.textContent = config.icon || '✦';
+    modalIcon.className = 'modal-icon ' + (config.tone || 'info');
+    modalTitle.textContent = config.title;
+    modalSubtitle.textContent = config.subtitle || '';
+    modalDetails.textContent = '';
+    (config.detalles || []).forEach(function (item) {
+      const dt = document.createElement('dt');
+      dt.textContent = item.label;
+      const dd = document.createElement('dd');
+      dd.textContent = item.value;
+      modalDetails.appendChild(dt);
+      modalDetails.appendChild(dd);
+    });
+    modalCancel.textContent = config.cancelText || 'Volver';
+    modalConfirm.textContent = config.confirmText || 'Confirmar';
+    modal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    modalConfirm.focus();
+  }
+
+  function cerrarModal(confirmado) {
+    if (modal.classList.contains('hidden')) {
+      return;
+    }
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    const config = modalConfig;
+    modalConfig = null;
+    if (confirmado && config && config.onConfirm) {
+      config.onConfirm();
+    } else if (!confirmado && config && config.onCancel) {
+      config.onCancel();
+    }
+  }
+
+  modalCancel.addEventListener('click', function () { cerrarModal(false); });
+  modalConfirm.addEventListener('click', function () { cerrarModal(true); });
+  modal.querySelector('.modal-backdrop').addEventListener('click', function () { cerrarModal(false); });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      cerrarModal(false);
+    }
+  });
 
   async function cargarNombres() {
     try {
@@ -97,7 +156,7 @@
         } else {
           btn.textContent = 'Cancelar';
           btn.addEventListener('click', function () {
-            cancelar(turno.id);
+            cancelar(turno);
           });
         }
         tdAcciones.appendChild(btn);
@@ -120,12 +179,30 @@
     render(res.data || []);
   }
 
-  async function cancelar(id) {
-    if (!window.confirm('¿Confirmás la cancelación de este turno? El horario volverá a estar disponible.')) {
+  async function cancelar(turno) {
+    const acepta = await new Promise(function (resolve) {
+      abrirModal({
+        icon: '✦',
+        tone: 'info',
+        title: '¿Cancelar el turno?',
+        subtitle: 'El horario volverá a estar disponible para otras reservas.',
+        detalles: [
+          { label: 'Fecha y hora', value: formatDateTime(turno.fechaHoraInicio) + ' a ' + formatHour(turno.fechaHoraFin) },
+          { label: 'Profesional', value: nombres.profesionales[turno.profesionalId] || '' },
+          { label: 'Prestación', value: nombres.prestaciones[turno.prestacionId] || '' },
+          { label: 'Sillón', value: nombres.sillonesBoxes[turno.sillonBoxId] || '' }
+        ],
+        cancelText: 'Volver',
+        confirmText: 'Sí, cancelar turno',
+        onConfirm: function () { resolve(true); },
+        onCancel: function () { resolve(false); }
+      });
+    });
+    if (!acepta) {
       return;
     }
     try {
-      const res = await Api.delete('/api/appointments/' + id);
+      const res = await Api.delete('/api/appointments/' + turno.id);
       if (!res.ok) {
         showAlert((res.data && res.data.message) || 'No se pudo cancelar el turno', 'error');
         return;
