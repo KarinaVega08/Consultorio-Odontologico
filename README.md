@@ -5,7 +5,7 @@ Global Desarrollo de software 2026
 ## Stack
 
 - **Backend:** Java 21 + Spring Boot 3 + Gradle + JPA/Hibernate + API REST
-- **Frontend:** TypeScript Vanilla servido estático (desde el mismo proceso backend)
+- **Frontend:** HTML/CSS/JavaScript estático servido por el mismo proceso backend (ver C-07 en `CHANGES.md`)
 - **Base de datos:** PostgreSQL local (ejecución) / H2 en memoria (tests)
 - **Email:** SMTP / Gmail (desarrollo: Mailpit o mock SMTP)
 - **Despliegue:** entorno reproducible local, sin Docker obligatorio
@@ -74,8 +74,55 @@ AGENTS.md / CLAUDE.md  # Instrucciones para agentes
 
 ## Estado del proyecto
 
-- **C-01 setup-base:** completado (esqueleto backend, seguridad RBAC inicial, health check, tests en verde)
-- **C-02 a C-06:** pendientes (ver `CHANGES.md`)
+- **C-01 a C-06:** completados (backend, auth, configuración, disponibilidad, turnos y notificaciones).
+- **C-07 frontend-web:** Etapa 1 (base visual) y Etapa 2 (lógica de reserva/turnos) ver `CHANGES.md`.
+
+## Cómo correr la app con datos de prueba (sin PostgreSQL)
+
+El perfil `demo` usa **H2 en memoria** y carga datos **ficticios** (DNI 99.999.999, "Juan Pérez").
+No se conecta a ningún servicio externo. El seeder corre una sola vez por arranque.
+
+**Windows (PowerShell):**
+```powershell
+.\scripts\cargar-datos-demo.ps1
+```
+
+**Linux / macOS:**
+```bash
+chmod +x scripts/cargar-datos-demo.sh
+./scripts/cargar-datos-demo.sh
+```
+
+Si preferís hacerlo a mano:
+```bash
+cd backend
+../gradlew bootRun --args='--spring.profiles.active=demo'
+```
+
+Usuario de prueba: **DNI `99999999` / contraseña `demo1234`**.
+Se siembran: 1 profesional, 1 sillón, 3 prestaciones (30/45/60 min), horarios lun–vie
+09:00–12:00 y 14:00–17:00, un turno ocupado 09:30–10:00 y un bloqueo 10:00–10:30
+en el próximo día hábil.
+
+## Puertos y páginas
+
+- Backend + frontend estático: **http://localhost:8080** (variable `APP_PORT`).
+- Landing: `/index.html`, login: `/login.html`, reserva: `/reservar.html`, turnos: `/mis-turnos.html`.
+- No hay un servidor frontend separado: el mismo Spring Boot sirve el HTML/CSS/JS desde
+  `backend/src/main/resources/static/`. No hace falta configurar CORS ni un proxy.
+
+## APIs que consume el frontend
+
+| Método | Endpoint | Uso | Autenticación |
+|--------|----------|-----|---------------|
+| `GET` | `/api/health` | Estado del backend (landing) | pública |
+| `GET` | `/api/catalog` | Profesionales, prestaciones y sillones para los combos | pública |
+| `GET` | `/api/availability?profesionalId=&fecha=&prestacionId=&sillonBoxId=` | Franjas libres | pública |
+| `POST` | `/api/auth/register` · `/api/auth/login` | Alta e ingreso de pacientes | pública |
+| `GET` | `/api/patients/me` | Perfil (para obtener el `pacienteId`) | Bearer |
+| `POST` | `/api/appointments` | Confirmar reserva | Bearer |
+| `GET` | `/api/appointments` | Mis turnos | Bearer |
+| `DELETE` | `/api/appointments/{id}` | Cancelar (libera el horario) | Bearer |
 
 ## Licencia
 

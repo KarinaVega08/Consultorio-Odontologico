@@ -52,6 +52,7 @@ public class SecurityConfig {
                     "/api/health",
                     "/api/auth/**",
                     "/api/availability",
+                    "/api/catalog",
                     "/",
                     "/index.html",
                     "/login.html",

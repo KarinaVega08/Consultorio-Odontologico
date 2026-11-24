@@ -29,13 +29,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.projectlombok:lombok'
     implementation 'org.postgresql:postgresql'
+    // H2 también está en runtime para el perfil demo (sin PostgreSQL local).
+    runtimeOnly 'com.h2database:h2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'com.icegreen:greenmail-junit5:2.1.7'
-    testRuntimeOnly 'com.h2database:h2'
 }
 
 test {

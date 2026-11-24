@@ -20,6 +20,16 @@
     alertBox.className = 'alert';
   }
 
+  /** Vuelve a la página que pidió login (?redirect=/reservar.html). */
+  function redirectIfRequested() {
+    const target = new URLSearchParams(window.location.search).get('redirect');
+    if (target && target.startsWith('/') && !target.startsWith('//')) {
+      window.location.href = target;
+      return true;
+    }
+    return false;
+  }
+
   function switchTab(mode) {
     clearAlert();
     const isLogin = mode === 'login';
@@ -89,6 +99,9 @@
       loginForm.reset();
       renderProfile(res.data.patient);
       showAlert('Sesión iniciada correctamente.', 'success');
+      if (!res.data.patient.requiereVincularGmail) {
+        redirectIfRequested();
+      }
     } catch {
       showAlert('Error de conexión con el servidor', 'error');
     }
@@ -111,6 +124,7 @@
       gmailForm.reset();
       renderProfile(res.data);
       showAlert('Gmail de recuperación vinculado correctamente.', 'success');
+      redirectIfRequested();
     } catch {
       showAlert('Error de conexión con el servidor', 'error');
     }
