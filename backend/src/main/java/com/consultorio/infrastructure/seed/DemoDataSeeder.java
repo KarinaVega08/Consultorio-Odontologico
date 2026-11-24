@@ -41,6 +41,8 @@ public class DemoDataSeeder implements ApplicationRunner {
 
     private static final String DNI_DEMO = "99999999";
     private static final String PASSWORD_DEMO = "demo1234";
+    private static final int[] DIAS_LUN_VIE = {1, 2, 3, 4, 5};
+    private static final int[] DIAS_MAR_JUE = {2, 3, 4};
 
     private final ProfesionalRepository profesionalRepository;
     private final SillonBoxRepository sillonBoxRepository;
@@ -59,10 +61,25 @@ public class DemoDataSeeder implements ApplicationRunner {
             return;
         }
 
-        Profesional profesional = new Profesional();
-        profesional.setNombreCompleto("Dra. Ana Demo");
-        profesional.setMatricula("MP-99999");
-        profesionalRepository.save(profesional);
+        Profesional ana = crearProfesional("Dra. Ana Demo", "MP-99999");
+        crearHorarios(ana, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+        crearHorarios(ana, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
+
+        Profesional martin = crearProfesional("Dr. Martín Gómez", "MP-10001");
+        crearHorarios(martin, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+
+        Profesional lucia = crearProfesional("Dra. Lucía Fernández", "MP-10002");
+        crearHorarios(lucia, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
+
+        Profesional sebastian = crearProfesional("Dr. Sebastián Ríos", "MP-10003");
+        crearHorarios(sebastian, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+        crearHorarios(sebastian, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
+
+        Profesional camila = crearProfesional("Dra. Camila Ortiz", "MP-10004");
+        crearHorarios(camila, DIAS_MAR_JUE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+
+        Profesional diego = crearProfesional("Dr. Diego Vega", "MP-10005");
+        crearHorarios(diego, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
 
         SillonBox sillon = new SillonBox();
         sillon.setNombre("Sillón 1");
@@ -71,11 +88,6 @@ public class DemoDataSeeder implements ApplicationRunner {
         Prestacion consulta = crearPrestacion("Consulta general", 30, "Control y diagnóstico inicial");
         crearPrestacion("Limpieza dental", 45, "Higiene profesional");
         crearPrestacion("Revisión completa", 60, "Evaluación integral");
-
-        for (int dia = 1; dia <= 5; dia++) {
-            crearHorario(profesional, dia, LocalTime.of(9, 0), LocalTime.of(12, 0));
-            crearHorario(profesional, dia, LocalTime.of(14, 0), LocalTime.of(17, 0));
-        }
 
         LocalDate diaDemo = proximoDiaHabil();
 
@@ -86,16 +98,16 @@ public class DemoDataSeeder implements ApplicationRunner {
         bloqueo.setMotivo("Mantenimiento del sillón (demo)");
         bloqueoRepository.save(bloqueo);
 
-        Paciente paciente = new Paciente();
-        paciente.setNombreCompleto("Juan Pérez (paciente ficticio)");
-        paciente.setDni(DNI_DEMO);
-        paciente.setPasswordHash(passwordEncoder.encode(PASSWORD_DEMO));
-        paciente.setEmailRecuperacion("paciente.demo@gmail.com");
-        pacienteRepository.save(paciente);
+        Paciente juan = crearPaciente("Juan Pérez (paciente ficticio)", DNI_DEMO, "paciente.demo@gmail.com");
+        crearPaciente("Camila Pereyra", "38901234", "camila.pereyra.test@gmail.com");
+        crearPaciente("Lucas Sosa", "40123789", "lucas.sosa.test@gmail.com");
+        crearPaciente("Valentina Quiroga", "35678123", "valentina.quiroga.test@gmail.com");
+        crearPaciente("Federico Moya", "41234567", "federico.moya.test@gmail.com");
+        crearPaciente("Romina Duarte", "30555123", null);
 
         Turno turno = new Turno();
-        turno.setPaciente(paciente);
-        turno.setProfesional(profesional);
+        turno.setPaciente(juan);
+        turno.setProfesional(ana);
         turno.setSillonBox(sillon);
         turno.setPrestacion(consulta);
         turno.setFechaHoraInicio(diaDemo.atTime(9, 30));
@@ -105,8 +117,30 @@ public class DemoDataSeeder implements ApplicationRunner {
         turnoRepository.save(turno);
 
         log.info("[DEMO] Datos ficticios cargados. Login: DNI {} / contraseña {}.", DNI_DEMO, PASSWORD_DEMO);
-        log.info("[DEMO] Profesional: {}, sillón: {}, prestaciones: 3, turno ocupado: {} 09:30-10:00, bloqueo: {} 10:00-10:30.",
-                profesional.getNombreCompleto(), sillon.getNombre(), diaDemo, diaDemo);
+        log.info("[DEMO] 6 pacientes y 6 profesionales ficticios, sillón: {}, prestaciones: 3, turno ocupado: {} 09:30-10:00, bloqueo: {} 10:00-10:30.",
+                sillon.getNombre(), diaDemo, diaDemo);
+    }
+
+    private Profesional crearProfesional(String nombreCompleto, String matricula) {
+        Profesional profesional = new Profesional();
+        profesional.setNombreCompleto(nombreCompleto);
+        profesional.setMatricula(matricula);
+        return profesionalRepository.save(profesional);
+    }
+
+    private Paciente crearPaciente(String nombreCompleto, String dni, String emailRecuperacion) {
+        Paciente paciente = new Paciente();
+        paciente.setNombreCompleto(nombreCompleto);
+        paciente.setDni(dni);
+        paciente.setPasswordHash(passwordEncoder.encode(PASSWORD_DEMO));
+        paciente.setEmailRecuperacion(emailRecuperacion);
+        return pacienteRepository.save(paciente);
+    }
+
+    private void crearHorarios(Profesional profesional, int[] dias, LocalTime inicio, LocalTime fin) {
+        for (int dia : dias) {
+            crearHorario(profesional, dia, inicio, fin);
+        }
     }
 
     private Prestacion crearPrestacion(String nombre, int duracion, String descripcion) {
