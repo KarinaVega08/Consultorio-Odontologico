@@ -25,8 +25,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Carga de datos FICTICIOS para probar el frontend en local (Ley 25.326).
@@ -43,6 +44,10 @@ public class DemoDataSeeder implements ApplicationRunner {
     private static final String PASSWORD_DEMO = "demo1234";
     private static final int[] DIAS_LUN_VIE = {1, 2, 3, 4, 5};
     private static final int[] DIAS_MAR_JUE = {2, 3, 4};
+    private static final int HORARIO_COMPLETO = 0;
+    private static final int HORARIO_MANANA = 1;
+    private static final int HORARIO_TARDE = 2;
+    private static final int HORARIO_MANANA_MAR_JUE = 3;
 
     private final ProfesionalRepository profesionalRepository;
     private final SillonBoxRepository sillonBoxRepository;
@@ -61,36 +66,32 @@ public class DemoDataSeeder implements ApplicationRunner {
             return;
         }
 
-        Profesional ana = crearProfesional("Dra. Ana Demo", "MP-99999");
-        crearHorarios(ana, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
-        crearHorarios(ana, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
-
-        Profesional martin = crearProfesional("Dr. Martín Gómez", "MP-10001");
-        crearHorarios(martin, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
-
-        Profesional lucia = crearProfesional("Dra. Lucía Fernández", "MP-10002");
-        crearHorarios(lucia, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
-
-        Profesional sebastian = crearProfesional("Dr. Sebastián Ríos", "MP-10003");
-        crearHorarios(sebastian, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
-        crearHorarios(sebastian, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
-
-        Profesional camila = crearProfesional("Dra. Camila Ortiz", "MP-10004");
-        crearHorarios(camila, DIAS_MAR_JUE, LocalTime.of(9, 0), LocalTime.of(12, 0));
-
-        Profesional diego = crearProfesional("Dr. Diego Vega", "MP-10005");
-        crearHorarios(diego, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
+        List<Profesional> profesionales = new ArrayList<>();
+        profesionales.add(crearProfesional("Dra. Ana Demo", "MP-99999", HORARIO_COMPLETO));
+        profesionales.add(crearProfesional("Dr. Martín Gómez", "MP-10001", HORARIO_MANANA));
+        profesionales.add(crearProfesional("Dra. Lucía Fernández", "MP-10002", HORARIO_TARDE));
+        profesionales.add(crearProfesional("Dr. Sebastián Ríos", "MP-10003", HORARIO_COMPLETO));
+        profesionales.add(crearProfesional("Dra. Camila Ortiz", "MP-10004", HORARIO_MANANA_MAR_JUE));
+        profesionales.add(crearProfesional("Dr. Diego Vega", "MP-10005", HORARIO_TARDE));
+        profesionales.add(crearProfesional("Dra. Florencia Acosta", "MP-10006", HORARIO_COMPLETO));
+        profesionales.add(crearProfesional("Dr. Nicolás Barrios", "MP-10007", HORARIO_MANANA));
+        profesionales.add(crearProfesional("Dra. Valentina Costa", "MP-10008", HORARIO_TARDE));
+        profesionales.add(crearProfesional("Dr. Agustín Duarte", "MP-10009", HORARIO_COMPLETO));
+        profesionales.add(crearProfesional("Dra. Jazmín Escobar", "MP-10010", HORARIO_MANANA_MAR_JUE));
+        profesionales.add(crearProfesional("Dr. Tomás Farías", "MP-10011", HORARIO_TARDE));
+        profesionales.add(crearProfesional("Dra. Elena Gómez", "MP-10012", HORARIO_COMPLETO));
+        profesionales.add(crearProfesional("Dr. Bruno Ibáñez", "MP-10013", HORARIO_MANANA));
+        profesionales.add(crearProfesional("Dra. Sofía Juárez", "MP-10014", HORARIO_TARDE));
 
         SillonBox sillon = new SillonBox();
         sillon.setNombre("Sillón 1");
         sillonBoxRepository.save(sillon);
 
         Prestacion consulta = crearPrestacion("Consulta general", 30, "Control y diagnóstico inicial");
-        crearPrestacion("Limpieza dental", 45, "Higiene profesional");
-        crearPrestacion("Revisión completa", 60, "Evaluación integral");
+        Prestacion limpieza = crearPrestacion("Limpieza dental", 45, "Higiene profesional");
+        Prestacion revision = crearPrestacion("Revisión completa", 60, "Evaluación integral");
 
-        LocalDate diaDemo = proximoDiaHabil();
-
+        LocalDate diaDemo = diaHabil(1);
         Bloqueo bloqueo = new Bloqueo();
         bloqueo.setSillonBox(sillon);
         bloqueo.setFechaHoraInicio(diaDemo.atTime(10, 0));
@@ -98,34 +99,63 @@ public class DemoDataSeeder implements ApplicationRunner {
         bloqueo.setMotivo("Mantenimiento del sillón (demo)");
         bloqueoRepository.save(bloqueo);
 
-        Paciente juan = crearPaciente("Juan Pérez (paciente ficticio)", DNI_DEMO, "paciente.demo@gmail.com");
-        crearPaciente("Camila Pereyra", "38901234", "camila.pereyra.test@gmail.com");
-        crearPaciente("Lucas Sosa", "40123789", "lucas.sosa.test@gmail.com");
-        crearPaciente("Valentina Quiroga", "35678123", "valentina.quiroga.test@gmail.com");
-        crearPaciente("Federico Moya", "41234567", "federico.moya.test@gmail.com");
-        crearPaciente("Romina Duarte", "30555123", null);
+        List<Paciente> pacientes = new ArrayList<>();
+        pacientes.add(crearPaciente("Juan Pérez (paciente ficticio)", "99999999", "paciente.demo@gmail.com"));
+        pacientes.add(crearPaciente("Camila Pereyra", "38901234", "camila.pereyra.test@gmail.com"));
+        pacientes.add(crearPaciente("Lucas Sosa", "40123789", "lucas.sosa.test@gmail.com"));
+        pacientes.add(crearPaciente("Valentina Quiroga", "35678123", "valentina.quiroga.test@gmail.com"));
+        pacientes.add(crearPaciente("Federico Moya", "41234567", "federico.moya.test@gmail.com"));
+        pacientes.add(crearPaciente("Romina Duarte", "30555123", null));
+        pacientes.add(crearPaciente("Nicolás Aguirre", "37654321", "nicolas.aguirre.test@gmail.com"));
+        pacientes.add(crearPaciente("Lucía Barsotti", "33445678", "lucia.barsotti.test@gmail.com"));
+        pacientes.add(crearPaciente("Martín Cáceres", "40222333", "martin.caceres.test@gmail.com"));
+        pacientes.add(crearPaciente("Sofía Delgado", "36111222", "sofia.delgado.test@gmail.com"));
+        pacientes.add(crearPaciente("Agustín Espinoza", "39333444", "agustin.espinoza.test@gmail.com"));
+        pacientes.add(crearPaciente("Jazmín Flores", "34555666", "jazmin.flores.test@gmail.com"));
+        pacientes.add(crearPaciente("Tomás Giménez", "40888777", "tomas.gimenez.test@gmail.com"));
+        pacientes.add(crearPaciente("Elena López", "31222999", "elena.lopez.test@gmail.com"));
+        pacientes.add(crearPaciente("Bruno Martínez", "39777111", "bruno.martinez.test@gmail.com"));
 
-        Turno turno = new Turno();
-        turno.setPaciente(juan);
-        turno.setProfesional(ana);
-        turno.setSillonBox(sillon);
-        turno.setPrestacion(consulta);
-        turno.setFechaHoraInicio(diaDemo.atTime(9, 30));
-        turno.setFechaHoraFin(diaDemo.atTime(10, 0));
-        turno.setEstado(EstadoTurno.RESERVADO);
-        turno.setCreadoPor(DNI_DEMO);
-        turnoRepository.save(turno);
+        // 15 turnos ficticios en 4 estados (4 RESERVADO, 4 CONFIRMADO, 4 COMPLETADO, 3 CANCELADO).
+        // Se reparten entre días pasados y futuros sin solaparse (un solo sillón en la demo).
+        crearTurno(sillon, pacientes.get(0), profesionales.get(0), consulta, diaHabil(-3), LocalTime.of(9, 0), EstadoTurno.COMPLETADO);
+        crearTurno(sillon, pacientes.get(4), profesionales.get(3), revision, diaHabil(-3), LocalTime.of(10, 0), EstadoTurno.COMPLETADO);
+        crearTurno(sillon, pacientes.get(1), profesionales.get(1), limpieza, diaHabil(-3), LocalTime.of(11, 0), EstadoTurno.COMPLETADO);
+        crearTurno(sillon, pacientes.get(0), profesionales.get(2), revision, diaHabil(-2), LocalTime.of(14, 0), EstadoTurno.COMPLETADO);
+        crearTurno(sillon, pacientes.get(2), profesionales.get(5), consulta, diaHabil(-2), LocalTime.of(15, 0), EstadoTurno.CANCELADO);
+        crearTurno(sillon, pacientes.get(0), profesionales.get(3), limpieza, diaHabil(-1), LocalTime.of(9, 0), EstadoTurno.CANCELADO);
+        crearTurno(sillon, pacientes.get(0), profesionales.get(0), consulta, diaDemo, LocalTime.of(9, 30), EstadoTurno.RESERVADO);
+        crearTurno(sillon, pacientes.get(4), profesionales.get(3), revision, diaHabil(2), LocalTime.of(9, 0), EstadoTurno.RESERVADO);
+        crearTurno(sillon, pacientes.get(5), profesionales.get(0), consulta, diaHabil(2), LocalTime.of(10, 0), EstadoTurno.CANCELADO);
+        crearTurno(sillon, pacientes.get(0), profesionales.get(2), revision, diaHabil(2), LocalTime.of(14, 0), EstadoTurno.CONFIRMADO);
+        crearTurno(sillon, pacientes.get(1), profesionales.get(3), limpieza, diaHabil(3), LocalTime.of(10, 30), EstadoTurno.CONFIRMADO);
+        crearTurno(sillon, pacientes.get(2), profesionales.get(1), limpieza, diaHabil(3), LocalTime.of(11, 15), EstadoTurno.RESERVADO);
+        crearTurno(sillon, pacientes.get(0), profesionales.get(5), revision, diaHabil(3), LocalTime.of(14, 0), EstadoTurno.RESERVADO);
+        crearTurno(sillon, pacientes.get(0), profesionales.get(0), consulta, diaHabil(4), LocalTime.of(9, 0), EstadoTurno.CONFIRMADO);
+        crearTurno(sillon, pacientes.get(3), profesionales.get(3), revision, diaHabil(4), LocalTime.of(11, 0), EstadoTurno.CONFIRMADO);
 
         log.info("[DEMO] Datos ficticios cargados. Login: DNI {} / contraseña {}.", DNI_DEMO, PASSWORD_DEMO);
-        log.info("[DEMO] 6 pacientes y 6 profesionales ficticios, sillón: {}, prestaciones: 3, turno ocupado: {} 09:30-10:00, bloqueo: {} 10:00-10:30.",
+        log.info("[DEMO] 15 pacientes, 15 profesionales y 15 turnos ficticios (4 RESERVADO, 4 CONFIRMADO, 4 COMPLETADO, 3 CANCELADO).");
+        log.info("[DEMO] Sillón: {}, prestaciones: 3, turno demo: {} 09:30-10:00, bloqueo: {} 10:00-10:30.",
                 sillon.getNombre(), diaDemo, diaDemo);
     }
 
-    private Profesional crearProfesional(String nombreCompleto, String matricula) {
+    private Profesional crearProfesional(String nombreCompleto, String matricula, int tipoHorario) {
         Profesional profesional = new Profesional();
         profesional.setNombreCompleto(nombreCompleto);
         profesional.setMatricula(matricula);
-        return profesionalRepository.save(profesional);
+        Profesional guardado = profesionalRepository.save(profesional);
+        switch (tipoHorario) {
+            case HORARIO_COMPLETO -> {
+                crearHorarios(guardado, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+                crearHorarios(guardado, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
+            }
+            case HORARIO_MANANA -> crearHorarios(guardado, DIAS_LUN_VIE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+            case HORARIO_TARDE -> crearHorarios(guardado, DIAS_LUN_VIE, LocalTime.of(14, 0), LocalTime.of(17, 0));
+            case HORARIO_MANANA_MAR_JUE -> crearHorarios(guardado, DIAS_MAR_JUE, LocalTime.of(9, 0), LocalTime.of(12, 0));
+            default -> throw new IllegalArgumentException("Tipo de horario desconocido: " + tipoHorario);
+        }
+        return guardado;
     }
 
     private Paciente crearPaciente(String nombreCompleto, String dni, String emailRecuperacion) {
@@ -135,6 +165,20 @@ public class DemoDataSeeder implements ApplicationRunner {
         paciente.setPasswordHash(passwordEncoder.encode(PASSWORD_DEMO));
         paciente.setEmailRecuperacion(emailRecuperacion);
         return pacienteRepository.save(paciente);
+    }
+
+    private void crearTurno(SillonBox sillon, Paciente paciente, Profesional profesional, Prestacion prestacion,
+                            LocalDate fecha, LocalTime inicio, EstadoTurno estado) {
+        Turno turno = new Turno();
+        turno.setPaciente(paciente);
+        turno.setProfesional(profesional);
+        turno.setSillonBox(sillon);
+        turno.setPrestacion(prestacion);
+        turno.setFechaHoraInicio(fecha.atTime(inicio));
+        turno.setFechaHoraFin(fecha.atTime(inicio).plusMinutes(prestacion.getDuracionMinutos()));
+        turno.setEstado(estado);
+        turno.setCreadoPor(paciente.getDni());
+        turnoRepository.save(turno);
     }
 
     private void crearHorarios(Profesional profesional, int[] dias, LocalTime inicio, LocalTime fin) {
@@ -160,10 +204,15 @@ public class DemoDataSeeder implements ApplicationRunner {
         horarioAtencionRepository.save(horario);
     }
 
-    private LocalDate proximoDiaHabil() {
-        LocalDate fecha = LocalDate.now().plusDays(1);
-        while (fecha.getDayOfWeek().getValue() > 5) {
-            fecha = fecha.plusDays(1);
+    /** Día hábil desplazado {@code offset} días desde hoy (negativo = pasado). */
+    private LocalDate diaHabil(int offset) {
+        LocalDate fecha = LocalDate.now();
+        int pasos = 0;
+        while (pasos < Math.abs(offset)) {
+            fecha = fecha.plusDays(offset > 0 ? 1 : -1);
+            if (fecha.getDayOfWeek().getValue() <= 5) {
+                pasos++;
+            }
         }
         return fecha;
     }
