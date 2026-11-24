@@ -48,7 +48,7 @@ GATE 2: C-05 ✓
   → C-06 notificaciones                  [Kari + Caste — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final backend)
 
 GATE 3: C-06 ✓
-  → C-07 frontend-web                    [Caste (Base) → Mai (Finiquitado) → Thiago (Unificación)]
+  → C-07 frontend-web                    [Caste (Base) → Mai (Finiquitado) → Thiago (Unificación ✓)]
 ```
 
 Cambios que pueden ejecutarse en paralelo sin colisiones de archivos (Oleada 1, GATE 1):
@@ -77,7 +77,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
 | **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste + Thiago (Listo ✓)** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
 | **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste (Listo ✓)** | `feat/c06-notificaciones` | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
-| **Fase 5** (Frontend) | **C-07** | `frontend-web` | **Caste + Mai + Thiago** | `feat/front-base` → `feat/front-completo` | Frontend completo: Caste arma la base visual, maquetado y navegación; Mai finiquita la lógica interactiva (reserva, disponibilidad y gestión); Thiago unifica en `main` |
+| **Fase 5** (Frontend) | **C-07** | `frontend-web` | **Caste + Mai + Thiago (Listo ✓)** | `feat/front-base` → `feat/front-completo` | Frontend completo: Caste arma la base visual, maquetado y navegación; Mai finiquita la lógica interactiva (reserva, disponibilidad y gestión); Thiago unifica en `main` |
 
 > **Supervisión y control de calidad (Thiago):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.
 
@@ -221,8 +221,8 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 ## FASE 5 — Frontend web completo (interfaz de usuario final)
 
 ### [C-07] `frontend-web`
-- **Estado**: `[ ]` pendiente
-- **Dinámica de equipo**: Caste (Etapa 1: base de diseño y maquetado) → Mai (Etapa 2: finiquitado con consumo de APIs y validaciones) → Thiago (Etapa 3: revisión general y unificación a `main`).
+- **Estado**: `[x]` completado
+- **Dinámica de equipo**: Caste (Etapa 1: base de diseño y maquetado) → Mai (Etapa 2: finiquitado con consumo de APIs y validaciones) → Thiago (Etapa 3: revisión general y unificación a `main`, delegada en Caste por disponibilidad del líder).
 - **Scope**:
   - **Etapa 1 (Caste — rama `feat/front-base`)**:
     - Estilos unificados en `backend/src/main/resources/static/css/styles.css` (diseño moderno, tipografía, paleta de colores y componentes).
@@ -236,7 +236,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
     - Cancelación de turnos (`DELETE /api/appointments/{id}`) con confirmación y refresco automático.
     - Validaciones de experiencia de usuario (bloqueo de fechas pasadas, redirección si no hay sesión activa a `login.html`, y diseño responsive).
   - **Etapa 3 (Thiago — líder técnico)**:
-    - Revisión del código final de Mai, prueba de flujo E2E completo en navegador y merge a `main`.
+    - Revisión del código final de Mai, prueba de flujo E2E completo en navegador y merge a `main` (realizado por Caste por delegación de Thiago).
 - **Dependencias**: `C-02`, `C-04`, `C-05`, `C-06`
 - **Governance**: MEDIO (interfaz de usuario del sistema)
 - **Riesgo**: BAJO (el backend ya está 100% probado y funcional)
@@ -256,7 +256,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | C-04 | disponibilidad-turnos | 2 | C-01 | MEDIO | MEDIO | C-02, C-03 |
 | C-05 | gestion-turnos | 3 | C-02, C-03, C-04 | CRITICO | ALTO | — (bloquea hasta que C-02/C-03/C-04 estén listos) |
 | C-06 | notificaciones | 4 | C-05, C-02 | ALTO | MEDIO | — (último backend) |
-| C-07 | frontend-web | 5 | C-02, C-04, C-05, C-06 | MEDIO | BAJO | — (Caste base → Mai finiquita) |
+| C-07 | frontend-web | 5 | C-02, C-04, C-05, C-06 | MEDIO | BAJO | — (Caste base → Mai finiquita → Thiago unificó) |
 
 **Camino crítico**: `C-01 → C-02 → C-05 → C-06 → C-07` (5 changes).
 **Gates de paralelismo**: 4 (GATE 0, GATE 1 FORK, GATE 2, GATE 3).

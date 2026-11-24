@@ -6,8 +6,8 @@
 
 ## 1. Coordinación y preparación
 
-- [ ] 1.1 Avisar a **Mai** que `feat/front-base` queda lista para que finiquite la lógica (ids de DOM en `reservar.html`/`mis-turnos.html`, `Api` en `js/api.js`, handoff en design D5) — verificación: mensaje en el chat del equipo.
-- [ ] 1.2 Avisar a **Thiago** que el apply incluye un cambio mínimo de whitelist en `SecurityConfig` — verificación: mensaje en el chat del equipo.
+- [x] 1.1 Avisar a **Mai** que `feat/front-base` queda lista para que finiquite la lógica (ids de DOM en `reservar.html`/`mis-turnos.html`, `Api` en `js/api.js`, handoff en design D5) — verificación: mensaje en el chat del equipo.
+- [x] 1.2 Avisar a **Thiago** que el apply incluye un cambio mínimo de whitelist en `SecurityConfig` — verificación: mensaje en el chat del equipo.
 - [x] 1.3 Confirmar en verde la base antes de empezar — verificación: `./gradlew test` en `backend/` → `BUILD SUCCESSFUL`.
 
 ## 2. Ciclo OPSX — Explore y Propose
