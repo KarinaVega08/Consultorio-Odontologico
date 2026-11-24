@@ -23,6 +23,7 @@ import com.consultorio.domain.model.Turno;
 import com.consultorio.domain.model.TurnoSolapamiento;
 import com.consultorio.domain.repository.PacienteRepository;
 import com.consultorio.domain.repository.TurnoRepository;
+import com.consultorio.integration.notification.TurnosNotificacionPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -55,6 +56,7 @@ public class TurnoService {
     private final PrestacionRepository prestacionRepository;
     private final HorarioAtencionRepository horarioAtencionRepository;
     private final BloqueoRepository bloqueoRepository;
+    private final TurnosNotificacionPublisher notificacionPublisher;
 
     @Transactional
     public AppointmentResponse crear(CreateAppointmentRequest request,
@@ -95,6 +97,7 @@ public class TurnoService {
 
         Turno guardado = turnoRepository.save(turno);
         log.info("Turno {} creado para profesional {} en {}", guardado.getId(), profesional.getId(), inicio);
+        notificacionPublisher.publicarCreado(guardado);
         return toResponse(guardado);
     }
 
@@ -117,10 +120,12 @@ public class TurnoService {
         validarBloqueos(profesional.getId(), sillonBox.getId(), inicio, fin);
         validarSolapes(profesional.getId(), sillonBox.getId(), inicio, fin, turno.getId());
 
+        LocalDateTime fechaHoraAnterior = turno.getFechaHoraInicio();
         turno.setFechaHoraInicio(inicio);
         turno.setFechaHoraFin(fin);
         Turno guardado = turnoRepository.save(turno);
         log.info("Turno {} reprogramado a {}", guardado.getId(), inicio);
+        notificacionPublisher.publicarReprogramado(guardado, fechaHoraAnterior);
         return toResponse(guardado);
     }
 
@@ -137,7 +142,46 @@ public class TurnoService {
         turno.setEstado(EstadoTurno.CANCELADO);
         Turno guardado = turnoRepository.save(turno);
         log.info("Turno {} cancelado; hueco liberado", guardado.getId());
+        notificacionPublisher.publicarCancelado(guardado);
         return toResponse(guardado);
+    }
+
+    /** Consumo del enlace único de cancelación: idempotente, nunca lanza excepción al público. */
+    @Transactional
+    public void cancelarDesdeEnlace(UUID turnoId, LocalDateTime fechaCancelacion) {
+        Turno turno = turnoRepository.findById(turnoId).orElse(null);
+        if (turno == null) {
+            log.info("Enlace de cancelación: turno {} no existe; se ignora", turnoId);
+            return;
+        }
+        if (turno.getEstado() == EstadoTurno.CANCELADO) {
+            log.info("Enlace de cancelación: turno {} ya estaba cancelado", turnoId);
+            return;
+        }
+        turno.setEstado(EstadoTurno.CANCELADO);
+        turnoRepository.save(turno);
+        log.info("Turno {} cancelado desde enlace único en {}", turnoId, fechaCancelacion);
+    }
+
+    /** Consumo del enlace único de confirmación: no reactiva turnos cancelados. */
+    @Transactional
+    public void confirmarDesdeEnlace(UUID turnoId, LocalDateTime fechaConfirmacion) {
+        Turno turno = turnoRepository.findById(turnoId).orElse(null);
+        if (turno == null) {
+            log.info("Enlace de confirmación: turno {} no existe; se ignora", turnoId);
+            return;
+        }
+        if (turno.getEstado() == EstadoTurno.CANCELADO) {
+            log.info("Enlace de confirmación: turno {} está cancelado; no se reactiva", turnoId);
+            return;
+        }
+        if (turno.getEstado() == EstadoTurno.CONFIRMADO) {
+            log.info("Enlace de confirmación: turno {} ya estaba confirmado", turnoId);
+            return;
+        }
+        turno.setEstado(EstadoTurno.CONFIRMADO);
+        turnoRepository.save(turno);
+        log.info("Turno {} confirmado desde enlace único en {}", turnoId, fechaConfirmacion);
     }
 
     @Transactional(readOnly = true)

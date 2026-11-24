@@ -20,6 +20,7 @@ import org.springframework.security.access.AccessDeniedException;
 import com.consultorio.domain.model.Turno;
 import com.consultorio.domain.repository.PacienteRepository;
 import com.consultorio.domain.repository.TurnoRepository;
+import com.consultorio.integration.notification.TurnosNotificacionPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +61,7 @@ class TurnoServiceTest {
     @Mock private PrestacionRepository prestacionRepository;
     @Mock private HorarioAtencionRepository horarioAtencionRepository;
     @Mock private BloqueoRepository bloqueoRepository;
+    @Mock private TurnosNotificacionPublisher notificacionPublisher;
 
     @InjectMocks private TurnoService turnoService;
 
