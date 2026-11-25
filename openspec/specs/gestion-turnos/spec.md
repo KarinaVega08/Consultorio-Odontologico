@@ -24,6 +24,12 @@ El sistema SHALL rechazar la creación o reprogramación de un turno cuyo rango 
 - **THEN** el sistema responde `400 Bad Request` con mensaje `"El profesional o el sillón ya tiene un turno en ese horario"`
 - **AND** el turno nuevo no se persiste
 
+#### Scenario: Mismo profesional no puede usar dos sillones a la vez
+- **GIVEN** que el profesional tiene un turno `RESERVADO` de `09:00` a `09:30` en el "Sillón 1"
+- **WHEN** se intenta crear un turno del mismo profesional de `09:00` a `09:30` en el "Sillón 2"
+- **THEN** el sistema responde `400 Bad Request` con mensaje `"El profesional o el sillón ya tiene un turno en ese horario"`
+- **AND** un turno del mismo profesional a las `09:30` en el "Sillón 2" SÍ se acepta (borde a borde)
+
 ### Requirement: Anti-solapamiento por sillón/box
 El sistema SHALL rechazar la creación o reprogramación de un turno cuyo rango se solape con un turno existente no cancelado del mismo sillón/box, aunque el profesional sea distinto.
 

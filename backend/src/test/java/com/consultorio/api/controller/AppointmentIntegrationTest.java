@@ -9,6 +9,8 @@ import com.consultorio.admin.domain.repository.HorarioAtencionRepository;
 import com.consultorio.admin.domain.repository.PrestacionRepository;
 import com.consultorio.admin.domain.repository.ProfesionalRepository;
 import com.consultorio.admin.domain.repository.SillonBoxRepository;
+import com.consultorio.application.dto.AvailabilityResponse;
+import com.consultorio.application.dto.AvailabilitySlotResponse;
 import com.consultorio.application.service.TokenService;
 import com.consultorio.domain.model.Paciente;
 import com.consultorio.domain.model.RolUsuario;
@@ -25,9 +27,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -125,6 +129,40 @@ class AppointmentIntegrationTest {
     }
 
     @Test
+    void mismoProfesionalNoPuedeAtenderDosSillonesEnElMismoHorario() throws Exception {
+        SillonBox sillon2 = sillonBoxRepository.save(sillon("Sillón 2"));
+        crearTurno(pacienteA.getId(), "09:00:00");
+
+        mockMvc.perform(post("/api/appointments")
+                .header("Authorization", tokenRecepcionista)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload(pacienteB.getId(), "09:00:00", sillon2.getId())))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("El profesional o el sillón ya tiene un turno en ese horario"));
+
+        String cuerpo = mockMvc.perform(get("/api/availability")
+                .param("profesionalId", profesional.getId().toString())
+                .param("fecha", FECHA.toString())
+                .param("prestacionId", prestacion.getId().toString())
+                .param("sillonBoxId", sillon2.getId().toString()))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsString();
+        AvailabilityResponse disponibilidad = objectMapper.readValue(cuerpo, AvailabilityResponse.class);
+
+        assertThat(disponibilidad.franjas()).extracting(AvailabilitySlotResponse::inicio)
+            .extracting(LocalDateTime::toLocalTime)
+            .doesNotContain(LocalTime.of(9, 0))
+            .contains(LocalTime.of(9, 30));
+
+        // Borde a borde en otro sillón: el profesional ya terminó a las 09:30.
+        mockMvc.perform(post("/api/appointments")
+                .header("Authorization", tokenRecepcionista)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload(pacienteB.getId(), "09:30:00", sillon2.getId())))
+            .andExpect(status().isCreated());
+    }
+
+    @Test
     void reprogramacionLiberaElHuecoAnteriorYRevalidaSolapes() throws Exception {
         String id10 = crearTurno(pacienteA.getId(), "10:00:00");
 
@@ -182,6 +220,10 @@ class AppointmentIntegrationTest {
     }
 
     private String payload(UUID pacienteId, String hora) {
+        return payload(pacienteId, hora, sillonBox.getId());
+    }
+
+    private String payload(UUID pacienteId, String hora, UUID sillonId) {
         return """
             {
               "pacienteId": "%s",
@@ -190,7 +232,7 @@ class AppointmentIntegrationTest {
               "prestacionId": "%s",
               "fechaHoraInicio": "2099-11-25T%s"
             }
-            """.formatted(pacienteId, profesional.getId(), sillonBox.getId(), prestacion.getId(), hora);
+            """.formatted(pacienteId, profesional.getId(), sillonId, prestacion.getId(), hora);
     }
 
     private String bearer(RolUsuario rol, UUID userId, String dni) {
@@ -205,8 +247,12 @@ class AppointmentIntegrationTest {
     }
 
     private static SillonBox sillon() {
+        return sillon("Sillón 1");
+    }
+
+    private static SillonBox sillon(String nombre) {
         SillonBox sillonBox = new SillonBox();
-        sillonBox.setNombre("Sillón 1");
+        sillonBox.setNombre(nombre);
         return sillonBox;
     }
 

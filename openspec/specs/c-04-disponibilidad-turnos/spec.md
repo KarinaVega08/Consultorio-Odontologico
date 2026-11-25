@@ -35,6 +35,11 @@ El sistema SHALL considerar que dos intervalos se solapan solo cuando `inicioA <
 - **WHEN** se consulta disponibilidad para ese sillón
 - **THEN** las franjas 10:00 y 10:30 NO aparecen, y las franjas 09:00, 09:30, 11:00 y 11:30 SÍ aparecen
 
+#### Scenario: Turno del profesional en otro sillón bloquea la franja
+- **GIVEN** un horario de 09:00 a 12:00 y un turno confirmado de 09:00 a 09:30 del profesional en el "Sillón 1"
+- **WHEN** se consulta disponibilidad para el "Sillón 2" con una prestación de 30 minutos
+- **THEN** la franja 09:00 NO aparece (el profesional no puede estar en dos sillones a la vez) y la franja 09:30 SÍ aparece
+
 #### Scenario: Duración que no cabe en el horario
 - **GIVEN** un horario de 09:00 a 09:20 y una prestación de 30 minutos
 - **WHEN** se consulta disponibilidad

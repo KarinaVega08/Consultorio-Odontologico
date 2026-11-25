@@ -59,14 +59,20 @@ public interface TurnoRepository extends JpaRepository<Turno, UUID> {
 
     List<Turno> findByPacienteIdOrderByFechaHoraInicio(UUID pacienteId);
 
-    /** Fuente de datos del puerto de disponibilidad de C-04; incluye cancelados para que se ignoren en el cálculo. */
+    /**
+     * Fuente de datos del puerto de disponibilidad de C-04; incluye cancelados para que se ignoren en el cálculo.
+     * Con sillón indicado se devuelven los turnos del profesional en CUALQUIER sillón más los turnos de
+     * otros profesionales en ese sillón: un profesional no puede estar en dos sillones a la vez y un
+     * sillón no puede tener dos profesionales a la vez. Sin sillón solo se devuelven los del profesional.
+     * El cast del parámetro evita el error de tipo con parámetros nulos en PostgreSQL.
+     */
     @Query("""
         select t from Turno t
         where t.activo = true
-          and t.profesional.id = :profesionalId
-          and t.fechaHoraInicio >= :desde
-          and t.fechaHoraInicio <= :hasta
-          and (cast(:sillonBoxId as uuid) is null or t.sillonBox.id = :sillonBoxId)
+          and (t.profesional.id = :profesionalId
+               or (cast(:sillonBoxId as uuid) is not null and t.sillonBox.id = :sillonBoxId))
+          and t.fechaHoraInicio < :hasta
+          and t.fechaHoraFin > :desde
         order by t.fechaHoraInicio
         """)
     List<Turno> buscarOcupados(@Param("profesionalId") UUID profesionalId,

@@ -35,6 +35,7 @@ class TurnoRepositoryTest {
     private Profesional profesional;
     private Profesional otroProfesional;
     private SillonBox sillonBox;
+    private SillonBox sillonBox2;
     private Prestacion prestacion;
     private Paciente paciente;
 
@@ -43,6 +44,7 @@ class TurnoRepositoryTest {
         profesional = profesionalRepository.saveAndFlush(profesional("Dra. Ana Ficticia"));
         otroProfesional = profesionalRepository.saveAndFlush(profesional("Dr. Luis Ficticio"));
         sillonBox = sillonBoxRepository.saveAndFlush(sillon("Sillón 1"));
+        sillonBox2 = sillonBoxRepository.saveAndFlush(sillon("Sillón 2"));
         prestacion = prestacionRepository.saveAndFlush(prestacion());
         paciente = pacienteRepository.saveAndFlush(pacienteFicticio());
     }
@@ -75,6 +77,41 @@ class TurnoRepositoryTest {
 
         assertThat(turnoRepository.findSolapesPorSillon(
             sillonBox.getId(), hora(11), hora(12), null)).isEmpty();
+    }
+
+    @Test
+    void buscarOcupadosConSillonIncluyeTurnosDelProfesionalEnOtrosSillones() {
+        Turno enSillon1 = turnoRepository.saveAndFlush(
+            turno(profesional, sillonBox, 9, 10, EstadoTurno.RESERVADO));
+        Turno enSillon2 = turnoRepository.saveAndFlush(
+            turno(profesional, sillonBox2, 10, 11, EstadoTurno.CONFIRMADO));
+        Turno cancelado = turnoRepository.saveAndFlush(
+            turno(profesional, sillonBox2, 12, 13, EstadoTurno.CANCELADO));
+
+        List<Turno> ocupados = turnoRepository.buscarOcupados(
+            profesional.getId(), hora(0), hora(23, 59), sillonBox2.getId());
+
+        assertThat(ocupados).extracting(Turno::getId)
+            .containsExactly(enSillon1.getId(), enSillon2.getId(), cancelado.getId());
+
+        List<Turno> sinSillon = turnoRepository.buscarOcupados(
+            profesional.getId(), hora(0), hora(23, 59), null);
+        assertThat(sinSillon).extracting(Turno::getId)
+            .containsExactly(enSillon1.getId(), enSillon2.getId(), cancelado.getId());
+    }
+
+    @Test
+    void buscarOcupadosConSillonIncluyeTurnosDeOtrosProfesionalesEnEseSillon() {
+        Turno otroProfesionalEnSillon2 = turnoRepository.saveAndFlush(
+            turno(otroProfesional, sillonBox2, 14, 15, EstadoTurno.RESERVADO));
+        Turno profesionalEnOtroSillon = turnoRepository.saveAndFlush(
+            turno(profesional, sillonBox, 15, 16, EstadoTurno.RESERVADO));
+
+        List<Turno> ocupados = turnoRepository.buscarOcupados(
+            profesional.getId(), hora(0), hora(23, 59), sillonBox2.getId());
+
+        assertThat(ocupados).extracting(Turno::getId)
+            .containsExactly(otroProfesionalEnSillon2.getId(), profesionalEnOtroSillon.getId());
     }
 
     @Test
