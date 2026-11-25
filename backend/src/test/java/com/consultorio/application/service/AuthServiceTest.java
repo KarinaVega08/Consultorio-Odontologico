@@ -9,6 +9,7 @@ import com.consultorio.domain.model.Paciente;
 import com.consultorio.domain.model.RolUsuario;
 import com.consultorio.domain.repository.PacienteRepository;
 import com.consultorio.domain.repository.RecoveryTokenRepository;
+import com.consultorio.notification.application.port.EmailSenderPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -45,13 +50,22 @@ class AuthServiceTest {
     @Mock
     private RecoveryTokenRepository recoveryTokenRepository;
 
+    @Mock
+    private EmailSenderPort emailSender;
+
     private PasswordEncoder passwordEncoder;
     private AuthService authService;
 
     @BeforeEach
     void setUp() {
         passwordEncoder = new BCryptPasswordEncoder();
-        authService = new AuthService(pacienteRepository, passwordEncoder, tokenService, recoveryTokenRepository);
+        authService = new AuthService(
+                pacienteRepository,
+                passwordEncoder,
+                tokenService,
+                recoveryTokenRepository,
+                emailSender,
+                "http://localhost:8080");
     }
 
     @Test
@@ -133,5 +147,40 @@ class AuthServiceTest {
 
         assertThrows(BusinessException.class, () ->
                 authService.linkRecoveryEmail(id, "otro.test@gmail.com"));
+    }
+
+    @Test
+    void recoverPasswordShouldSendEmailWhenPatientHasLinkedGmail() {
+        Paciente paciente = new Paciente();
+        paciente.setId(UUID.randomUUID());
+        paciente.setNombreCompleto("Juan Pérez (paciente ficticio)");
+        paciente.setDni("99999995");
+        paciente.setEmailRecuperacion("juan.perez.test@gmail.com");
+        paciente.setActivo(true);
+
+        when(pacienteRepository.findByDni("99999995")).thenReturn(Optional.of(paciente));
+        when(recoveryTokenRepository.findByDniAndUsadoFalse("99999995")).thenReturn(Optional.empty());
+
+        authService.recoverPassword("99999995");
+
+        verify(emailSender).enviar(
+                eq("juan.perez.test@gmail.com"),
+                contains("Recuperación de contraseña"),
+                contains("http://localhost:8080/login.html?resetToken="));
+    }
+
+    @Test
+    void recoverPasswordShouldNotSendEmailWhenPatientHasNoLinkedGmail() {
+        Paciente paciente = new Paciente();
+        paciente.setId(UUID.randomUUID());
+        paciente.setDni("99999996");
+        paciente.setEmailRecuperacion(null);
+        paciente.setActivo(true);
+
+        when(pacienteRepository.findByDni("99999996")).thenReturn(Optional.of(paciente));
+
+        authService.recoverPassword("99999996");
+
+        verifyNoInteractions(emailSender);
     }
 }

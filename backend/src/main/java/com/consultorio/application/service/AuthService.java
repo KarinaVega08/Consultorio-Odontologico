@@ -11,8 +11,11 @@ import com.consultorio.domain.model.RecoveryToken;
 import com.consultorio.domain.model.RolUsuario;
 import com.consultorio.domain.repository.PacienteRepository;
 import com.consultorio.domain.repository.RecoveryTokenRepository;
+import com.consultorio.notification.application.port.EmailSenderPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,15 +37,22 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final RecoveryTokenRepository recoveryTokenRepository;
+    private final EmailSenderPort emailSender;
+    private final String baseUrl;
 
+    @Autowired
     public AuthService(PacienteRepository pacienteRepository,
                        PasswordEncoder passwordEncoder,
                        TokenService tokenService,
-                       RecoveryTokenRepository recoveryTokenRepository) {
+                       RecoveryTokenRepository recoveryTokenRepository,
+                       EmailSenderPort emailSender,
+                       @Value("${notification.base-url:http://localhost:8080}") String baseUrl) {
         this.pacienteRepository = pacienteRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
         this.recoveryTokenRepository = recoveryTokenRepository;
+        this.emailSender = emailSender;
+        this.baseUrl = baseUrl;
     }
 
     @Transactional
@@ -146,6 +156,22 @@ public class AuthService {
             token.setActivo(true);
             recoveryTokenRepository.save(token);
             logger.info("Token de recuperación generado para DNI {}", dniNormalizado);
+
+            String enlace = baseUrl + "/login.html?resetToken=" + token.getToken();
+            String cuerpo = "Hola " + paciente.getNombreCompleto() + ",\n\n"
+                    + "Recibimos una solicitud para restablecer tu contraseña en Open Mouth.\n"
+                    + "Ingresá al siguiente enlace (válido por 1 hora):\n"
+                    + enlace + "\n\n"
+                    + "Si no solicitaste este cambio, podés ignorar este mensaje.";
+            try {
+                emailSender.enviar(
+                        paciente.getEmailRecuperacion(),
+                        "Open Mouth — Recuperación de contraseña",
+                        cuerpo);
+            } catch (RuntimeException ex) {
+                logger.warn("No se pudo enviar el correo de recuperación para DNI {}: {}",
+                        dniNormalizado, ex.getMessage());
+            }
         }
         // Si no existe o no tiene Gmail vinculado, no hacemos nada (respuesta genérica)
     }

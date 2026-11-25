@@ -6,6 +6,12 @@
   const tabRegister = document.getElementById('tab-register');
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
+  const recoverForm = document.getElementById('recover-form');
+  const resetForm = document.getElementById('reset-form');
+  const forgotBtn = document.getElementById('forgot-btn');
+  const backToLoginBtn = document.getElementById('back-to-login-btn');
+  const resetBackBtn = document.getElementById('reset-back-btn');
+  const tabsBar = document.querySelector('#auth-section .tabs');
   const gmailForm = document.getElementById('gmail-form');
   const gmailLinkBox = document.getElementById('gmail-link-box');
   const logoutBtn = document.getElementById('logout-btn');
@@ -37,11 +43,21 @@
     tabRegister.classList.toggle('active', !isLogin);
     loginForm.classList.toggle('hidden', !isLogin);
     registerForm.classList.toggle('hidden', isLogin);
+    if (recoverForm) recoverForm.classList.add('hidden');
+    if (resetForm) resetForm.classList.add('hidden');
+    if (tabsBar) tabsBar.classList.remove('hidden');
+    if (authTitle) authTitle.textContent = 'Bienvenido';
+    if (authSubtitle) authSubtitle.textContent = 'Ingresá con tu DNI y contraseña o creá tu cuenta.';
   }
+
+  const authTitle = document.getElementById('auth-title');
+  const authSubtitle = document.getElementById('auth-subtitle');
 
   function renderProfile(patient) {
     authSection.classList.add('hidden');
     profileSection.classList.remove('hidden');
+    if (authTitle) authTitle.textContent = 'Mi cuenta';
+    if (authSubtitle) authSubtitle.textContent = 'Tus datos de acceso y recuperación.';
     document.getElementById('prof-name').textContent = patient.nombreCompleto;
     document.getElementById('prof-dni').textContent = patient.dni;
     document.getElementById('prof-gmail').textContent = patient.emailRecuperacion || 'No vinculado';
@@ -74,6 +90,24 @@
         return;
       }
       registerForm.reset();
+      try {
+        const loginRes = await Api.post('/api/auth/login', {
+          dni: payload.dni,
+          password: payload.password
+        });
+        if (loginRes.ok) {
+          Api.setToken(loginRes.data.token);
+          if (window.Nav && window.Nav.refresh) window.Nav.refresh();
+          renderProfile(loginRes.data.patient);
+          showAlert('Cuenta creada e inicio de sesión exitoso.', 'success');
+          if (!loginRes.data.patient.requiereVincularGmail) {
+            redirectIfRequested();
+          }
+          return;
+        }
+      } catch {
+        // Fallback al login manual si falla el auto-login
+      }
       switchTab('login');
       document.getElementById('login-dni').value = payload.dni;
       showAlert('Cuenta creada correctamente. Ya podés iniciar sesión.', 'success');
@@ -96,6 +130,7 @@
         return;
       }
       Api.setToken(res.data.token);
+      if (window.Nav && window.Nav.refresh) window.Nav.refresh();
       loginForm.reset();
       renderProfile(res.data.patient);
       showAlert('Sesión iniciada correctamente.', 'success');
@@ -106,6 +141,40 @@
       showAlert('Error de conexión con el servidor', 'error');
     }
   });
+
+  if (forgotBtn && recoverForm) {
+    forgotBtn.addEventListener('click', () => {
+      clearAlert();
+      loginForm.classList.add('hidden');
+      recoverForm.classList.remove('hidden');
+      const dniActual = document.getElementById('login-dni').value.trim();
+      if (dniActual) document.getElementById('rec-dni').value = dniActual;
+    });
+  }
+
+  if (backToLoginBtn) {
+    backToLoginBtn.addEventListener('click', () => switchTab('login'));
+  }
+
+  if (recoverForm) {
+    recoverForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+      const dni = document.getElementById('rec-dni').value.trim();
+      try {
+        const res = await Api.post('/api/auth/recover-password', { dni });
+        if (!res.ok) {
+          showAlert(extractErrorMessage(res.data, 'No se pudo procesar la recuperación'), 'error');
+          return;
+        }
+        recoverForm.reset();
+        switchTab('login');
+        showAlert('Si el DNI tiene un Gmail vinculado, enviamos un enlace de recuperación.', 'success');
+      } catch {
+        showAlert('Error de conexión con el servidor', 'error');
+      }
+    });
+  }
 
   gmailForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -132,10 +201,70 @@
 
   logoutBtn.addEventListener('click', () => {
     Api.clearToken();
+    if (window.Nav && window.Nav.refresh) window.Nav.refresh();
     profileSection.classList.add('hidden');
     authSection.classList.remove('hidden');
+    if (authTitle) authTitle.textContent = 'Bienvenido';
+    if (authSubtitle) authSubtitle.textContent = 'Ingresá con tu DNI y contraseña o creá tu cuenta.';
     switchTab('login');
   });
+
+  (function showRedirectReason() {
+    if (Api.isLoggedIn()) return;
+    const params = new URLSearchParams(window.location.search);
+    const resetToken = params.get('resetToken');
+    if (resetToken && resetForm) {
+      if (tabsBar) tabsBar.classList.add('hidden');
+      loginForm.classList.add('hidden');
+      registerForm.classList.add('hidden');
+      if (recoverForm) recoverForm.classList.add('hidden');
+      resetForm.classList.remove('hidden');
+      if (authTitle) authTitle.textContent = 'Restablecer contraseña';
+      if (authSubtitle) authSubtitle.textContent = 'Ingresá tu nueva contraseña para recuperar el acceso.';
+      return;
+    }
+    if (params.get('reason') === 'turnos') {
+      showAlert('Iniciá sesión para ver y gestionar tus turnos.', 'info');
+    }
+  })();
+
+  if (resetBackBtn) {
+    resetBackBtn.addEventListener('click', () => {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState({}, '', '/login.html');
+      }
+      switchTab('login');
+    });
+  }
+
+  if (resetForm) {
+    resetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+      const token = new URLSearchParams(window.location.search).get('resetToken');
+      const newPassword = document.getElementById('reset-password').value;
+      const confirm = document.getElementById('reset-password-confirm').value;
+      if (newPassword !== confirm) {
+        showAlert('Las contraseñas no coinciden.', 'error');
+        return;
+      }
+      try {
+        const res = await Api.post('/api/auth/reset-password', { token, newPassword });
+        if (!res.ok) {
+          showAlert(extractErrorMessage(res.data, 'No se pudo restablecer la contraseña'), 'error');
+          return;
+        }
+        resetForm.reset();
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, '', '/login.html');
+        }
+        switchTab('login');
+        showAlert('Contraseña actualizada correctamente. Ya podés iniciar sesión.', 'success');
+      } catch {
+        showAlert('Error de conexión con el servidor', 'error');
+      }
+    });
+  }
 
   (async function restoreSession() {
     if (!Api.isLoggedIn()) return;
