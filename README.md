@@ -2,6 +2,16 @@
 Sistema de gestión de turnos para consultorios odontológicos en Argentina.
 Global Desarrollo de software 2026
 
+## Integrantes
+
+| Legajo | Nombre |
+|--------|--------|
+| 52064 | Matias Oliva |
+| 51939 | Mailen Claros |
+| 52132 | Thiago Sinatra |
+| 52149 | Karina Vega |
+| 51931 | Franco Castellarin |
+
 ## Stack
 
 - **Backend:** Java 21 + Spring Boot 3 + Gradle + JPA/Hibernate + API REST
