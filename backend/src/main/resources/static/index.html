@@ -36,10 +36,6 @@
           <span class="eyebrow">Gestión de turnos</span>
           <h1>Tu consultorio,<br><span class="accent">sin fichas de papel.</span></h1>
           <p class="lead">Reservá tu turno en minutos, elegí profesional y horario, y recibí el recordatorio por email. Todo en un mismo lugar.</p>
-          <div id="backend-status" class="status-badge">
-            <span class="status-dot"></span>
-            <span id="status-text">Verificando conexión con el backend...</span>
-          </div>
           <div class="hero-actions">
             <a class="btn btn-lg" href="/reservar.html">Sacar turno &rarr;</a>
             <a class="btn btn-ghost btn-lg" href="/login.html">Ingresar / Registrarme</a>
@@ -191,16 +187,5 @@
   <script src="/js/api.js"></script>
   <script src="/js/nav.js"></script>
   <script src="/js/scroll-effects.js"></script>
-  <script>
-    fetch('/api/health')
-      .then((res) => {
-        document.getElementById('status-text').textContent = res.ok
-          ? 'Backend Spring Boot en línea (200 OK)'
-          : 'Error al conectar con la API (' + res.status + ')';
-      })
-      .catch(() => {
-        document.getElementById('status-text').textContent = 'Backend desconectado';
-      });
-  </script>
 </body>
 </html>
