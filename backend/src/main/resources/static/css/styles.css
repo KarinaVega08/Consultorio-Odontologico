@@ -1315,6 +1315,59 @@ td small {
   color: var(--navy);
 }
 
+/* ------------------------------------------------------- Intro / splash */
+/* Overlay a pantalla completa con el nombre letra por letra.
+   Los tiempos y easings replican la animación de entrada de Odentix. */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  overflow: hidden;
+}
+
+.intro-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+  font-size: clamp(2.75rem, 11vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.intro-letter {
+  display: inline-block;
+  will-change: transform;
+  animation: intro-letter-in 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) var(--in-delay, 0s) both,
+             intro-letter-out 0.6s cubic-bezier(0.645, 0.045, 0.355, 1) var(--out-delay, 1.7s) forwards;
+}
+
+@keyframes intro-letter-in {
+  from { transform: translateY(115%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes intro-letter-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(-115%); }
+}
+
+.intro-overlay.is-leaving {
+  animation: intro-overlay-out 1s cubic-bezier(0.77, 0, 0.175, 1) 2.05s forwards;
+}
+
+@keyframes intro-overlay-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
 /* ------------------------------------------------ Animaciones de scroll */
 /* La clase la agrega JS solo cuando hay IntersectionObserver: sin JS el
    contenido se muestra normalmente. */
