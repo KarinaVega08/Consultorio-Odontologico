@@ -186,6 +186,11 @@ public class TurnoService {
 
     @Transactional(readOnly = true)
     public List<AppointmentResponse> listar(AppointmentQuery query, TokenService.AuthenticatedUser usuario) {
+        if (usuario.rol() == RolUsuario.PACIENTE && query.profesionalId() == null && query.fecha() == null && query.estado() == null) {
+            return turnoRepository.findByPacienteIdOrderByFechaHoraInicio(usuario.userId()).stream()
+                .map(TurnoService::toResponse)
+                .toList();
+        }
         LocalDateTime desde = query.fecha() == null ? null : query.fecha().atStartOfDay();
         LocalDateTime hasta = query.fecha() == null ? null : query.fecha().atTime(LocalTime.MAX);
 

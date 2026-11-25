@@ -46,9 +46,9 @@ public interface TurnoRepository extends JpaRepository<Turno, UUID> {
 
     @Query("""
         select t from Turno t
-        where (:profesionalId is null or t.profesional.id = :profesionalId)
-          and (:desde is null or t.fechaHoraInicio >= :desde)
-          and (:hasta is null or t.fechaHoraInicio <= :hasta)
+        where (cast(:profesionalId as uuid) is null or t.profesional.id = :profesionalId)
+          and (cast(:desde as timestamp) is null or t.fechaHoraInicio >= :desde)
+          and (cast(:hasta as timestamp) is null or t.fechaHoraInicio <= :hasta)
           and (:estado is null or t.estado = :estado)
         order by t.fechaHoraInicio
         """)
@@ -57,6 +57,8 @@ public interface TurnoRepository extends JpaRepository<Turno, UUID> {
                                  @Param("hasta") LocalDateTime hasta,
                                  @Param("estado") EstadoTurno estado);
 
+    List<Turno> findByPacienteIdOrderByFechaHoraInicio(UUID pacienteId);
+
     /** Fuente de datos del puerto de disponibilidad de C-04; incluye cancelados para que se ignoren en el cálculo. */
     @Query("""
         select t from Turno t
@@ -64,7 +66,7 @@ public interface TurnoRepository extends JpaRepository<Turno, UUID> {
           and t.profesional.id = :profesionalId
           and t.fechaHoraInicio >= :desde
           and t.fechaHoraInicio <= :hasta
-          and (:sillonBoxId is null or t.sillonBox.id = :sillonBoxId)
+          and (cast(:sillonBoxId as uuid) is null or t.sillonBox.id = :sillonBoxId)
         order by t.fechaHoraInicio
         """)
     List<Turno> buscarOcupados(@Param("profesionalId") UUID profesionalId,

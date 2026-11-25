@@ -42,6 +42,8 @@ mailpit:
 
 app:
   frontend-path: ${FRONTEND_PATH:src/main/resources/static}
+  demo-seed:
+    enabled: ${DEMO_SEED_ENABLED:true}
 
 availability:
   grid-minutes: ${AVAILABILITY_GRID_MINUTES:15}
