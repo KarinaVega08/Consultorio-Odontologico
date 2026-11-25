@@ -2,7 +2,7 @@
 
 ## Why
 
-`C-06 notificaciones` ya está mergeado en `main` con eventos, tokens de un solo uso, scheduler y enlaces públicos, pero **está desconectado de la agenda**: nadie publica `TurnoCreadoEvent`, `TurnoReprogramadoEvent` ni `TurnoCanceladoEvent`, `TurnoParaRecordarPort` sigue siendo un bean no-op y los eventos `TurnoCanceladoPorPacienteEvent` / `AsistenciaConfirmadaEvent` que emiten los enlaces únicos no cambian ningún estado. En la práctica no llegan correos de confirmación ni recordatorios, y cancelar/confirmar desde un enlace no impacta el turno (RN-NT-01, RN-NT-02, US-013). Esta es la parte de la integración que completa **Caste** junto con **Kari**, y depende de que `C-05 gestion-turnos` esté mergeado.
+`C-06 notificaciones` ya está mergeado en `main` con eventos, tokens de un solo uso, scheduler y enlaces públicos, pero **está desconectado de la agenda**: nadie publica `TurnoCreadoEvent`, `TurnoReprogramadoEvent` ni `TurnoCanceladoEvent`, `TurnoParaRecordarPort` sigue siendo un bean no-op y los eventos `TurnoCanceladoPorPacienteEvent` / `AsistenciaConfirmadaEvent` que emiten los enlaces únicos no cambian ningún estado. En la práctica no llegan correos de confirmación ni recordatorios, y cancelar/confirmar desde un enlace no impacta el turno (RN-NT-01, RN-NT-02, US-013). Esta es la parte de la integración que completa **Franco Castellarín** junto con **Karina Vega**, y depende de que `C-05 gestion-turnos` esté mergeado.
 
 ## What Changes
 

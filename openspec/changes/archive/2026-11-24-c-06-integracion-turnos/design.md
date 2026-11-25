@@ -71,5 +71,5 @@ No aplica: no hay cambios de esquema ni de datos. Rollback = revert del commit d
 
 ## Open Questions
 
-- **Orden de merge**: Thiago decide simergea primero C-05 y luego esta integración; el propose no depende del orden, el apply sí.
+- **Orden de merge**: Thiago Sinatra decide simergea primero C-05 y luego esta integración; el propose no depende del orden, el apply sí.
 - **¿Confirmar asistencia sobre un turno cancelado?** Se decide mantenerlo como `CANCELADO` (no reactivar); si el negocio quiere reactivación, será un change nuevo.

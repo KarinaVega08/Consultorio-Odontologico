@@ -1,4 +1,4 @@
-# Explore — C-07 frontend-web (Etapa 1: base de Caste)
+# Explore — C-07 frontend-web (Etapa 1: base de Franco Castellarín)
 
 ## Estado actual relevado (`2026-11-23`, desde `origin/main` @ `e5d9876`)
 
@@ -10,10 +10,10 @@
   - `js/auth.js`: IIFE acoplada al DOM de `login.html`; ya usa la clave `consultorio_auth_token` en `localStorage`, envía `Authorization: Bearer`, hace logout y restaura sesión con `GET /api/patients/me`.
 - **No existen**: `css/`, `reservar.html`, `mis-turnos.html`, `js/api.js`, `js/nav.js`.
 - **Seguridad (`SecurityConfig`, `@Order(2)`)**: whitelist actual = `/api/health`, `/api/auth/**`, `/api/availability`, `/`, `/index.html`, `/login.html`, `/favicon.ico`, `/css/**`, `/js/**`, `/static/**`; todo lo demás `authenticated()`. **`/reservar.html` y `/mis-turnos.html` no están permitidas** → navegar a ellas sin token daría 401/403 (el browser no envía header Bearer en la navegación).
-- **Sin tests de frontend**: no hay `package.json`, ni framework JS. La verificación es `./gradlew test` (backend) + revisión visual/E2E de Thiago.
+- **Sin tests de frontend**: no hay `package.json`, ni framework JS. La verificación es `./gradlew test` (backend) + revisión visual/E2E de Thiago Sinatra.
 - **Change `c-07-frontend-web` no existía** en `openspec/changes/` → se crea en esta rama.
 
-## Contratos de API que la base debe respetar (los consume la Etapa 2 de Mai)
+## Contratos de API que la base debe respetar (los consume la Etapa 2 de Mailén Claros)
 
 | Endpoint | Uso en el frontend | Forma relevante |
 |---|---|---|
@@ -44,4 +44,4 @@ Nota de dominio: `AppointmentResponse` expone **solo UUIDs** (`profesionalId`, `
 
 ## Conclusión
 
-La Etapa 1 es documentación + maquetado + módulo HTTP: se puede ejecutar **ahora** sin depender de otras ramas (el backend ya expone todo lo necesario). La lógica de disponibilidad, reserva, listado y cancelación queda **explícitamente fuera** de esta etapa (Etapa 2 de Mai) y la revisión/merge es de Thiago (Etapa 3).
+La Etapa 1 es documentación + maquetado + módulo HTTP: se puede ejecutar **ahora** sin depender de otras ramas (el backend ya expone todo lo necesario). La lógica de disponibilidad, reserva, listado y cancelación queda **explícitamente fuera** de esta etapa (Etapa 2 de Mailén Claros) y la revisión/merge es de Thiago Sinatra (Etapa 3).

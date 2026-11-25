@@ -2,7 +2,7 @@
 
 ## Why
 
-El backend está completo y en verde (`C-01` a `C-06`), pero **la interfaz de usuario no existe**: solo hay una landing y una página de login con CSS inline, sin navegación común, sin página de reserva y sin panel de turnos. Sin una base visual coherente no hay forma de demostrar los flujos del producto (reserva, disponibilidad, gestión) ni de que Mai pueda construir la lógica interactiva sobre una estructura estable. Este change abre la **Fase 5 (frontend)** y entrega la **Etapa 1: base visual, maquetado y navegación** a cargo de **Caste**; la lógica interactiva es de Mai (Etapa 2) y la revisión/unificación es de Thiago (Etapa 3).
+El backend está completo y en verde (`C-01` a `C-06`), pero **la interfaz de usuario no existe**: solo hay una landing y una página de login con CSS inline, sin navegación común, sin página de reserva y sin panel de turnos. Sin una base visual coherente no hay forma de demostrar los flujos del producto (reserva, disponibilidad, gestión) ni de que Mailén Claros pueda construir la lógica interactiva sobre una estructura estable. Este change abre la **Fase 5 (frontend)** y entrega la **Etapa 1: base visual, maquetado y navegación** a cargo de **Franco Castellarín**; la lógica interactiva es de Mailén Claros (Etapa 2) y la revisión/unificación es de Thiago Sinatra (Etapa 3).
 
 ## What Changes
 
@@ -33,8 +33,8 @@ El backend está completo y en verde (`C-01` a `C-06`), pero **la interfaz de us
 - **Archivos nuevos**: `backend/src/main/resources/static/css/styles.css`, `static/reservar.html`, `static/mis-turnos.html`, `static/js/api.js`, `static/js/nav.js`.
 - **Archivos modificados**: `static/index.html`, `static/login.html`, `static/js/auth.js` (refactor mínimo), `infrastructure/config/SecurityConfig.java` (whitelist de 2 páginas).
 - **Dependencias**: backend mergeado en `main` (`C-01` a `C-06`); no depende de ramas abiertas (`feat/c06-integracion-turnos` no bloquea).
-- **Tests**: `./gradlew test` debe seguir en verde (no hay tests JS; la revisión visual/E2E es de Thiago en la Etapa 3).
-- **Entrega**: la Etapa 2 de Mai parte de `feat/front-base` para agregar la lógica interactiva; la Etapa 3 de Thiago unifica en `main`.
+- **Tests**: `./gradlew test` debe seguir en verde (no hay tests JS; la revisión visual/E2E es de Thiago Sinatra en la Etapa 3).
+- **Entrega**: la Etapa 2 de Mailén Claros parte de `feat/front-base` para agregar la lógica interactiva; la Etapa 3 de Thiago Sinatra unifica en `main`.
 
 ## Leer antes
 

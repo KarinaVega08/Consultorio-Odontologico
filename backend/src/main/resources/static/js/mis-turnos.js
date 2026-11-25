@@ -1,5 +1,5 @@
 /**
- * Etapa 2 (Mai) — Panel "Mis Turnos":
+ * Etapa 2 (Mailén Claros) — Panel "Mis Turnos":
  *   GET /api/appointments + DELETE /api/appointments/{id}
  * Requiere api.js y catalog.js cargados antes.
  */

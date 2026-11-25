@@ -1,12 +1,12 @@
 # Tasks — C-04 Disponibilidad de Turnos
 
-> Checklist de trabajo para **Mai**. Rama: `feat/c04-disponibilidad-turnos`.
+> Checklist de trabajo para **Mailén Claros**. Rama: `feat/c04-disponibilidad-turnos`.
 
 ## Fase A — Preparación (antes de codear)
 
 - [x] **A1.** Desestagiar `backend/.env` (ya hecho al crear la rama) y confirmar que `.gitignore` lo ignora.
-- [x] **A2.** Confirmar con **Kari** el alcance de las entidades de `C-03` (`Profesional`, `SillonBox`, `Prestacion`, `HorarioAtencion`, `Bloqueo`).
-- [x] **A3.** Confirmar con **Caste** cómo se modelará `Turno` en `C-05` (campos `fecha_hora_inicio`, `fecha_hora_fin`, `estado`, `profesional_id`, `sillon_box_id`).
+- [x] **A2.** Confirmar con **Karina Vega** el alcance de las entidades de `C-03` (`Profesional`, `SillonBox`, `Prestacion`, `HorarioAtencion`, `Bloqueo`).
+- [x] **A3.** Confirmar con **Franco Castellarín** cómo se modelará `Turno` en `C-05` (campos `fecha_hora_inicio`, `fecha_hora_fin`, `estado`, `profesional_id`, `sillon_box_id`).
 - [x] **A4.** Definir la granularidad de la grilla: 15 minutos (propuesto) o 30. Registrar la decisión en `design.md`.
 
 ## Fase B — Ciclo OPSX (propose)
@@ -42,12 +42,12 @@
 
 ## Fase E — Integración y cierre
 
-- [x] **E1.** Merge a `main` cuando `C-03` (Kari) esté lista, conectando los repositorios reales si se usaron interfaces.
-- [x] **E2.** Avisar a **Caste** que `C-04` está disponible para su `C-05`.
+- [x] **E1.** Merge a `main` cuando `C-03` (Karina Vega) esté lista, conectando los repositorios reales si se usaron interfaces.
+- [x] **E2.** Avisar a **Franco Castellarín** que `C-04` está disponible para su `C-05`.
 - [x] **E3.** Archivar el change (`/opsx:archive C-04-disponibilidad-turnos`) una vez mergeado.
 - [x] **E4.** Commits propios con mensajes claros (`feat(c04-...): ...`).
 
-> **Estado al cierre de la sesión:** C-03 ya está integrado en la rama y sus repositorios reales están conectados en `AvailabilityService`. E3 (archive, 2026-11-23) completado en la rama `feat/c04-disponibilidad-turnos`; no se hizo push ni merge a `main`. Quedan pendientes de acción humana: el merge a `main` (E1) y el aviso directo a Caste (E2 — handoff documentado en `handoff-c05.md`).
+> **Estado al cierre de la sesión:** C-03 ya está integrado en la rama y sus repositorios reales están conectados en `AvailabilityService`. E3 (archive, 2026-11-23) completado en la rama `feat/c04-disponibilidad-turnos`; no se hizo push ni merge a `main`. Quedan pendientes de acción humana: el merge a `main` (E1) y el aviso directo a Franco Castellarín (E2 — handoff documentado en `handoff-c05.md`).
 
 ## Fase F — Evidencia para la defensa
 

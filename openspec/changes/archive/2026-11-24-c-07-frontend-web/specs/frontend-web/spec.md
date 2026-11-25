@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Entregar la base del frontend estático (servido por el backend): sistema de estilos unificado, navegación común con estado de sesión, maquetado de las páginas de reserva y de turnos, y un módulo HTTP con token listo para que la Etapa 2 construya la lógica interactiva. Esta spec cubre **solo la Etapa 1 (Caste)**; la lógica de disponibilidad, reserva y cancelación se especifica en la continuación del mismo change (Etapa 2, Mai).
+Entregar la base del frontend estático (servido por el backend): sistema de estilos unificado, navegación común con estado de sesión, maquetado de las páginas de reserva y de turnos, y un módulo HTTP con token listo para que la Etapa 2 construya la lógica interactiva. Esta spec cubre **solo la Etapa 1 (Franco Castellarín)**; la lógica de disponibilidad, reserva y cancelación se especifica en la continuación del mismo change (Etapa 2, Mailén Claros).
 
 ## ADDED Requirements
 

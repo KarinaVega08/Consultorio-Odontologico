@@ -1,5 +1,5 @@
 /**
- * Etapa 2 (Mai) — Lógica de reserva:
+ * Etapa 2 (Mailén Claros) — Lógica de reserva:
  *   1. carga profesionales / prestaciones / sillones desde /api/catalog
  *   2. consulta franjas libres con GET /api/availability
  *   3. confirma con POST /api/appointments

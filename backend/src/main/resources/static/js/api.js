@@ -1,7 +1,7 @@
 /**
  * Módulo HTTP del frontend (C-07 frontend-web, Etapa 1).
  * Centraliza el token de sesión en localStorage y las peticiones autenticadas.
- * La lógica de negocio (disponibilidad, reservas, turnos) es Etapa 2 (Mai).
+ * La lógica de negocio (disponibilidad, reservas, turnos) es Etapa 2 (Mailén Claros).
  */
 (function () {
   const TOKEN_KEY = 'consultorio_auth_token';

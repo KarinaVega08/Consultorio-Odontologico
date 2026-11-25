@@ -33,4 +33,4 @@ Manual técnico público completo que detalla exactamente cómo modela sillones 
 
 ## Notas del investigador
 
-Único competidor relevado con manual operativo público de agenda por sillón y lista de precios transparente publicada en detalle. Verificado manualmente además por Thiago el 2026-11-22.
+Único competidor relevado con manual operativo público de agenda por sillón y lista de precios transparente publicada en detalle. Verificado manualmente además por Thiago Sinatra el 2026-11-22.

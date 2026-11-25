@@ -36,25 +36,25 @@ C-01 setup-base
 ### Paralelismo por fase (Distribución del equipo — 5 integrantes)
 
 ```
-GATE 0: C-01 setup-base ✓     [Thiago — Líder técnico, sube base limpia a main y control general]
-  → C-02 auth-pacientes                  [Mati + Thiago (Listo ✓) — feat/c02-registro-pacientes]
-  → C-03 configuracion-consultorio       [Kari — feat/c03-config-consultorio]
-  → C-04 disponibilidad-turnos           [Mai — feat/c04-disponibilidad-turnos]   ← FORK (Oleada 1: 3 ramas separadas)
+GATE 0: C-01 setup-base ✓     [Thiago Sinatra — Líder técnico, sube base limpia a main y control general]
+  → C-02 auth-pacientes                  [Matías Oliva + Thiago Sinatra (Listo ✓) — feat/c02-registro-pacientes]
+  → C-03 configuracion-consultorio       [Karina Vega — feat/c03-config-consultorio]
+  → C-04 disponibilidad-turnos           [Mailén Claros — feat/c04-disponibilidad-turnos]   ← FORK (Oleada 1: 3 ramas separadas)
 
 GATE 1: C-02, C-03, C-04 ✓
-  → C-05 gestion-turnos                  [Caste + Thiago (Listo ✓) — feat/c05-gestion-turnos]   (Oleada 2, Core MVP)
+  → C-05 gestion-turnos                  [Franco Castellarín + Thiago Sinatra (Listo ✓) — feat/c05-gestion-turnos]   (Oleada 2, Core MVP)
 
 GATE 2: C-05 ✓
-  → C-06 notificaciones                  [Kari + Caste — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final backend)
+  → C-06 notificaciones                  [Karina Vega + Franco Castellarín — feat/c06-notificaciones (SMTP/Mailpit)]   (Change final backend)
 
 GATE 3: C-06 ✓
-  → C-07 frontend-web                    [Caste (Base) → Mai (Finiquitado) → Thiago (Unificación ✓)]
+  → C-07 frontend-web                    [Franco Castellarín (Base) → Mailén Claros (Finiquitado) → Thiago Sinatra (Unificación ✓)]
 ```
 
 Cambios que pueden ejecutarse en paralelo sin colisiones de archivos (Oleada 1, GATE 1):
-- **C-02 auth-pacientes (Mati + Thiago (Listo ✓))**: toca `backend/.../auth/` (Paciente, AuthController, AuthService, seguridad, registro/login/recuperación/blanqueo).
-- **C-03 configuracion-consultorio (Kari)**: toca `backend/.../admin/` (Profesional, SillonBox, Prestacion, HorarioAtencion, Bloqueo + Admin CRUD).
-- **C-04 disponibilidad-turnos (Mai)**: toca `backend/.../availability/` (AvailabilityController, AvailabilityService, lecturas de calendario).
+- **C-02 auth-pacientes (Matías Oliva + Thiago Sinatra (Listo ✓))**: toca `backend/.../auth/` (Paciente, AuthController, AuthService, seguridad, registro/login/recuperación/blanqueo).
+- **C-03 configuracion-consultorio (Karina Vega)**: toca `backend/.../admin/` (Profesional, SillonBox, Prestacion, HorarioAtencion, Bloqueo + Admin CRUD).
+- **C-04 disponibilidad-turnos (Mailén Claros)**: toca `backend/.../availability/` (AvailabilityController, AvailabilityService, lecturas de calendario).
 - Ninguno escribe en los paquetes de los otros dos; solo leen entidades base creadas en C-01.
 
 ---
@@ -71,15 +71,15 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 
 | Fase | Change | Nombre | Responsable | Rama Git | Alcance asignado |
 |---|---|---|---|---|---|
-| **Fase 1** | **C-01** | `setup-base` | **Thiago** (Listo ✓) | `main` | Esqueleto base Java 21 + Spring Boot 3 + Gradle + PostgreSQL/H2, seguridad inicial, y control/revisión general |
-| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Mati + Thiago (Listo ✓)** | `feat/c02-registro-pacientes` (mergeada en `main`) | Registro y login con DNI, vinculación única con Gmail, recuperación y reset de contraseña, blanqueo presencial |
-| **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Kari** | `feat/c03-config-consultorio` (mergeada en `main`) | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
-| **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mai** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
-| **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Caste + Thiago (Listo ✓)** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
-| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Kari + Caste (Listo ✓)** | `feat/c06-notificaciones` (mergeada en `main`) | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
-| **Fase 5** (Frontend) | **C-07** | `frontend-web` | **Caste + Mai + Thiago (Listo ✓)** | `feat/front-base` → `feat/front-completo` | Frontend completo: Caste arma la base visual, maquetado y navegación; Mai finiquita la lógica interactiva (reserva, disponibilidad y gestión); Thiago unifica en `main` |
+| **Fase 1** | **C-01** | `setup-base` | **Thiago Sinatra** (Listo ✓) | `main` | Esqueleto base Java 21 + Spring Boot 3 + Gradle + PostgreSQL/H2, seguridad inicial, y control/revisión general |
+| **Fase 2** (Oleada 1) | **C-02** | `auth-pacientes` | **Matías Oliva + Thiago Sinatra (Listo ✓)** | `feat/c02-registro-pacientes` (mergeada en `main`) | Registro y login con DNI, vinculación única con Gmail, recuperación y reset de contraseña, blanqueo presencial |
+| **Fase 2** (Oleada 1) | **C-03** | `configuracion-consultorio` | **Karina Vega** | `feat/c03-config-consultorio` (mergeada en `main`) | CRUD profesionales, sillones/boxes, horarios, bloqueos, prestaciones con duración variable |
+| **Fase 2** (Oleada 1) | **C-04** | `disponibilidad-turnos` | **Mailén Claros** | `feat/c04-disponibilidad-turnos` | Motor de disponibilidad y cálculo de franjas libres por profesional y sillón/box |
+| **Fase 3** (Core MVP) | **C-05** | `gestion-turnos` | **Franco Castellarín + Thiago Sinatra (Listo ✓)** | `feat/c05-gestion-turnos` | Gestión de turnos sin solapamiento (profesional + sillón/box) y turnos consecutivos borde a borde |
+| **Fase 4** (Cierre) | **C-06** | `notificaciones` | **Karina Vega + Franco Castellarín (Listo ✓)** | `feat/c06-notificaciones` (mergeada en `main`) | Recordatorios automáticos por email (SMTP/Mailpit) y enlaces únicos de confirmación/cancelación |
+| **Fase 5** (Frontend) | **C-07** | `frontend-web` | **Franco Castellarín + Mailén Claros + Thiago Sinatra (Listo ✓)** | `feat/front-base` → `feat/front-completo` | Frontend completo: Franco Castellarín arma la base visual, maquetado y navegación; Mailén Claros finiquita la lógica interactiva (reserva, disponibilidad y gestión); Thiago Sinatra unifica en `main` |
 
-> **Supervisión y control de calidad (Thiago):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.
+> **Supervisión y control de calidad (Thiago Sinatra):** Lidera el repositorio, revisa y aprueba los Pull Requests hacia `main`, asegurando la integración continua y la corrección general de la suite de pruebas.
 
 ---
 
@@ -216,27 +216,27 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
   - `knowledge-base/02_descripcion_general.md` §Integraciones externas (SMTP/Mailpit)
   - `knowledge-base/10_preguntas_abiertas.md` §IN-02 horas de antelación para recordatorio
 
-> **Nota de integración (estado actual en `main`):** el **change C-06 está completo e integrado directamente en `main`** (adaptador SMTP, recordatorios configurables, enlaces únicos de confirmación/cancelación y fallback de envío; mergeado por Kari en `dabff4e` / `d42370c`), por eso su checkbox figura `[x]`. **No confundir con el cierre posterior `c-06-integracion-turnos`**: es un change **separado**, planificado en `origin/feat/c06-integracion-turnos`, que conectará C-05 con notificaciones (publicar `TurnoCreadoEvent`, `TurnoReprogramadoEvent` y `TurnoCanceladoEvent` desde `TurnoService`, y reemplazar el fallback no-op por un `TurnoParaRecordarPort` real). Ese cierre **ya está completado e integrado en `main`** (paquete `com.consultorio.integration.notification`, eventos publicados desde `TurnoService`, `TurnoRecordatorioAdapter` real y listeners de enlaces únicos), sin modificar el módulo `notification` ni la seguridad. Sigue siendo **fuera del alcance de C-06** y no modifica su estado.
+> **Nota de integración (estado actual en `main`):** el **change C-06 está completo e integrado directamente en `main`** (adaptador SMTP, recordatorios configurables, enlaces únicos de confirmación/cancelación y fallback de envío; mergeado por Karina Vega en `dabff4e` / `d42370c`), por eso su checkbox figura `[x]`. **No confundir con el cierre posterior `c-06-integracion-turnos`**: es un change **separado**, planificado en `origin/feat/c06-integracion-turnos`, que conectará C-05 con notificaciones (publicar `TurnoCreadoEvent`, `TurnoReprogramadoEvent` y `TurnoCanceladoEvent` desde `TurnoService`, y reemplazar el fallback no-op por un `TurnoParaRecordarPort` real). Ese cierre **ya está completado e integrado en `main`** (paquete `com.consultorio.integration.notification`, eventos publicados desde `TurnoService`, `TurnoRecordatorioAdapter` real y listeners de enlaces únicos), sin modificar el módulo `notification` ni la seguridad. Sigue siendo **fuera del alcance de C-06** y no modifica su estado.
 
 ## FASE 5 — Frontend web completo (interfaz de usuario final)
 
 ### [C-07] `frontend-web`
 - **Estado**: `[x]` completado
-- **Dinámica de equipo**: Caste (Etapa 1: base de diseño y maquetado) → Mai (Etapa 2: finiquitado con consumo de APIs y validaciones) → Thiago (Etapa 3: revisión general y unificación a `main`, delegada en Caste por disponibilidad del líder).
+- **Dinámica de equipo**: Franco Castellarín (Etapa 1: base de diseño y maquetado) → Mailén Claros (Etapa 2: finiquitado con consumo de APIs y validaciones) → Thiago Sinatra (Etapa 3: revisión general y unificación a `main`, delegada en Franco Castellarín por disponibilidad del líder).
 - **Scope**:
-  - **Etapa 1 (Caste — rama `feat/front-base`)**:
+  - **Etapa 1 (Franco Castellarín — rama `feat/front-base`)**:
     - Estilos unificados en `backend/src/main/resources/static/css/styles.css` (diseño moderno, tipografía, paleta de colores y componentes).
     - Barra de navegación común (header) y footer en todas las pantallas con accesos a: *Inicio*, *Sacar Turno*, *Mis Turnos* y *Login / Mi Cuenta / Cerrar Sesión*.
     - Maquetado HTML de `index.html` (landing page actualizada), `reservar.html` (formulario de reserva y contenedor para horarios) y `mis-turnos.html` (panel de listado de turnos).
     - Módulo de conexión HTTP enviando el token de autenticación guardado en `localStorage` (`consultorio_auth_token`).
-  - **Etapa 2 (Mai — rama `feat/front-completo`)**:
+  - **Etapa 2 (Mailén Claros — rama `feat/front-completo`)**:
     - Lógica de consulta de disponibilidad (`GET /api/availability`) con carga de profesionales, prestaciones y selección de fecha.
     - Renderizado interactivo de las franjas horarias libres y confirmación de la reserva con `POST /api/appointments`.
     - Lógica de "Mis Turnos" (`GET /api/appointments`) con visualización de turnos activos y cancelados con badges de estado.
     - Cancelación de turnos (`DELETE /api/appointments/{id}`) con confirmación y refresco automático.
     - Validaciones de experiencia de usuario (bloqueo de fechas pasadas, redirección si no hay sesión activa a `login.html`, y diseño responsive).
-  - **Etapa 3 (Thiago — líder técnico)**:
-    - Revisión del código final de Mai, prueba de flujo E2E completo en navegador y merge a `main` (realizado por Caste por delegación de Thiago).
+  - **Etapa 3 (Thiago Sinatra — líder técnico)**:
+    - Revisión del código final de Mailén Claros, prueba de flujo E2E completo en navegador y merge a `main` (realizado por Franco Castellarín por delegación de Thiago Sinatra).
 - **Dependencias**: `C-02`, `C-04`, `C-05`, `C-06`
 - **Governance**: MEDIO (interfaz de usuario del sistema)
 - **Riesgo**: BAJO (el backend ya está 100% probado y funcional)
@@ -256,7 +256,7 @@ Nota: `C-03 configuracion-consultorio` y `C-04 disponibilidad-turnos` son ramas 
 | C-04 | disponibilidad-turnos | 2 | C-01 | MEDIO | MEDIO | C-02, C-03 |
 | C-05 | gestion-turnos | 3 | C-02, C-03, C-04 | CRITICO | ALTO | — (bloquea hasta que C-02/C-03/C-04 estén listos) |
 | C-06 | notificaciones | 4 | C-05, C-02 | ALTO | MEDIO | — (último backend) |
-| C-07 | frontend-web | 5 | C-02, C-04, C-05, C-06 | MEDIO | BAJO | — (Caste base → Mai finiquita → Thiago unificó) |
+| C-07 | frontend-web | 5 | C-02, C-04, C-05, C-06 | MEDIO | BAJO | — (Franco Castellarín base → Mailén Claros finiquita → Thiago Sinatra unificó) |
 
 **Camino crítico**: `C-01 → C-02 → C-05 → C-06 → C-07` (5 changes).
 **Gates de paralelismo**: 4 (GATE 0, GATE 1 FORK, GATE 2, GATE 3).

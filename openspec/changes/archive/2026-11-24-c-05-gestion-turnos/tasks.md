@@ -1,13 +1,13 @@
 # Tasks — C-05 gestion-turnos
 
-> Checklist de trabajo para **Caste**. Rama: `feat/c05-gestion-turnos` (solo este change).
+> Checklist de trabajo para **Franco Castellarín**. Rama: `feat/c05-gestion-turnos` (solo este change).
 > Referencias: `specs/gestion-turnos/spec.md` (qué) y `design.md` (cómo).
 > La integración con `C-06` se planifica en la rama `feat/c06-integracion-turnos` y **no** pertenece a esta rama.
 
 ## 1. Coordinación y preparación (antes de codear)
 
-- [x] 1.1 Responderle a **Mai** (su tarea A3) con el modelo de `Turno` del design D1/D3 (campos, ubicación `domain.model.Turno`, regla estricta) — verificación: respuesta enviada en el chat del equipo y confirmación de Mai.
-- [x] 1.2 Avisar a **Thiago** que el apply requiere el merge de `C-02` (`Paciente`, `AuthenticatedUser`, filtro Bearer) — verificación: `git log` confirma que `d5d8a73 feat(c02-auth-pacientes)` es ancestro de esta rama.
+- [x] 1.1 Responderle a **Mailén Claros** (su tarea A3) con el modelo de `Turno` del design D1/D3 (campos, ubicación `domain.model.Turno`, regla estricta) — verificación: respuesta enviada en el chat del equipo y confirmación de Mailén Claros.
+- [x] 1.2 Avisar a **Thiago Sinatra** que el apply requiere el merge de `C-02` (`Paciente`, `AuthenticatedUser`, filtro Bearer) — verificación: `git log` confirma que `d5d8a73 feat(c02-auth-pacientes)` es ancestro de esta rama.
 - [x] 1.3 Confirmar en verde la base antes de empezar — verificación: `./gradlew test` en `backend/` → `BUILD SUCCESSFUL`.
 
 ## 2. Ciclo OPSX — Explore y Propose
@@ -17,7 +17,7 @@
 - [x] 2.3 Spec: `specs/gestion-turnos/spec.md` con 9 requirements y 12 escenarios WHEN/THEN (feliz, error de negocio, borde y seguridad) — verificación: `openspec validate c-05-gestion-turnos --strict` sin errores.
 - [x] 2.4 Design: `design.md` con decisiones D1-D5 (IN-04 resuelto; sin integración C-06) — verificación: archivo presente con todas las secciones.
 - [x] 2.5 Tasks: este archivo — verificación: `openspec status --change c-05-gestion-turnos` → todos los artefactos `done`.
-- [x] 2.6 Subir la rama a `origin/feat/c05-gestion-turnos` (sin PR: la revisión y el merge los hace Thiago) — verificación: `git ls-remote origin refs/heads/feat/c05-gestion-turnos` muestra el commit del propose.
+- [x] 2.6 Subir la rama a `origin/feat/c05-gestion-turnos` (sin PR: la revisión y el merge los hace Thiago Sinatra) — verificación: `git ls-remote origin refs/heads/feat/c05-gestion-turnos` muestra el commit del propose.
 
 ## 3. Modelo de datos (apply)
 
@@ -50,5 +50,5 @@
 
 ## Workflow follow-up
 
-- La revisión, el merge y el archivado del change los hace **Thiago** (no se ejecutan desde esta rama).
+- La revisión, el merge y el archivado del change los hace **Thiago Sinatra** (no se ejecutan desde esta rama).
 - Dejar lista la evidencia para el video: tests en verde, el momento de "Ajustar" del propose y el archivo archivado.

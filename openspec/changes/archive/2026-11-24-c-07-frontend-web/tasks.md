@@ -1,13 +1,13 @@
-# Tasks — C-07 frontend-web (Etapa 1: base de Caste)
+# Tasks — C-07 frontend-web (Etapa 1: base de Franco Castellarín)
 
-> Checklist de trabajo para **Caste**. Rama: `feat/front-base` (solo este change).
+> Checklist de trabajo para **Franco Castellarín**. Rama: `feat/front-base` (solo este change).
 > Referencias: `specs/frontend-web/spec.md` (qué) y `design.md` (cómo).
-> La lógica interactiva es de **Mai** (Etapa 2, rama `feat/front-completo`) y la revisión/merge de **Thiago** (Etapa 3).
+> La lógica interactiva es de **Mailén Claros** (Etapa 2, rama `feat/front-completo`) y la revisión/merge de **Thiago Sinatra** (Etapa 3).
 
 ## 1. Coordinación y preparación
 
-- [x] 1.1 Avisar a **Mai** que `feat/front-base` queda lista para que finiquite la lógica (ids de DOM en `reservar.html`/`mis-turnos.html`, `Api` en `js/api.js`, handoff en design D5) — verificación: mensaje en el chat del equipo.
-- [x] 1.2 Avisar a **Thiago** que el apply incluye un cambio mínimo de whitelist en `SecurityConfig` — verificación: mensaje en el chat del equipo.
+- [x] 1.1 Avisar a **Mailén Claros** que `feat/front-base` queda lista para que finiquite la lógica (ids de DOM en `reservar.html`/`mis-turnos.html`, `Api` en `js/api.js`, handoff en design D5) — verificación: mensaje en el chat del equipo.
+- [x] 1.2 Avisar a **Thiago Sinatra** que el apply incluye un cambio mínimo de whitelist en `SecurityConfig` — verificación: mensaje en el chat del equipo.
 - [x] 1.3 Confirmar en verde la base antes de empezar — verificación: `./gradlew test` en `backend/` → `BUILD SUCCESSFUL`.
 
 ## 2. Ciclo OPSX — Explore y Propose
@@ -17,7 +17,7 @@
 - [x] 2.3 Spec: `specs/frontend-web/spec.md` con 7 requirements y 12 escenarios WHEN/THEN (feliz, borde, seguridad) — verificación: `openspec validate c-07-frontend-web --strict` sin errores.
 - [x] 2.4 Design: `design.md` con decisiones D1-D6 — verificación: archivo presente con todas las secciones.
 - [x] 2.5 Tasks: este archivo — verificación: `openspec status --change c-07-frontend-web` → todos los artefactos `done`.
-- [x] 2.6 Subir la rama a `origin/feat/front-base` cuando Caste lo autorice (sin PR: la revisión es de Thiago) — verificación: `git ls-remote origin refs/heads/feat/front-base`.
+- [x] 2.6 Subir la rama a `origin/feat/front-base` cuando Franco Castellarín lo autorice (sin PR: la revisión es de Thiago Sinatra) — verificación: `git ls-remote origin refs/heads/feat/front-base`.
 
 ## 3. Base visual (apply)
 
@@ -48,10 +48,10 @@
 
 ## 8. Cierre de esta rama
 
-- [x] 8.1 Dejar la rama lista para revisión: commits locales hechos y `openspec validate` en verde — verificación: `git log origin/main..HEAD` muestra los commits de propose y de base; **push pendiente de autorización de Caste**.
+- [x] 8.1 Dejar la rama lista para revisión: commits locales hechos y `openspec validate` en verde — verificación: `git log origin/main..HEAD` muestra los commits de propose y de base; **push pendiente de autorización de Franco Castellarín**.
 
 ## Workflow follow-up
 
-- La Etapa 2 (**Mai**) parte de `feat/front-base` para agregar la lógica de disponibilidad, reserva y gestión.
-- La Etapa 3 (**Thiago**) revisa E2E y unifica en `main`; la revisión, el merge y el archivado los hace él.
+- La Etapa 2 (**Mailén Claros**) parte de `feat/front-base` para agregar la lógica de disponibilidad, reserva y gestión.
+- La Etapa 3 (**Thiago Sinatra**) revisa E2E y unifica en `main`; la revisión, el merge y el archivado los hace él.
 - Dejar lista la evidencia para el video: páginas navegables, tests en verde y el momento de "Ajustar" del propose.

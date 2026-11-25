@@ -42,7 +42,7 @@ Guard en dos capas, dentro de una misma transacción (`@Transactional` en el mé
 
 - `fecha_hora_fin` se calcula **siempre en el servidor** = `fecha_hora_inicio` + `duracionMinutos` de la `Prestacion` elegida; el cliente nunca la envía.
 - Se valida que el turno esté **contenido completo** en el horario laboral vigente (`HorarioAtencion` del profesional para el día de la fecha) y que **no choque con bloqueos** (`Bloqueo` del profesional o del sillón/box), usando los repositorios ya existentes de `C-03`.
-- **Coordinación con `C-04`**: mismo criterio de solapamiento y misma exclusión de `CANCELADO`. Si el `AvailabilityCalculator` de Mai mergea antes que este apply, el servicio puede delegarle el cálculo (confirmarlo con Mai — su tarea A3); hasta entonces `C-05` valida con las entidades de `C-03` para no depender de una rama sin merge.
+- **Coordinación con `C-04`**: mismo criterio de solapamiento y misma exclusión de `CANCELADO`. Si el `AvailabilityCalculator` de Mailén Claros mergea antes que este apply, el servicio puede delegarle el cálculo (confirmarlo con Mailén Claros — su tarea A3); hasta entonces `C-05` valida con las entidades de `C-03` para no depender de una rama sin merge.
 
 ### D4 — RBAC de los endpoints de turnos
 
@@ -57,7 +57,7 @@ Guard en dos capas, dentro de una misma transacción (`@Transactional` en el mé
 
 ## Risks / Trade-offs
 
-- **[El apply depende de `C-02` sin merge]** → el propose no depende de nadie; mantener esta spec y hacer rebase en cuanto se mergeee antes de codificar. Avisar a Thiago.
+- **[El apply depende de `C-02` sin merge]** → el propose no depende de nadie; mantener esta spec y hacer rebase en cuanto se mergeee antes de codificar. Avisar a Thiago Sinatra.
 - **[Lock pesimista serializa reservas del mismo profesional]** → volumen de un consultorio: irrelevante; si algún día escala, migra al constraint PG + reintentos.
 - **[Doble guarda (app + constraint PG)]** → una carrera rara puede violar el constraint tras pasar la app; se captura la violación y se responde `400` con el mismo mensaje, manteniendo el comportamiento observable.
 - **[Estilos de paquetes mezclados en el repo]** → decisión registrada en D1; unificar es trabajo post-MVP, no de este change.

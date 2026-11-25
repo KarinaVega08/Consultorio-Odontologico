@@ -1,4 +1,4 @@
-# Handoff C-04 → C-05 (para Caste)
+# Handoff C-04 → C-05 (para Franco Castellarín)
 
 C-04 dejó un puerto de solo lectura para que C-05 conecte sus turnos reales sin acoplar este change a la entidad `Turno`.
 

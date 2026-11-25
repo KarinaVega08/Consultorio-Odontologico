@@ -1,6 +1,6 @@
-# Etapa 2 (Mai) — C-07 frontend-web
+# Etapa 2 (Mailén Claros) — C-07 frontend-web
 
-Rama: `feat/front-completo` (parte de `feat/front-base`, que es la Etapa 1 de Caste).
+Rama: `feat/front-completo` (parte de `feat/front-base`, que es la Etapa 1 de Franco Castellarín).
 
 ## Qué se agregó
 
