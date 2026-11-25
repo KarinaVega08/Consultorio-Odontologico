@@ -7,7 +7,7 @@
   <title>Consultorio Odontológico — Sistema de Gestión de Turnos</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body class="page-home">
   <header class="site-header">
     <nav class="nav">
       <a class="nav-brand" href="/index.html">
@@ -61,7 +61,7 @@
         </div>
       </section>
 
-      <div class="trust-strip">
+      <div class="trust-strip" data-reveal>
         <div class="trust-item">
           <span class="trust-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
@@ -83,23 +83,23 @@
       </div>
 
       <section class="section">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <span class="eyebrow">Cómo funciona</span>
           <h2>Tres pasos y listo</h2>
           <p>Dejamos la agenda simple para que vos te ocupes de lo importante: cuidar sonrisas.</p>
         </div>
         <div class="steps">
-          <article class="step">
+          <article class="step" data-reveal data-delay="1">
             <div class="step-num">1</div>
             <h3>Ingresá con tu DNI</h3>
             <p>Creá tu cuenta o iniciá sesión. Tu DNI es tu usuario, sin datos personales de más.</p>
           </article>
-          <article class="step">
+          <article class="step" data-reveal data-delay="2">
             <div class="step-num">2</div>
             <h3>Elegí tu horario</h3>
             <p>Seleccioná profesional, prestación y sillón. Mirá solo las franjas realmente libres.</p>
           </article>
-          <article class="step">
+          <article class="step" data-reveal data-delay="3">
             <div class="step-num">3</div>
             <h3>Confirmá y listo</h3>
             <p>Revisá los datos, confirmá la reserva y recibí el aviso por email.</p>
@@ -108,34 +108,34 @@
       </section>
 
       <section class="section">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <span class="eyebrow">Funcionalidades</span>
           <h2>Pensado para el día a día</h2>
           <p>Lo mismo que buscás en un software de gestión, pero enfocado en que sacar un turno sea fácil.</p>
         </div>
         <div class="feature-grid">
-          <article class="feature-card">
+          <article class="feature-card" data-reveal data-delay="1">
             <span class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
             </span>
             <h3>Autogestión del paciente</h3>
             <p>Registro con DNI y contraseña, perfil propio y consulta de turnos desde cualquier dispositivo.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card" data-reveal data-delay="2">
             <span class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M9 15l2 2 4-4"/></svg>
             </span>
             <h3>Agenda con doble validación</h3>
             <p>Cada reserva se valida en transacción por odontólogo y por sillón/box, sin superposiciones.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card" data-reveal data-delay="3">
             <span class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
             </span>
             <h3>Duración variable</h3>
             <p>La disponibilidad se calcula según la prestación: 30, 45 o 60 minutos, respetando los horarios de atención.</p>
           </article>
-          <article class="feature-card">
+          <article class="feature-card" data-reveal>
             <span class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
             </span>
@@ -146,31 +146,31 @@
       </section>
 
       <section class="section">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <span class="eyebrow">Preguntas frecuentes</span>
           <h2>Lo que suele aparecer</h2>
         </div>
         <div class="faq">
-          <details>
+          <details data-reveal>
             <summary>¿Necesito crear una cuenta para sacar un turno?</summary>
             <p>Sí. El registro es con DNI y contraseña; después podés vincular un Gmail para recuperar el acceso y recibir avisos.</p>
           </details>
-          <details>
+          <details data-reveal>
             <summary>¿Puedo cancelar un turno ya reservado?</summary>
             <p>Claro. Entrá a «Mis Turnos», elegí el turno y cancelalo. El horario vuelve a quedar libre de inmediato para nuevas reservas.</p>
           </details>
-          <details>
+          <details data-reveal>
             <summary>¿Cómo se calculan los horarios disponibles?</summary>
             <p>Teniendo en cuenta el horario de atención, la duración de la prestación y que ni el profesional ni el sillón estén ocupados en ese rango.</p>
           </details>
-          <details>
+          <details data-reveal>
             <summary>¿Se pueden reservar turnos consecutivos?</summary>
             <p>Sí. Un turno puede empezar exactamente cuando termina el anterior; lo que no se permite es que se superpongan.</p>
           </details>
         </div>
       </section>
 
-      <section class="cta-band">
+      <section class="cta-band" data-reveal>
         <div>
           <h2>¿Listo para sacar tu turno?</h2>
           <p>Elegí profesional, prestación y horario en menos de un minuto.</p>
@@ -189,6 +189,7 @@
 
   <script src="/js/api.js"></script>
   <script src="/js/nav.js"></script>
+  <script src="/js/scroll-effects.js"></script>
   <script>
     fetch('/api/health')
       .then((res) => {
