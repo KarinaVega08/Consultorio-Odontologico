@@ -5,7 +5,7 @@
  */
 (function () {
   if (!Api.isLoggedIn()) {
-    window.location.replace('/login.html?redirect=' + encodeURIComponent('/mis-turnos.html'));
+    window.location.replace('/login.html?redirect=' + encodeURIComponent('/mis-turnos.html') + '&reason=turnos');
     return;
   }
 
@@ -62,7 +62,11 @@
     modalConfirm.textContent = config.confirmText || 'Confirmar';
     modal.classList.remove('hidden');
     document.body.classList.add('modal-open');
-    modalConfirm.focus();
+    if (config.focusCancel) {
+      modalCancel.focus();
+    } else {
+      modalConfirm.focus();
+    }
   }
 
   function cerrarModal(confirmado) {
@@ -118,6 +122,11 @@
     return td;
   }
 
+  function esHistorial(turno) {
+    const estado = String(turno.estado || '').toLowerCase();
+    return estado === 'cancelado' || estado === 'completado';
+  }
+
   function render(turnos) {
     list.textContent = '';
     emptyState.classList.toggle('hidden', turnos.length > 0);
@@ -125,20 +134,29 @@
     turnos
       .slice()
       .sort(function (a, b) {
-        return new Date(a.fechaHoraInicio) - new Date(b.fechaHoraInicio);
+        const histA = esHistorial(a);
+        const histB = esHistorial(b);
+        if (histA !== histB) {
+          return histA ? 1 : -1;
+        }
+        const diff = new Date(a.fechaHoraInicio) - new Date(b.fechaHoraInicio);
+        return histA ? -diff : diff;
       })
       .forEach(function (turno) {
         const fila = document.createElement('tr');
+        const rango = formatDateTime(turno.fechaHoraInicio) + ' – ' + formatHour(turno.fechaHoraFin);
+        const tdFecha = celdaConDetalle('Fecha y hora', rango, '');
+        tdFecha.classList.add('col-nowrap');
+        fila.appendChild(tdFecha);
         fila.appendChild(celdaConDetalle(
-          'Inicio',
-          formatDateTime(turno.fechaHoraInicio),
-          nombres.profesionales[turno.profesionalId] || ''
+          'Profesional',
+          nombres.profesionales[turno.profesionalId] || '—',
+          ''
         ));
         fila.appendChild(celdaConDetalle(
-          'Fin',
-          formatDateTime(turno.fechaHoraFin),
-          (nombres.prestaciones[turno.prestacionId] || '') + ' · ' +
-            (nombres.sillonesBoxes[turno.sillonBoxId] || '')
+          'Prestación y sillón',
+          nombres.prestaciones[turno.prestacionId] || '—',
+          nombres.sillonesBoxes[turno.sillonBoxId] || ''
         ));
 
         const tdEstado = document.createElement('td');
@@ -152,19 +170,21 @@
 
         const tdAcciones = document.createElement('td');
         tdAcciones.setAttribute('data-label', 'Acciones');
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn btn-secondary';
         if (estado === 'cancelado' || estado === 'completado') {
-          btn.textContent = 'Sin acciones';
-          btn.disabled = true;
+          const sinAcciones = document.createElement('span');
+          sinAcciones.className = 'text-muted';
+          sinAcciones.textContent = '—';
+          tdAcciones.appendChild(sinAcciones);
         } else {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn btn-danger-outline';
           btn.textContent = 'Cancelar';
           btn.addEventListener('click', function () {
             cancelar(turno);
           });
+          tdAcciones.appendChild(btn);
         }
-        tdAcciones.appendChild(btn);
         fila.appendChild(tdAcciones);
 
         list.appendChild(fila);
@@ -187,8 +207,9 @@
   async function cancelar(turno) {
     const acepta = await new Promise(function (resolve) {
       abrirModal({
-        icon: '✦',
-        tone: 'info',
+        icon: '!',
+        tone: 'danger',
+        focusCancel: true,
         title: '¿Cancelar el turno?',
         subtitle: 'El horario volverá a estar disponible para otras reservas.',
         detalles: [

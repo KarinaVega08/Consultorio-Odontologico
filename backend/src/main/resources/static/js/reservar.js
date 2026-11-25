@@ -22,7 +22,16 @@
   const modalDetails = document.getElementById('modal-details');
   const modalCancel = document.getElementById('modal-cancel');
   const modalConfirm = document.getElementById('modal-confirm');
+  const stepperItems = document.querySelectorAll('.stepper .stepper-item');
   let modalConfig = null;
+
+  function setStep(activeStep) {
+    stepperItems.forEach(function (item, idx) {
+      const stepNum = idx + 1;
+      item.classList.toggle('is-active', stepNum === activeStep);
+      item.classList.toggle('is-done', stepNum < activeStep);
+    });
+  }
 
   function showAlert(message, type) {
     alertBox.textContent = message;
@@ -148,6 +157,46 @@
     }
   });
 
+  const PENDING_KEY = 'openmouth_pending_booking';
+
+  function guardarReservaPendiente(inicio) {
+    try {
+      sessionStorage.setItem(PENDING_KEY, JSON.stringify({
+        profesionalId: profesionalSel.value,
+        sillonBoxId: sillonSel.value,
+        prestacionId: prestacionSel.value,
+        fecha: fechaInput.value,
+        inicio: inicio
+      }));
+    } catch (e) {
+      // Sin sessionStorage se continúa con el redirect normal.
+    }
+  }
+
+  function consumirReservaPendiente() {
+    try {
+      const raw = sessionStorage.getItem(PENDING_KEY);
+      if (!raw) return null;
+      sessionStorage.removeItem(PENDING_KEY);
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function resetFranjas() {
+    clearAlert();
+    setStep(1);
+    franjasBox.textContent = '';
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    const strong = document.createElement('strong');
+    strong.textContent = 'Sin horarios para mostrar todavía';
+    empty.appendChild(strong);
+    empty.appendChild(document.createTextNode('Completá los datos de la reserva y presioná «Buscar horarios disponibles».'));
+    franjasBox.appendChild(empty);
+  }
+
   async function init() {
     fechaInput.min = todayISO();
     if (!fechaInput.value) {
@@ -168,6 +217,22 @@
       if (!catalogo.profesionales || !catalogo.profesionales.length ||
           !catalogo.prestaciones || !catalogo.prestaciones.length) {
         showAlert('No hay profesionales o prestaciones cargados. Ejecutá el script de datos demo (perfil demo).', 'error');
+        return;
+      }
+
+      const pendiente = consumirReservaPendiente();
+      if (pendiente) {
+        if (pendiente.profesionalId) profesionalSel.value = pendiente.profesionalId;
+        if (pendiente.sillonBoxId) sillonSel.value = pendiente.sillonBoxId;
+        if (pendiente.prestacionId) prestacionSel.value = pendiente.prestacionId;
+        if (pendiente.fecha) fechaInput.value = pendiente.fecha;
+        await buscarFranjas();
+        if (pendiente.inicio && Api.isLoggedIn()) {
+          const btn = franjasBox.querySelector('button[data-inicio="' + pendiente.inicio + '"]');
+          if (btn) {
+            reservar(pendiente.inicio, btn);
+          }
+        }
       }
     } catch (error) {
       showAlert('No se pudo cargar el catálogo. Verificá que el backend esté en http://localhost:8080.', 'error');
@@ -226,6 +291,11 @@
         grid.appendChild(btn);
       });
       franjasBox.appendChild(grid);
+      setStep(2);
+      const franjasCard = franjasBox.closest('.card');
+      if (franjasCard && franjasCard.scrollIntoView) {
+        franjasCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     } catch (error) {
       showAlert('Error de conexión con el backend', 'error');
     } finally {
@@ -237,7 +307,8 @@
     clearAlert();
 
     if (!Api.isLoggedIn()) {
-      showAlert('Iniciá sesión para confirmar el turno. Te redirigimos al login.', 'info');
+      guardarReservaPendiente(inicio);
+      showAlert('Iniciá sesión para confirmar el turno. Al volver retomamos tu horario.', 'info');
       window.setTimeout(function () {
         window.location.href = '/login.html?redirect=' + encodeURIComponent('/reservar.html');
       }, 900);
@@ -270,10 +341,12 @@
         // Sin catálogo no se puede estimar el fin; el modal muestra solo el inicio.
       }
 
+      setStep(3);
       const confirma = await pedirConfirmacion(
         detalleTurno(inicio, finPrevisto, me.data.nombreCompleto)
       );
       if (!confirma) {
+        setStep(2);
         showAlert('Reserva cancelada: no se creó ningún turno.', 'info');
         return;
       }
@@ -310,6 +383,10 @@
       btn.disabled = false;
     }
   }
+
+  [profesionalSel, sillonSel, prestacionSel, fechaInput].forEach(function (el) {
+    el.addEventListener('change', resetFranjas);
+  });
 
   buscarBtn.addEventListener('click', function () {
     clearAlert();

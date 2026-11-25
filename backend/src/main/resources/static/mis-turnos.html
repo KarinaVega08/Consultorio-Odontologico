@@ -19,10 +19,10 @@
       </a>
       <ul class="nav-links">
         <li><a class="nav-link" href="/index.html">Inicio</a></li>
-        <li><a class="nav-link" href="/reservar.html">Sacar Turno</a></li>
-        <li><a class="nav-link active" href="/mis-turnos.html">Mis Turnos</a></li>
+        <li><a class="nav-link" href="/reservar.html">Sacar turno</a></li>
+        <li><a class="nav-link active" href="/mis-turnos.html">Mis turnos</a></li>
         <li><a class="nav-link nav-account" id="nav-account" href="/login.html">Iniciar sesión</a></li>
-        <li><button type="button" id="nav-logout" class="nav-logout hidden">Cerrar Sesión</button></li>
+        <li><button type="button" id="nav-logout" class="nav-logout hidden">Cerrar sesión</button></li>
       </ul>
     </nav>
   </header>
@@ -30,8 +30,13 @@
   <main>
     <div class="container">
       <span class="eyebrow">Mi agenda</span>
-      <h1 class="page-title">Mis Turnos</h1>
-      <p class="subtitle">Consultá tus turnos activos y cancelados, y cancelá uno si ya no podés asistir.</p>
+      <div class="page-header-row">
+        <div>
+          <h1 class="page-title">Mis Turnos</h1>
+          <p class="subtitle">Consultá tus próximos turnos y tu historial, o cancelá uno si ya no podés asistir.</p>
+        </div>
+        <a class="btn btn-lg" href="/reservar.html">Sacar turno &rarr;</a>
+      </div>
 
       <div id="turnos-alert" class="alert"></div>
 
@@ -39,8 +44,9 @@
         <table>
           <thead>
             <tr>
-              <th>Inicio</th>
-              <th>Fin</th>
+              <th>Fecha y hora</th>
+              <th>Profesional</th>
+              <th>Prestación y sillón</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>

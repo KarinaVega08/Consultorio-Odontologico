@@ -6,11 +6,16 @@
   function aplicar() {
     const account = document.getElementById('nav-account');
     const logoutBtn = document.getElementById('nav-logout');
+    const heroAuthCta = document.getElementById('hero-auth-cta');
     if (!account) return;
 
     if (window.Api && Api.isLoggedIn()) {
-      account.textContent = 'Mi Cuenta';
+      account.textContent = 'Mi cuenta';
       account.href = '/login.html';
+      if (heroAuthCta) {
+        heroAuthCta.textContent = 'Ver mis turnos';
+        heroAuthCta.href = '/mis-turnos.html';
+      }
       if (logoutBtn) {
         logoutBtn.classList.remove('hidden');
         logoutBtn.onclick = function () {
@@ -21,12 +26,18 @@
     } else {
       account.textContent = 'Iniciar sesión';
       account.href = '/login.html';
+      if (heroAuthCta) {
+        heroAuthCta.textContent = 'Ingresar / Registrarme';
+        heroAuthCta.href = '/login.html';
+      }
       if (logoutBtn) {
         logoutBtn.classList.add('hidden');
         logoutBtn.onclick = null;
       }
     }
   }
+
+  window.Nav = { refresh: aplicar };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', aplicar);
