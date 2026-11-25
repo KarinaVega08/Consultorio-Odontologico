@@ -68,14 +68,13 @@ backend/           # Módulo backend (Java 21 + Spring Boot 3 + Gradle)
 openspec/          # Planificación OPSX (proposals, specs, designs, tasks, archive)
 knowledge-base/    # Base de conocimiento del dominio (11 archivos .md)
 docs/discovery/    # Informe de discovery y verificación de fuentes
-CHANGES.md         # Roadmap de implementación (6 changes, C-01 a C-06)
+CHANGES.md         # Roadmap de implementación (7 changes, C-01 a C-07)
 AGENTS.md / CLAUDE.md  # Instrucciones para agentes
 ```
 
 ## Estado del proyecto
 
-- **C-01 a C-06:** completados (backend, auth, configuración, disponibilidad, turnos y notificaciones).
-- **C-07 frontend-web:** Etapa 1 (base visual) y Etapa 2 (lógica de reserva/turnos) ver `CHANGES.md`.
+- **C-01 a C-07:** completados (backend, auth, configuración, disponibilidad, turnos, notificaciones y frontend web).
 
 ## Cómo correr la app con datos de prueba (sin PostgreSQL)
 

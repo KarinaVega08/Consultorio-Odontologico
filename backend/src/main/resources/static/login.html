@@ -9,7 +9,14 @@
 <body>
   <header class="site-header">
     <nav class="nav">
-      <a class="nav-brand" href="/index.html">🦷 Consultorio Odontológico</a>
+      <a class="nav-brand" href="/index.html">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5.6c-1.5-1.3-3.3-1.8-4.9-1.1-2.4 1-3.3 2.8-3 5 .4 2.8 1.6 5.1 2.3 7.7.4 1.5 1.2 2.1 2.2 1.7 1-.4 1.2-1.7 1.4-3 .2-1.4.6-2.3 2-2.3s1.8.9 2 2.3c.2 1.3.4 2.6 1.4 3 1 .4 1.8-.2 2.2-1.7.7-2.6 1.9-4.9 2.3-7.7.3-2.2-.6-4-3-5-1.6-.7-3.4-.2-4.9 1.1z"/>
+          </svg>
+        </span>
+        <span>Consultorio Odontológico</span>
+      </a>
       <ul class="nav-links">
         <li><a class="nav-link" href="/index.html">Inicio</a></li>
         <li><a class="nav-link" href="/reservar.html">Sacar Turno</a></li>
@@ -21,77 +28,91 @@
   </header>
 
   <main>
-    <div class="container narrow">
-      <a class="back-link" href="/index.html">← Volver al inicio</a>
+    <div class="container">
+      <a class="back-link" href="/index.html">&larr; Volver al inicio</a>
 
-      <div class="card">
-        <h1 class="page-title">🦷 Portal de Pacientes</h1>
-        <p class="subtitle">Ingresá con tu DNI y contraseña o creá tu cuenta.</p>
-
-        <div id="alert-box" class="alert"></div>
-
-        <div id="auth-section">
-          <div class="tabs">
-            <button type="button" id="tab-login" class="tab-btn active">Iniciar sesión</button>
-            <button type="button" id="tab-register" class="tab-btn">Registrarme</button>
+      <div class="auth-shell">
+        <aside class="auth-aside">
+          <div>
+            <span class="eyebrow">Portal de pacientes</span>
+            <h2>Tu sonrisa, en buenas manos.</h2>
+            <p>Ingresá con tu DNI, elegí el horario que mejor te quede y recibí el recordatorio por email.</p>
           </div>
+          <p class="auth-quote">«Un turno simple es el primer paso de un tratamiento tranquilo.»</p>
+        </aside>
 
-          <form id="login-form">
-            <div class="form-group">
-              <label for="login-dni">DNI (7 u 8 dígitos)</label>
-              <input id="login-dni" type="text" inputmode="numeric" pattern="\d{7,8}" placeholder="Ej: 99999999" required>
-            </div>
-            <div class="form-group">
-              <label for="login-password">Contraseña</label>
-              <input id="login-password" type="password" placeholder="Tu contraseña" required>
-            </div>
-            <button type="submit" class="btn btn-block">Ingresar</button>
-          </form>
+        <div class="auth-card">
+          <h1 class="page-title">Bienvenido</h1>
+          <p class="subtitle">Ingresá con tu DNI y contraseña o creá tu cuenta.</p>
 
-          <form id="register-form" class="hidden">
-            <div class="form-group">
-              <label for="reg-name">Nombre completo</label>
-              <input id="reg-name" type="text" minlength="2" placeholder="Ej: Juan Pérez" required>
-            </div>
-            <div class="form-group">
-              <label for="reg-dni">DNI (7 u 8 dígitos)</label>
-              <input id="reg-dni" type="text" inputmode="numeric" pattern="\d{7,8}" placeholder="Ej: 99999999" required>
-            </div>
-            <div class="form-group">
-              <label for="reg-password">Contraseña (mínimo 6 caracteres)</label>
-              <input id="reg-password" type="password" minlength="6" placeholder="Creá una contraseña" required>
-            </div>
-            <button type="submit" class="btn btn-block">Crear cuenta</button>
-          </form>
-        </div>
+          <div id="alert-box" class="alert"></div>
 
-        <div id="profile-section" class="hidden">
-          <div class="profile-box">
-            <p><strong>Paciente:</strong> <span id="prof-name"></span></p>
-            <p><strong>DNI:</strong> <span id="prof-dni"></span></p>
-            <p><strong>Gmail de recuperación:</strong> <span id="prof-gmail">No vinculado</span></p>
-          </div>
+          <div id="auth-section">
+            <div class="tabs">
+              <button type="button" id="tab-login" class="tab-btn active">Iniciar sesión</button>
+              <button type="button" id="tab-register" class="tab-btn">Registrarme</button>
+            </div>
 
-          <div id="gmail-link-box" class="gmail-banner hidden">
-            <h3>Vincular Gmail de recuperación (única vez)</h3>
-            <p>Asociá una cuenta @gmail.com por única vez para recuperar tu acceso o recibir recordatorios.</p>
-            <form id="gmail-form">
+            <form id="login-form">
               <div class="form-group">
-                <label for="gmail-input">Correo Gmail</label>
-                <input id="gmail-input" type="email" placeholder="ejemplo@gmail.com" required>
+                <label for="login-dni">DNI (7 u 8 dígitos)</label>
+                <input id="login-dni" type="text" inputmode="numeric" pattern="\d{7,8}" placeholder="Ej: 99999999" required>
               </div>
-              <button type="submit" class="btn btn-block">Vincular Gmail</button>
+              <div class="form-group">
+                <label for="login-password">Contraseña</label>
+                <input id="login-password" type="password" placeholder="Tu contraseña" required>
+              </div>
+              <button type="submit" class="btn btn-block btn-lg">Ingresar</button>
+            </form>
+
+            <form id="register-form" class="hidden">
+              <div class="form-group">
+                <label for="reg-name">Nombre completo</label>
+                <input id="reg-name" type="text" minlength="2" placeholder="Ej: Juan Pérez" required>
+              </div>
+              <div class="form-group">
+                <label for="reg-dni">DNI (7 u 8 dígitos)</label>
+                <input id="reg-dni" type="text" inputmode="numeric" pattern="\d{7,8}" placeholder="Ej: 99999999" required>
+              </div>
+              <div class="form-group">
+                <label for="reg-password">Contraseña (mínimo 6 caracteres)</label>
+                <input id="reg-password" type="password" minlength="6" placeholder="Creá una contraseña" required>
+              </div>
+              <button type="submit" class="btn btn-block btn-lg">Crear cuenta</button>
             </form>
           </div>
 
-          <button type="button" id="logout-btn" class="btn btn-secondary btn-block">Cerrar sesión</button>
+          <div id="profile-section" class="hidden">
+            <div class="profile-box">
+              <p><strong>Paciente:</strong> <span id="prof-name"></span></p>
+              <p><strong>DNI:</strong> <span id="prof-dni"></span></p>
+              <p><strong>Gmail de recuperación:</strong> <span id="prof-gmail">No vinculado</span></p>
+            </div>
+
+            <div id="gmail-link-box" class="gmail-banner hidden">
+              <h3>Vincular Gmail de recuperación (única vez)</h3>
+              <p>Asociá una cuenta @gmail.com por única vez para recuperar tu acceso o recibir recordatorios.</p>
+              <form id="gmail-form">
+                <div class="form-group">
+                  <label for="gmail-input">Correo Gmail</label>
+                  <input id="gmail-input" type="email" placeholder="ejemplo@gmail.com" required>
+                </div>
+                <button type="submit" class="btn btn-block">Vincular Gmail</button>
+              </form>
+            </div>
+
+            <button type="button" id="logout-btn" class="btn btn-secondary btn-block">Cerrar sesión</button>
+          </div>
         </div>
       </div>
     </div>
   </main>
 
   <footer class="site-footer">
-    <p>Consultorio Odontológico &copy; 2026 — Trabajo Global Integrador — UTN FRM</p>
+    <div class="footer-inner">
+      <span><strong>Consultorio Odontológico</strong> &mdash; Gestión de turnos</span>
+      <span>Trabajo Global Integrador &middot; UTN FRM &copy; 2026</span>
+    </div>
   </footer>
 
   <script src="/js/api.js"></script>

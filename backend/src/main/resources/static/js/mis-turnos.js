@@ -106,8 +106,9 @@
     }
   }
 
-  function celdaConDetalle(principal, detalle) {
+  function celdaConDetalle(etiqueta, principal, detalle) {
     const td = document.createElement('td');
+    td.setAttribute('data-label', etiqueta);
     td.textContent = principal;
     if (detalle) {
       const small = document.createElement('small');
@@ -129,16 +130,19 @@
       .forEach(function (turno) {
         const fila = document.createElement('tr');
         fila.appendChild(celdaConDetalle(
+          'Inicio',
           formatDateTime(turno.fechaHoraInicio),
           nombres.profesionales[turno.profesionalId] || ''
         ));
         fila.appendChild(celdaConDetalle(
+          'Fin',
           formatDateTime(turno.fechaHoraFin),
           (nombres.prestaciones[turno.prestacionId] || '') + ' · ' +
             (nombres.sillonesBoxes[turno.sillonBoxId] || '')
         ));
 
         const tdEstado = document.createElement('td');
+        tdEstado.setAttribute('data-label', 'Estado');
         const estado = String(turno.estado || '').toLowerCase();
         const badge = document.createElement('span');
         badge.className = 'badge ' + estado;
@@ -147,6 +151,7 @@
         fila.appendChild(tdEstado);
 
         const tdAcciones = document.createElement('td');
+        tdAcciones.setAttribute('data-label', 'Acciones');
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn btn-secondary';
