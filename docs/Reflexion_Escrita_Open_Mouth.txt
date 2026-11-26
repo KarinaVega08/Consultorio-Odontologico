@@ -1,0 +1,61 @@
+Reflexión Escrita
+Trabajo Global Integrador — Open Mouth
+
+Grupo
+- Castellarín, Franco (Legajo 51931)
+- Claros, Mailén (Legajo 51939)
+- Oliva, Matías (Legajo 52064)
+- Sinatra, Thiago (Legajo 52132)
+- Vega, Karina (Legajo 52149)
+
+
+1. Información del Discovery incorrecta o inventada
+¿Qué información del Discovery resultó incorrecta o inventada y cómo la detectaron?
+
+Cuando arrancamos a investigar los sistemas que ya existen en el mercado, el agente empezó a llenar la tabla comparativa con cosas que suponía o que sacaba de publicidades de las páginas, sin tener pruebas reales. También nos pasó que varias URLs que encontraba tiraban error o nos llevaban a sitios con fallos grandes y re poco intuitivos si un paciente común quería entrar a sacar un turno rápido.
+
+Por eso nos pusimos a revisar a mano 5 de esas páginas directo desde el navegador (Dentify, Dentry, Open Dental, Dentalink y Odontal Web, y también chusmeamos cómo funcionaba Odentix). Ahí saltaron varias diferencias con lo que había escrito el agente al principio: por ejemplo, en Dentalink decía que no mostraban precios al público, pero entrando a la sección de planes y promociones vimos que sí tenían tarifas de referencia y hasta un precio promocional para su módulo de Contact Center. Lo mismo con varias funciones o integraciones locales de Argentina que no aparecían por ningún lado en la documentación oficial.
+
+Al final, dejamos anotadas esas 5 revisiones con la fecha y quién la miró, y en todo el resto de la tabla donde no encontramos forma de comprobar si una función existía de verdad pusimos directamente "No evidenciado" antes de dar por cerrado el Discovery.
+
+
+2. Uso del protocolo Ajustar
+¿En qué etapa usaron Ajustar, qué estaba mal y qué habría pasado si continuaban?
+
+Aplicamos el protocolo Ajustar en dos momentos clave del ciclo OPSX:
+
+C-04 (Disponibilidad) y C-05 (Gestión de turnos)
+Durante la etapa de Propose, observamos que el cálculo de franjas libres y el control de anti-solapamiento utilizaban criterios diferentes para los turnos consecutivos. Si no hacíamos ajustes a la especificación, el sistema podría haber indicado un horario "borde a borde" (por ejemplo, de 10:00 a 10:30 cuando otro acaba a las 10:00) y luego habría rechazado la reserva al intentar guardarla. Además, más tarde identificamos que la consulta de ocupación debía considerar tanto el profesional como el sillón (OR), para prevenir que un mismo profesional apareciera como libre en dos sillones simultáneamente.
+
+Integración de notificaciones (C-06)
+Ajustamos la spec para que no se dispararan eventos de envío si el paciente aún no había vinculado su correo de recuperación. Sin ese ajuste, el sistema habría intentado enviar correos con destinatario nulo generando fallos innecesarios en el flujo de reserva.
+
+
+3. Especificación aprobada vs. prompt suelto
+¿Qué diferencia notaron entre implementar con especificación aprobada vs. prompt suelto?
+
+La diferencia fue considerable, sobre todo al trabajar cinco personas en paralelo. Sin una instrucción bien definida, cada integrante habría interpretado por su cuenta los contratos de la API, los nombres de los campos y los códigos de error, lo que habría generado conflictos al integrar los cambios en la rama principal.
+
+Al trabajar con una especificación aprobada en OpenSpec (explore → propose → apply → verify), los contratos (DTOs, endpoints y escenarios de error/borde) quedaron cerrados antes de escribir la primera línea de Java. Eso permitió que Matías, Karina y Mailén desarrollaran C-02, C-03 y C-04 en simultáneo en ramas separadas y que todo encajara al integrarse en C-05 y C-07.
+
+
+4. Valor de la fundación en el ciclo OPSX
+¿Qué parte de la fundación aportó más valor al ciclo OPSX y cuál menos?
+
+- Lo que más valor aportó: La carpeta knowledge-base/ (sobre todo las reglas de negocio codificadas RN-XX y el modelo de datos) junto con el CHANGES.md (el árbol de dependencias y los gates de paralelismo). Funcionaron como el mapa central del proyecto y evitaron ambigüedades durante todo el desarrollo. Además, nos permitió ahorrar muchísimos tokens y tiempo al momento de supervisar o corregir errores, porque ya no teníamos que volver a explicarle al agente todos los detalles de contexto desde cero en cada cambio.
+
+- Lo que menos valor aportó: Tener que mantener archivos de reglas duplicados para distintos agentes (AGENTS.md y CLAUDE.md) y algunas formalidades repetitivas dentro de las carpetas de archive en cambios chicos, ya que obligaba a estar sincronizando documentación cada vez que se tocaba un detalle menor.
+
+
+5. Participación de cada integrante
+¿Qué hizo cada integrante en el equipo?
+
+- Thiago Sinatra (52132) — Líder técnico: Estuvo a cargo de toda la etapa de Fundación (Discovery, Base de Conocimiento, CHANGES.md y reglas del agente) y armó la base inicial en C-01 (setup-base). También coordinó las ramas y los merges hacia main, colaboró en C-02 y C-05, y se ocupó de la validación final punta a punta.
+
+- Matías Oliva (52064): Desarrolló C-02 (auth-pacientes), implementando el registro y login con DNI, el encriptado de contraseñas con BCrypt, la autenticación por token, la vinculación única del correo de recuperación y el flujo completo de reseteo de contraseña.
+
+- Karina Vega (52149): Desarrolló C-03 (configuracion-consultorio), implementando el CRUD administrativo de profesionales, sillones/boxes, prestaciones, horarios y bloqueos, junto con el módulo C-06 (notificaciones) con adaptador SMTP, recordatorios programados y enlaces únicos. También colaboró activamente en la lógica y en las mejoras visuales del frontend.
+
+- Mailén Claros (51939): Implementó C-04 (disponibilidad-turnos) con el motor de cálculo de franjas libres, completó la Etapa 2 del frontend C-07 (conexión a la API, modales interactivos y validaciones) y resolvió el ajuste de ocupación cruzada para que un profesional no figure disponible en dos sillones al mismo tiempo.
+
+- Franco Castellarín (51931): Implementó C-05 (gestion-turnos) con la lógica transaccional anti-solapamiento doble y cancelación lógica sin borrado físico, la integración de eventos entre turnos y notificaciones (c-06-integracion-turnos), y la Etapa 1 del frontend C-07 (diseño visual, estilos, maquetado y cliente HTTP).
